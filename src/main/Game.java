@@ -1,9 +1,19 @@
 package main;
 
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable{
 
+	/**
+	 * Szeria verzio szam
+	 */
+	private static final long serialVersionUID = 5307833864394498312L;
+	
+	//Jatek-ablak valtozoi
 	public static int width = 1000;
 	public static int height = 600;
 	private String title;
@@ -93,4 +103,34 @@ public class Game extends Canvas implements Runnable{
 		
 	}
 	
+	/**
+	 * Grafika renderelese
+	 */
+	public void render(){
+		BufferStrategy bs = this.getBufferStrategy();
+		if (bs == null) { //ez csak egyszer fog meghivodni a jatek elejen
+			this.createBufferStrategy(3); //alapbeallitas: 3x elotoltes - tulnovelese pl. 5-8-15x-re lassitja a jatekot
+			return;
+		}
+		
+		Graphics g = bs.getDrawGraphics();
+		Graphics g2D = (Graphics2D) g;
+		
+		//alap piros talaj
+		g.setColor(Color.red);
+		g.fillRect(0, 0, width, height);
+		
+		///kamera szerinti nezet renderelese -START-
+		g2D.translate(-camera.getX(), -camera.getY());
+		
+		handler.render(g);
+		
+		/// -STOP-
+		bs.show();
+		g.dispose();
+	}
+	
+	public static void main(String[] args){
+		new Game();
+	}
 }
