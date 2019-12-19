@@ -6,10 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
+import gui.KeyInput;
+
 public class Game extends Canvas implements Runnable{
 
 	/**
-	 * Szeria verzio szam
+	 * Szeria verzioszam
 	 */
 	private static final long serialVersionUID = 5307833864394498312L;
 	
@@ -23,16 +25,15 @@ public class Game extends Canvas implements Runnable{
 		init();
 	}
 	
-	//Handler referencia
+	//Handler es Camera referencia
 	private Handler handler;
-			
-	//Camera referencia
 	private Camera camera;
 	
 	public void init(){
 		title = "Dungeon Game pA 0.1";
 		handler = new Handler(); 
 		camera = new Camera(0, 0, handler);
+		this.addKeyListener(new KeyInput(handler));
 	}
 
 	/**
