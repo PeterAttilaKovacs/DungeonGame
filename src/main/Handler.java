@@ -47,6 +47,11 @@ public class Handler {
 		return tempObject;
 	} 
 	
+	//Palya torlese tovabbtoltes elott
+	public void clearLevel(){
+		object.clear();
+	}
+	
 	//Jatekos getterei es setterei
 	public boolean isUp(){ 
 		return up;}

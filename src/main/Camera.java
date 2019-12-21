@@ -21,7 +21,7 @@ public class Camera {
 	//Jatekoskereso metodus
 	public void fndPlayer(){
 		for (int i = 0; i < handler.object.size(); i++){ 
-			if (handler.object.get(i).getId() == ID.Player){ //jatekos keresese objektumok kozt ID alapjan
+			if (handler.object.get(i).getId() == ID.SpaceMarine){ //jatekos keresese objektumok kozt ID alapjan
 				tempPlayer = handler.object.get(i);
 				break;
 			}

@@ -6,7 +6,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
+import animation.SpriteCuter;
 import gui.KeyInput;
+import objects.Hud;
 
 public class Game extends Canvas implements Runnable{
 
@@ -19,21 +21,34 @@ public class Game extends Canvas implements Runnable{
 	public static int width = 1000;
 	public static int height = 600;
 	private String title;
+	public static int Level = 1;
 	
+	//Game konstruktora
 	public Game(){
-		new Window(width, height, title, this);
 		init();
+		new Window(width, height, title, this); //uj megjelenitesi ablak hivasa
+		new LevelLoader(handler, this, camera, hud); //uj palya betoltese
+		start();
+	
 	}
 	
 	//Handler es Camera referencia
 	private Handler handler;
 	private Camera camera;
+	private SpriteCuter cut;
+	private Hud hud;
 	
+	/**
+	 * Inicializalas (valtozok inicializalasa)
+	 */
 	public void init(){
-		title = "Dungeon Game pA 0.1";
+		title = "SpaceMarine Game pA 0.1";
 		handler = new Handler(); 
 		camera = new Camera(0, 0, handler);
 		this.addKeyListener(new KeyInput(handler));
+		
+		hud = new Hud(25, 25, null, cut);
+		//cut = new SpriteCuter(map_layout); <--TODO kidolgozni
 	}
 
 	/**
@@ -98,16 +113,46 @@ public class Game extends Canvas implements Runnable{
         } 
 	}
 	
+	//futatatasban levo szal
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		this.requestFocus();
+		long lastTime = System.nanoTime();
+		double amountOfTicks = 60.0;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		long timer = System.currentTimeMillis();
+		while(canRun){ //amig a szal fut
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			
+			while(delta >= 1){
+				tick(); //tick hivasa
+				delta--;
+			}
+			
+			render(); //rendereles hivasa
+			
+			if (System.currentTimeMillis() - timer > 1000){
+				timer += 1000;
+			}
+		}
+		stop();
+	}
+	
+	/**
+	 * Frissites metodus
+	 */
+	private void tick(){
+		handler.tick();
+		camera.tick();
 	}
 	
 	/**
 	 * Grafika renderelese
 	 */
-	public void render(){
+	private void render(){
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) { //ez csak egyszer fog meghivodni a jatek elejen
 			this.createBufferStrategy(3); //alapbeallitas: 3x elotoltes - tulnovelese pl. 5-8-15x-re lassitja a jatekot
@@ -125,12 +170,25 @@ public class Game extends Canvas implements Runnable{
 		g2D.translate(-camera.getX(), -camera.getY());
 		
 		handler.render(g);
+			
+		g2D.translate(camera.getX(), camera.getY());
+		///kamera szerinti nezet renderelese -STOP-
 		
-		/// -STOP-
+		/**
+		 * Jatekos HUD renderelese
+		 * 
+		 * g2D alatt, mivel ez statikusan kell, hogy egy pozicioba legyen mindig
+		 */
+		hud.render(g);
+		
 		bs.show();
 		g.dispose();
 	}
 	
+	/**
+	 * Main metodus, uj jatek hivasa
+	 * @param args
+	 */
 	public static void main(String[] args){
 		new Game();
 	}

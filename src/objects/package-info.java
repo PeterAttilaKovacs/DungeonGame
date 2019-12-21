@@ -1,7 +1,7 @@
 /**
  * Jatek objektumai
  * 
- * Objektumok: BaseObject, Player, Monster
+ * Objektumok: BaseObject, Jatekos (SpaceMarine), Szornyek(KhornDemon)
  */
 /**
  * @author Galaktika

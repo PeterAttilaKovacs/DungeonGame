@@ -2,11 +2,11 @@ package enums;
 
 public enum ID {
 
-	Player(),
-	Monster(),
-	Block(),
-	Crate(),
-	Bolt(),
+	SpaceMarine(),
+	Khornet(),
+	WallBlock(),
+	AmmoCrate(),
+	BolterRound(),
 	Flag(),
 	GameOver();
 }
