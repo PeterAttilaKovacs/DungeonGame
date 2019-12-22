@@ -1,3 +1,13 @@
+/**
+ * 
+ * Space Marine on Demon Worlds
+ * 
+ * author: Galaktika
+ * 
+ * TODO: animalt grafika - spritok, zene, hangok, menu, menu/jatek allapot
+ * 
+ */
+
 package main;
 
 import java.awt.Canvas;
@@ -8,7 +18,7 @@ import java.awt.image.BufferStrategy;
 
 import animation.SpriteCuter;
 import gui.KeyInput;
-import objects.Hud;
+import objects.PlayerHUD;
 
 public class Game extends Canvas implements Runnable{
 
@@ -36,7 +46,7 @@ public class Game extends Canvas implements Runnable{
 	private Handler handler;
 	private Camera camera;
 	private SpriteCuter cut;
-	private Hud hud;
+	private PlayerHUD hud;
 	
 	/**
 	 * Inicializalas (valtozok inicializalasa)
@@ -47,7 +57,7 @@ public class Game extends Canvas implements Runnable{
 		camera = new Camera(0, 0, handler);
 		this.addKeyListener(new KeyInput(handler));
 		
-		hud = new Hud(25, 25, null, cut);
+		hud = new PlayerHUD(25, 25, null, cut);
 		//cut = new SpriteCuter(map_layout); <--TODO kidolgozni
 	}
 

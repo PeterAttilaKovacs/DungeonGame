@@ -10,6 +10,7 @@ import gui.MouseInput;
 import main.Camera;
 import main.Game;
 import main.Handler;
+import main.LevelLoader;
 
 public class SpaceMarine extends BaseObject{
 
@@ -18,15 +19,17 @@ public class SpaceMarine extends BaseObject{
 	private Handler handler;
 	private Camera camera;
 	private Game game;
-	private Hud hud;
+	private PlayerHUD hud;
 	private final MouseInput SpMarine;
 	
-	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut, Handler handler, Camera cam, Game game, Hud hud) {
+	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut, Handler handler, 
+						Camera cam, Game game, PlayerHUD hud, LevelLoader level) {
 		super(x, y, id, imageCut);
 		this.handler = handler;
 		this.camera = cam;
 		this.game = game;
 		this.hud = hud;
+		this.level = level;
 		
 		SpMarine = new MouseInput(handler, cam, game, imageCut, hud);
 		game.addMouseListener(SpMarine);
@@ -78,6 +81,9 @@ public class SpaceMarine extends BaseObject{
 	/**
 	 * Utkozes figyelese metodus
 	 */
+	
+	private LevelLoader level;
+	
 	private void collision(){
 		for (int i = 0; i < handler.object.size(); i++){
 			
@@ -110,13 +116,15 @@ public class SpaceMarine extends BaseObject{
 			if (tempObject.getId() == ID.Flag){
 				if (getBounds().intersects(tempObject.getBounds())){
 					game.removeMouseListener(SpMarine); //egerfigyelo eltavolitasa palyatoltes elott
-					//level.nextLevel(); //call for loading next level
+					level.nextLevel(); //kovetkezo palya hivasa
 				}
 			}
 		}
 		if (hud.MarineLife <= 0){
 			//TODO gameover
 			System.out.println("Elfogyott az eleted."); //teszt
+			handler.addObject(new GameOver(this.x, this.y, ID.GameOver, imageCut));
+			handler.removeObject(this);
 		}
 	}
 

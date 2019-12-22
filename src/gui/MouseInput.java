@@ -10,7 +10,7 @@ import main.Game;
 import main.Handler;
 import objects.BaseObject;
 import objects.BolterRound;
-import objects.Hud;
+import objects.PlayerHUD;
 
 public class MouseInput extends MouseAdapter {
 
@@ -19,7 +19,7 @@ public class MouseInput extends MouseAdapter {
 	private Game game;
 	private Camera camera;
 	private SpriteCuter cut;
-	private Hud hud;
+	private PlayerHUD hud;
 	
 	/**
 	 * Eger bevitel konstruktora
@@ -29,7 +29,7 @@ public class MouseInput extends MouseAdapter {
 	 * 
 	 * tovabbi bovites: spritecuter, hud osztaly
 	 */
-	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter cut, Hud hud){
+	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter cut, PlayerHUD hud){
 		this.handler = handler;
 		this.camera = camera;
 		this.game = game;

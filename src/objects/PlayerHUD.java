@@ -7,14 +7,14 @@ import java.awt.Rectangle;
 import animation.SpriteCuter;
 import enums.ID;
 
-public class Hud extends BaseObject{
+public class PlayerHUD extends BaseObject{
 
 	public int MarineLife = 100;
 	public int MarineAmmo = 50;
 	public int MarineScore = 0;
 	
 	//Hud konstruktora
-	public Hud(float x, float y, ID id, SpriteCuter imageCut) {
+	public PlayerHUD(float x, float y, ID id, SpriteCuter imageCut) {
 		super(x, y, id, imageCut);
 	}
 
