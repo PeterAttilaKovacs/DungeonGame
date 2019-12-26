@@ -14,7 +14,6 @@ import objects.tesztEnemy;
 
 public class LevelLoader {
 
-	//LevelLoader variables
 	private Handler handler;
 	public PlayerHUD hud;
 	public SpriteCuter cut;
@@ -23,7 +22,7 @@ public class LevelLoader {
 	public BufferedImage level_1 = null, level_2 = null, level_3 = null;
 	private Game game;
 		
-	//LevelLoader constructor
+	//LevelLoader konstruktora
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
 	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud){
 		this.handler = handler;
@@ -43,7 +42,7 @@ public class LevelLoader {
 		nextLevel();
 	}
 		
-	//Level rendering
+	//Level renderelese
 	public void loadMap(BufferedImage levelMap){
 		int w = levelMap.getWidth();
 		int h = levelMap.getHeight();

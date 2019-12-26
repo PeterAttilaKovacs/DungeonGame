@@ -14,10 +14,14 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
 
 import animation.SpriteCuter;
+import enums.STATES;
 import gui.KeyInput;
+import gui.MouseInput;
+import menu.MainMenu;
 import objects.PlayerHUD;
 
 public class Game extends Canvas implements Runnable{
@@ -27,10 +31,13 @@ public class Game extends Canvas implements Runnable{
 	 */
 	private static final long serialVersionUID = 5307833864394498312L;
 	
+	//Jatek allapot valtozoja
+	public static STATES GameStatus = STATES.Menu;
+	
 	//Jatek-ablak valtozoi
 	public static int width = 1000;
 	public static int height = 600;
-	private String title;
+	public static String title;
 	public static int Level = 1;
 	
 	//Game konstruktora
@@ -47,6 +54,7 @@ public class Game extends Canvas implements Runnable{
 	private Camera camera;
 	private SpriteCuter cut;
 	private PlayerHUD hud;
+	private MainMenu menu;
 	
 	/**
 	 * Inicializalas (valtozok inicializalasa)
@@ -56,6 +64,11 @@ public class Game extends Canvas implements Runnable{
 		handler = new Handler(); 
 		camera = new Camera(0, 0, handler);
 		this.addKeyListener(new KeyInput(handler));
+		
+		menu = new MainMenu();
+		this.addMouseMotionListener(new MouseInput());
+		//this.addMouseListener(new MouseInput().mouseClicked(MouseEvent.BUTTON1));
+		//this.addMouseMotionListener(menu);
 		
 		hud = new PlayerHUD(25, 25, null, cut);
 		//cut = new SpriteCuter(map_layout); <--TODO kidolgozni
@@ -155,8 +168,15 @@ public class Game extends Canvas implements Runnable{
 	 * Frissites metodus
 	 */
 	private void tick(){
-		handler.tick();
-		camera.tick();
+		if (GameStatus == STATES.Menu){
+			menu.tick();
+			//System.out.println("menutick"); // meghivodik
+		}
+		
+		if (GameStatus == STATES.Play){
+			handler.tick();
+			camera.tick();
+		}	
 	}
 	
 	/**
@@ -171,25 +191,40 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics g = bs.getDrawGraphics();
 		Graphics g2D = (Graphics2D) g;
-		
-		//alap piros talaj
-		g.setColor(Color.red);
-		g.fillRect(0, 0, width, height);
-		
-		///kamera szerinti nezet renderelese -START-
-		g2D.translate(-camera.getX(), -camera.getY());
-		
-		handler.render(g);
 			
-		g2D.translate(camera.getX(), camera.getY());
-		///kamera szerinti nezet renderelese -STOP-
+			//alap piros talaj
+			g.setColor(Color.red);
+			g.fillRect(0, 0, width, height);
 		
 		/**
-		 * Jatekos HUD renderelese
-		 * 
-		 * g2D alatt, mivel ez statikusan kell, hogy egy pozicioba legyen mindig
+		 * Jatek indul, ha a jatekstatusza: jatek
+		 */	
+		if (GameStatus == STATES.Play){
+				
+			//this.removeMouseMotionListener(menu);
+			
+			///kamera szerinti nezet renderelese -START-
+			g2D.translate(-camera.getX(), -camera.getY());
+		
+				handler.render(g);
+			
+			g2D.translate(camera.getX(), camera.getY());
+			///kamera szerinti nezet renderelese -STOP-
+		
+			/**
+			 * Jatekos HUD renderelese
+			 * 
+			 * g2D alatt, mivel ez statikusan kell, hogy egy pozicioba legyen mindig
+			 */
+			hud.render(g);
+		}
+		
+		/**
+		 * Menu funkcio inditasa uj jatek inditasakor
 		 */
-		hud.render(g);
+		if (GameStatus == STATES.Menu){
+			menu.render(g);
+		}
 		
 		bs.show();
 		g.dispose();

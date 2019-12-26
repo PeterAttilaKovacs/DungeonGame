@@ -68,7 +68,7 @@ public class SpaceMarine extends BaseObject{
 	 */
 	@Override
 	public void render(Graphics g) {
-		// Test render
+		// Teszt render
 		g.setColor(Color.green);
 		g.fillRect((int)x, (int)y, 32, 48);
 	}
@@ -120,10 +120,13 @@ public class SpaceMarine extends BaseObject{
 				}
 			}
 		}
+		/**
+		 * Jatekos elete 0, akkor GameOver peldanyositasa, 
+		 * jatekos torlese, egerfigyelo eltavolitasa
+		 */
 		if (hud.MarineLife <= 0){
-			//TODO gameover
-			System.out.println("Elfogyott az eleted."); //teszt
 			handler.addObject(new GameOver(this.x, this.y, ID.GameOver, imageCut));
+			game.removeMouseListener(SpMarine);
 			handler.removeObject(this);
 		}
 	}

@@ -5,5 +5,6 @@ public enum STATES {
 	Menu(),
 	Help(),
 	Options(),
-	Play();
+	Play(),
+	Exit();
 }
