@@ -14,8 +14,8 @@ import main.LevelLoader;
 
 public class SpaceMarine extends BaseObject{
 
-	private int width = 32;
-	private int height = 48;
+	private int width;
+	private int height;
 	private Handler handler;
 	private Camera camera;
 	private Game game;
@@ -30,6 +30,9 @@ public class SpaceMarine extends BaseObject{
 		this.game = game;
 		this.hud = hud;
 		this.level = level;
+		
+		width = 32;
+		height = 48;
 		
 		SpMarine = new MouseInput(handler, cam, game, imageCut, hud);
 		game.addMouseListener(SpMarine);

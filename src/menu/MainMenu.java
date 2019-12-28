@@ -1,5 +1,5 @@
 /**
- * TODO menuben egergomblenyomas meghivasa-figyelese
+ * TODO opciok, help allapotok
  */
 package menu;
 
@@ -7,7 +7,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
 import enums.STATES;
 import gui.MouseInput;
@@ -69,15 +75,13 @@ public class MainMenu {
 		
 		boolean event = false;
 		
+		//Opciok tomb figyelese
 		for (int i=0; i < options.length; i++){
 			if(options[i].intersects(new Rectangle(MouseInput.getX(), MouseInput.getY(), 1, 1))){
 				selectedMenu = i;
-				//TODO gomblenyomas erzekelese es status valtas
 				event = MouseInput.wasPressed(MouseEvent.BUTTON1);
-				System.out.println(event);
 			}
 		}
-		//System.out.println(MouseInput.getX() + " : " + MouseInput.getY()); //meghivodik
 		if (event) { 
 			selectState();
 		}
@@ -88,19 +92,40 @@ public class MainMenu {
 		
 		switch(selectedMenu){
 		
-		case 0:
-			Game.GameStatus = STATES.Play;
-			System.out.println("Play");
+			//Jatek statuszvaltas: jatekra
+			case 0:
+				Game.GameStatus = STATES.Play;
 			break;
 		
-		case 1:	
+			//Jatek opciok
+			case 1:	
+				System.out.println("OPCIOK meghivodik"); //teszt
 			break;
 			
-		case 2:
+			//Jatek help
+			case 2:
+				//TODO ezt atalakitani, mert igy nem jo
+//				JMenuItem helpItem = new JMenuItem();
+//				JPopupMenu pmenu = new JPopupMenu();
+//				helpItem.addActionListener(new ActionListener(){
+//
+//					@Override
+//					public void actionPerformed(ActionEvent arg0) {
+//						JOptionPane.showInternalMessageDialog(pmenu, "Jatekos vezerlese WSAD gombokkal, loves az eger bal gombjaval.");
+//					}
+//				});
+//			
+//				pmenu.add(helpItem);
+//				pmenu.setLocation(MouseInput.getX(), MouseInput.getY());
+//				pmenu.setBounds(MouseInput.getX(), MouseInput.getY(), 200, 200);
+//				pmenu.setSize(200, 200);
+//				pmenu.setVisible(true);
+				System.out.println("HELP meghivodik"); //teszt
 			break;
 			
-		case 3:	
-			Runtime.getRuntime().exit(1);
+			//Jatekbol kilepes
+			case 3:	
+				Runtime.getRuntime().exit(1);
 			break;
 		}
 	}

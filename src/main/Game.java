@@ -46,7 +46,6 @@ public class Game extends Canvas implements Runnable{
 		new Window(width, height, title, this); //uj megjelenitesi ablak hivasa
 		new LevelLoader(handler, this, camera, hud); //uj palya betoltese
 		start();
-	
 	}
 	
 	//Handler es Camera referencia
@@ -55,6 +54,8 @@ public class Game extends Canvas implements Runnable{
 	private SpriteCuter cut;
 	private PlayerHUD hud;
 	private MainMenu menu;
+	
+	public MouseInput mouse;
 	
 	/**
 	 * Inicializalas (valtozok inicializalasa)
@@ -65,10 +66,13 @@ public class Game extends Canvas implements Runnable{
 		camera = new Camera(0, 0, handler);
 		this.addKeyListener(new KeyInput(handler));
 		
+		mouse = new MouseInput();
+		
 		menu = new MainMenu();
-		this.addMouseMotionListener(new MouseInput());
-		//this.addMouseListener(new MouseInput().mouseClicked(MouseEvent.BUTTON1));
-		//this.addMouseMotionListener(menu);
+		
+			//eger figyeles felvetele menure
+			this.addMouseMotionListener(mouse);
+			this.addMouseListener(mouse);
 		
 		hud = new PlayerHUD(25, 25, null, cut);
 		//cut = new SpriteCuter(map_layout); <--TODO kidolgozni
@@ -168,11 +172,12 @@ public class Game extends Canvas implements Runnable{
 	 * Frissites metodus
 	 */
 	private void tick(){
+		//menu tick
 		if (GameStatus == STATES.Menu){
 			menu.tick();
-			//System.out.println("menutick"); // meghivodik
 		}
 		
+		//jatek tick
 		if (GameStatus == STATES.Play){
 			handler.tick();
 			camera.tick();
@@ -183,6 +188,10 @@ public class Game extends Canvas implements Runnable{
 	 * Grafika renderelese
 	 */
 	private void render(){
+		
+		/**
+		 * Elotoltesi strategia
+		 */
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) { //ez csak egyszer fog meghivodni a jatek elejen
 			this.createBufferStrategy(3); //alapbeallitas: 3x elotoltes - tulnovelese pl. 5-8-15x-re lassitja a jatekot
@@ -200,8 +209,10 @@ public class Game extends Canvas implements Runnable{
 		 * Jatek indul, ha a jatekstatusza: jatek
 		 */	
 		if (GameStatus == STATES.Play){
-				
-			//this.removeMouseMotionListener(menu);
+			
+			//eger figyles levetele a menurol
+			this.removeMouseMotionListener(mouse);
+			this.removeMouseListener(mouse);
 			
 			///kamera szerinti nezet renderelese -START-
 			g2D.translate(-camera.getX(), -camera.getY());
@@ -232,7 +243,6 @@ public class Game extends Canvas implements Runnable{
 	
 	/**
 	 * Main metodus, uj jatek hivasa
-	 * @param args
 	 */
 	public static void main(String[] args){
 		new Game();

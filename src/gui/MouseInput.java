@@ -53,12 +53,31 @@ public class MouseInput extends MouseAdapter {
 		}
 	}
 	
-	//Egergomb lenyomas
+	/**
+	 * Egergomb lenyomas metodus
+	 * 
+	 * NM_BTN : 5 - otgombos egerkezeleshez
+	 * Az ertek novelesevel tobbgombos egerkezeles lehetseges
+	 * 
+	 * Menu allapotban: menuvezerles 
+	 * Jatek allapotben: loves vezerles
+	 */
+	private static final int NM_BTN = 5;
+		
+	private static final boolean buttons[] = new boolean[NM_BTN];
+	//private static final boolean lastButtons[] = new boolean[NM_BTN];
+		
+	@Override
 	public void mousePressed(MouseEvent e){
 		
 		int mx = e.getX();
 		int my = e.getY();
 	
+		//ha a jatek statusza: menu
+		if (Game.GameStatus == STATES.Menu){
+			buttons[e.getButton()] = true;
+		}
+		
 		//ha a jatek statusza: jatek
 		if (Game.GameStatus == STATES.Play){
 
@@ -79,37 +98,40 @@ public class MouseInput extends MouseAdapter {
 		}	
 	}
 	
+	//Egergomb felengedve
+	@Override
+	public void mouseReleased(MouseEvent e){
+		if (Game.GameStatus == STATES.Menu){
+			buttons[e.getButton()] = false;
+		}	
+	}
+	
+	//Eger mozgasfigyelo
 	private static int x;
 	private static int y;
 	
-	//eger mozgasfigyelo
+	@Override
 	public void mouseMoved(MouseEvent e){
+		
 		x = e.getX();
 		y = e.getY();
-		//System.out.println(x + y);
 	}
 	
-	//teszt
-	private static final int NM_BTN = 3;
-	private static final boolean[] buttons = new boolean[NM_BTN];
-	
+	/**
+	 * Egergomb lenyomasra kerult-e figyelese
+	 * @return visszatero ertek a lenyomott egergomb (button)
+	 */
 	public static boolean wasPressed(int button){
 		return buttons[button];
 	}
-	//teszt
 	
-	//eger x gettere
+	//Eger x gettere
 	public static int getX(){
 		return x;
 	}
 	
-	//eger y gettere
+	//Eger y gettere
 	public static int getY(){
 		return y;
-	}
-
-	public static int mouseClicked(int button) {
-		// TODO Auto-generated method stub
-		return button;
 	}
 }
