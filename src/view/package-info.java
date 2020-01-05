@@ -5,4 +5,4 @@
  * @author Galaktika
  *
  */
-package animation;
+package view;

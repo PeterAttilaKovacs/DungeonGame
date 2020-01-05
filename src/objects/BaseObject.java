@@ -3,8 +3,8 @@ package objects;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import animation.SpriteCuter;
 import enums.ID;
+import view.SpriteCuter;
 
 public abstract class BaseObject {
 
@@ -15,7 +15,7 @@ public abstract class BaseObject {
 	protected SpriteCuter imageCut;
 	
 	//kozos os jatek objektumoknak
-	public BaseObject(float x, float y, ID id, SpriteCuter imageCut){ //<-- SpriteCuter Cut kivenni, ha vissza kell allni "2D kocka" nezetre!
+	public BaseObject(float x, float y, ID id, SpriteCuter imageCut) {
 		this.x = x;
 		this.y = y;
 		this.id = id;

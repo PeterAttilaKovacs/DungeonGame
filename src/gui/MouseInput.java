@@ -3,7 +3,6 @@ package gui;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import animation.SpriteCuter;
 import enums.ID;
 import enums.STATES;
 import main.Camera;
@@ -12,6 +11,7 @@ import main.Handler;
 import objects.BaseObject;
 import objects.BolterRound;
 import objects.PlayerHUD;
+import view.SpriteCuter;
 
 public class MouseInput extends MouseAdapter {
 
@@ -19,7 +19,7 @@ public class MouseInput extends MouseAdapter {
 	private BaseObject tempPlayer;
 	private Game game;
 	private Camera camera;
-	private SpriteCuter cut;
+	private SpriteCuter imageCut;
 	private PlayerHUD hud;
 	
 	/*
@@ -35,18 +35,18 @@ public class MouseInput extends MouseAdapter {
 	 * 
 	 * tovabbi bovites: spritecuter, hud osztaly
 	 */
-	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter cut, PlayerHUD hud){
+	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter imageCut, PlayerHUD hud) {
 		this.handler = handler;
 		this.camera = camera;
 		this.game = game;
-		this.cut = cut;
+		this.imageCut = imageCut;
 		this.hud = hud;
 	}
 	
 	//Jatekos keresese
 	public void fndPlayer(){
-		for (int i = 0; i < handler.object.size(); i++){ 
-			if (handler.object.get(i).getId() == ID.SpaceMarine){ //jatekos keresese ID alapjan
+		for (int i = 0; i < handler.object.size(); i++) { 
+			if (handler.object.get(i).getId() == ID.SpaceMarine) { //jatekos keresese ID alapjan
 				tempPlayer = handler.object.get(i);
 				break;
 			}
@@ -68,22 +68,22 @@ public class MouseInput extends MouseAdapter {
 	//private static final boolean lastButtons[] = new boolean[NM_BTN];
 		
 	@Override
-	public void mousePressed(MouseEvent e){
+	public void mousePressed(MouseEvent e) {
 		
 		int mx = e.getX();
 		int my = e.getY();
 	
 		//ha a jatek statusza: menu
-		if (Game.GameStatus == STATES.Menu){
+		if (Game.GameStatus == STATES.Menu) {
 			buttons[e.getButton()] = true;
 		}
 		
 		//ha a jatek statusza: jatek
-		if (Game.GameStatus == STATES.Play){
+		if (Game.GameStatus == STATES.Play) {
 
 			//ha a jatekos nem nulla, akkor hajtodik vegre
-			if (tempPlayer != null){
-				BaseObject tempBolt = handler.addObject(new BolterRound(tempPlayer.x + 16, tempPlayer.y + 16, ID.BolterRound, cut, handler));
+			if (tempPlayer != null) {
+				BaseObject tempBolt = handler.addObject(new BolterRound(tempPlayer.x + 16, tempPlayer.y + 16, ID.BolterRound, imageCut, handler));
 			
 				//Lovedek iranyszamitas
 				float angle = (float) Math.atan2(my - tempPlayer.y - 16 +camera.getY(), mx - tempPlayer.x - 16 +camera.getX());
@@ -98,12 +98,15 @@ public class MouseInput extends MouseAdapter {
 		}	
 	}
 	
-	//Egergomb felengedve
+	//Egergomb felengedve 
 	@Override
-	public void mouseReleased(MouseEvent e){
-		if (Game.GameStatus == STATES.Menu){
+	public void mouseReleased(MouseEvent e) {
+		if (Game.GameStatus == STATES.Menu) {
 			buttons[e.getButton()] = false;
-		}	
+		}
+		if (Game.GameStatus == STATES.Help) { // <-- ez igy nem jo, atnezni!!
+			buttons[e.getButton()] = false;
+		}
 	}
 	
 	//Eger mozgasfigyelo
@@ -111,8 +114,7 @@ public class MouseInput extends MouseAdapter {
 	private static int y;
 	
 	@Override
-	public void mouseMoved(MouseEvent e){
-		
+	public void mouseMoved(MouseEvent e) {
 		x = e.getX();
 		y = e.getY();
 	}
@@ -121,17 +123,21 @@ public class MouseInput extends MouseAdapter {
 	 * Egergomb lenyomasra kerult-e figyelese
 	 * @return visszatero ertek a lenyomott egergomb (button)
 	 */
-	public static boolean wasPressed(int button){
+	public static boolean wasPressed(int button) {
+		return buttons[button];
+	}
+	
+	public static boolean wasReleased(int button) {
 		return buttons[button];
 	}
 	
 	//Eger x gettere
-	public static int getX(){
+	public static int getX() {
 		return x;
 	}
 	
 	//Eger y gettere
-	public static int getY(){
+	public static int getY() {
 		return y;
 	}
 }

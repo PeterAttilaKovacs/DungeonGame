@@ -14,15 +14,17 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
-import animation.SpriteCuter;
 import enums.STATES;
 import gui.KeyInput;
 import gui.MouseInput;
+import menu.HelpMenu;
 import menu.MainMenu;
 import objects.PlayerHUD;
+import view.BufferedImageLoader;
+import view.SpriteCuter;
 
 public class Game extends Canvas implements Runnable{
 
@@ -41,26 +43,34 @@ public class Game extends Canvas implements Runnable{
 	public static int Level = 1;
 	
 	//Game konstruktora
-	public Game(){
+	public Game() {
 		init();
 		new Window(width, height, title, this); //uj megjelenitesi ablak hivasa
-		new LevelLoader(handler, this, camera, hud); //uj palya betoltese
+		new LevelLoader(handler, this, camera, hud, imageCut); //uj palya betoltese
 		start();
 	}
 	
 	//Handler es Camera referencia
 	private Handler handler;
 	private Camera camera;
-	private SpriteCuter cut;
 	private PlayerHUD hud;
-	private MainMenu menu;
 	
+	//Menupontok referencia
+	private MainMenu menu;
+	private HelpMenu subHelpMenu;
+	
+	//Eger referencia
 	public MouseInput mouse;
+	
+	//Animacio es kepvagas referencia
+	private SpriteCuter imageCut;
+	private BufferedImageLoader imageloader;
+	private BufferedImage trySprite;
 	
 	/**
 	 * Inicializalas (valtozok inicializalasa)
 	 */
-	public void init(){
+	public void init() {
 		title = "SpaceMarine Game pA 0.1";
 		handler = new Handler(); 
 		camera = new Camera(0, 0, handler);
@@ -69,13 +79,18 @@ public class Game extends Canvas implements Runnable{
 		mouse = new MouseInput();
 		
 		menu = new MainMenu();
+		subHelpMenu = new HelpMenu();
 		
 			//eger figyeles felvetele menure
 			this.addMouseMotionListener(mouse);
 			this.addMouseListener(mouse);
 		
-		hud = new PlayerHUD(25, 25, null, cut);
-		//cut = new SpriteCuter(map_layout); <--TODO kidolgozni
+		hud = new PlayerHUD(25, 25, null, imageCut);
+		
+		imageloader = new BufferedImageLoader();
+			
+			trySprite = imageloader.loadImage("/spm.png");
+			imageCut = new SpriteCuter(trySprite);
 	}
 
 	/**
@@ -86,8 +101,8 @@ public class Game extends Canvas implements Runnable{
 	private boolean canRun = false;
 	
 	//uj futtatasi szal inditasa
-	public void start(){
-		synchronized (threadLock){ //olyan objektum szinkronizalasa ami biztos, hogy letezik!
+	public void start() {
+		synchronized (threadLock) { //olyan objektum szinkronizalasa ami biztos, hogy letezik!
             if (myThread instanceof Thread){ //van-e szal?
                 if(!myThread.isAlive()) stop(); //ha a szal nem el, akkor stop
             }
@@ -98,13 +113,13 @@ public class Game extends Canvas implements Runnable{
                 myThread = new Thread(()->{ //lambda kifejezeses fuggveny
                     try{
                         canRun = true;
-                        while (canRun){
+                        while (canRun) {
                             this.run();
                             myThread.sleep(100);
                         }
                     }
                     
-                    catch (InterruptedException ie){ 
+                    catch (InterruptedException ie) { 
                     	System.err.println("Hiba a szal futatasaban: " + ie); //nagyon alap hibaelfogas
                     }
                     
@@ -118,10 +133,10 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	//futasban levo szal leallitasa
-	public void stop(){
-		synchronized(threadLock){ //olyan objektum szinkronizalasa ami biztos, hogy letezik!
+	public void stop() {
+		synchronized(threadLock) { //olyan objektum szinkronizalasa ami biztos, hogy letezik!
             if (myThread instanceof Thread){ //van-e szal?
-                if(myThread.isAlive()){
+                if(myThread.isAlive()) {
                     canRun = false;
                     try {
                         myThread.join(2000); //2 masodperces varas
@@ -132,7 +147,7 @@ public class Game extends Canvas implements Runnable{
                     }
                 
                     //vizsgalat, hogy el-e meg a szal
-                    if(myThread.isAlive()){
+                    if(myThread.isAlive()) {
                         myThread.interrupt(); //ha 3 mp utan nem all meg, akkor jelzes a szalnak a megallasra
                     }
                 }    
@@ -171,14 +186,19 @@ public class Game extends Canvas implements Runnable{
 	/**
 	 * Frissites metodus
 	 */
-	private void tick(){
-		//menu tick
-		if (GameStatus == STATES.Menu){
+	private void tick() {
+		//main - menu tick
+		if (GameStatus == STATES.Menu) {
 			menu.tick();
+		}	
+		//menu - help tick
+		else if (GameStatus == STATES.Help) {
+			subHelpMenu.tick();
 		}
 		
+		
 		//jatek tick
-		if (GameStatus == STATES.Play){
+		if (GameStatus == STATES.Play) {
 			handler.tick();
 			camera.tick();
 		}	
@@ -187,7 +207,7 @@ public class Game extends Canvas implements Runnable{
 	/**
 	 * Grafika renderelese
 	 */
-	private void render(){
+	private void render() {
 		
 		/**
 		 * Elotoltesi strategia
@@ -202,13 +222,13 @@ public class Game extends Canvas implements Runnable{
 		Graphics g2D = (Graphics2D) g;
 			
 			//alap piros talaj
-			g.setColor(Color.red);
+			g.setColor(Color.magenta);
 			g.fillRect(0, 0, width, height);
 		
 		/**
 		 * Jatek indul, ha a jatekstatusza: jatek
 		 */	
-		if (GameStatus == STATES.Play){
+		if (GameStatus == STATES.Play) {
 			
 			//eger figyles levetele a menurol
 			this.removeMouseMotionListener(mouse);
@@ -233,8 +253,11 @@ public class Game extends Canvas implements Runnable{
 		/**
 		 * Menu funkcio inditasa uj jatek inditasakor
 		 */
-		if (GameStatus == STATES.Menu){
+		if (GameStatus == STATES.Menu) {
 			menu.render(g);
+		}
+		else if (GameStatus == STATES.Help) {
+			subHelpMenu.render(g);
 		}
 		
 		bs.show();
@@ -244,7 +267,7 @@ public class Game extends Canvas implements Runnable{
 	/**
 	 * Main metodus, uj jatek hivasa
 	 */
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		new Game();
 	}
 }

@@ -1,14 +1,14 @@
-package animation;
+package view;
 
 import java.awt.image.BufferedImage;
 
 public class SpriteCuter {
 
-	private BufferedImage cuted_image;
+	private BufferedImage imageCut;
 	
 	//SpriteCuter konstruktora
-	public SpriteCuter(BufferedImage cut_image){
-		this.cuted_image = cut_image;
+	public SpriteCuter(BufferedImage imageCut){
+		this.imageCut = imageCut;
 	}
 	
 	/**
@@ -20,6 +20,6 @@ public class SpriteCuter {
 	 * @param height int 32 vagy 48 attol fuggoen szorny vagy jatekos van renderelve
 	 */
 	public BufferedImage grabImage(int col, int row, int width, int height){
-		return cuted_image.getSubimage((col*32)-32, (row*32)-32, (width), (height));
+		return imageCut.getSubimage((col*32)-32, (row*32)-32, (width), (height));
 	}
 }

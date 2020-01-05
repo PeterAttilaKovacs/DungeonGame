@@ -3,14 +3,16 @@ package objects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
-import animation.SpriteCuter;
 import enums.ID;
 import gui.MouseInput;
 import main.Camera;
 import main.Game;
 import main.Handler;
 import main.LevelLoader;
+import view.Animation2D;
+import view.SpriteCuter;
 
 public class SpaceMarine extends BaseObject{
 
@@ -20,8 +22,23 @@ public class SpaceMarine extends BaseObject{
 	private Camera camera;
 	private Game game;
 	private PlayerHUD hud;
-	private final MouseInput SpMarine;
+	private final MouseInput mouseSpMarine;
+	private BufferedImage spmarine[] = new BufferedImage[3];
+	public Animation2D animation;
 	
+	
+	/**
+	 * Jatekos konstruktora
+	 * @param x - x koordinataja
+	 * @param y - y koordinataja
+	 * @param id - azonosito
+	 * @param imageCut - kepvago
+	 * @param handler - vegrahajto
+	 * @param cam - kameranezet
+	 * @param game - jatekter
+	 * @param hud - elet/loszer kijelzo
+	 * @param level - palya
+	 */
 	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut, Handler handler, 
 						Camera cam, Game game, PlayerHUD hud, LevelLoader level) {
 		super(x, y, id, imageCut);
@@ -30,12 +47,19 @@ public class SpaceMarine extends BaseObject{
 		this.game = game;
 		this.hud = hud;
 		this.level = level;
+		this.imageCut = imageCut;
 		
 		width = 32;
 		height = 48;
 		
-		SpMarine = new MouseInput(handler, cam, game, imageCut, hud);
-		game.addMouseListener(SpMarine);
+		mouseSpMarine = new MouseInput(handler, cam, game, imageCut, hud);
+		game.addMouseListener(mouseSpMarine);
+		
+		spmarine[0] = imageCut.grabImage(1, 1, width, 39);
+		spmarine[1] = imageCut.grabImage(2, 1, 33, 39);
+		spmarine[2] = imageCut.grabImage(3, 1, width, 35);
+		
+		animation = new Animation2D(3, spmarine);
 	}
 
 	@Override
@@ -64,6 +88,8 @@ public class SpaceMarine extends BaseObject{
 		//Esc <-- kilepes
 		if (handler.isEsc()){ Runtime.getRuntime().exit(1); }
 		
+		animation.runAnimation();
+		
 	}
 
 	/**
@@ -72,8 +98,16 @@ public class SpaceMarine extends BaseObject{
 	@Override
 	public void render(Graphics g) {
 		// Teszt render
-		g.setColor(Color.green);
-		g.fillRect((int)x, (int)y, 32, 48);
+		//g.setColor(Color.blue);
+		//g.fillRect((int)x, (int)y, 32, 48);
+		
+		if (velX == 0 && velY == 0){
+			g.drawImage(spmarine[0], (int)x, (int)y, null);
+		}
+		
+		else { 
+			animation.drawAnimation(g, x, y, 0); 
+		}
 	}
 
 	@Override
@@ -118,7 +152,7 @@ public class SpaceMarine extends BaseObject{
 			//kilpesi ponttal valo utkozes figyelse
 			if (tempObject.getId() == ID.Flag){
 				if (getBounds().intersects(tempObject.getBounds())){
-					game.removeMouseListener(SpMarine); //egerfigyelo eltavolitasa palyatoltes elott
+					game.removeMouseListener(mouseSpMarine); //egerfigyelo eltavolitasa palyatoltes elott
 					level.nextLevel(); //kovetkezo palya hivasa
 				}
 			}
@@ -129,9 +163,8 @@ public class SpaceMarine extends BaseObject{
 		 */
 		if (hud.MarineLife <= 0){
 			handler.addObject(new GameOver(this.x, this.y, ID.GameOver, imageCut));
-			game.removeMouseListener(SpMarine);
+			game.removeMouseListener(mouseSpMarine);
 			handler.removeObject(this);
 		}
 	}
-
 }

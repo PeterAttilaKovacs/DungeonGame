@@ -2,8 +2,6 @@ package main;
 
 import java.awt.image.BufferedImage;
 
-import animation.BufferedImageLoader;
-import animation.SpriteCuter;
 import enums.ID;
 import objects.AmmoCrate;
 import objects.Flag;
@@ -11,25 +9,26 @@ import objects.PlayerHUD;
 import objects.SpaceMarine;
 import objects.WallBlock;
 import objects.tesztEnemy;
+import view.BufferedImageLoader;
+import view.SpriteCuter;
 
 public class LevelLoader {
 
 	private Handler handler;
 	public PlayerHUD hud;
-	public SpriteCuter cut;
-	//public SpriteCuter cut2;
+	public SpriteCuter imageCut;
 	public Camera camera;
 	public BufferedImage level_1 = null, level_2 = null, level_3 = null;
 	private Game game;
 		
 	//LevelLoader konstruktora
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
-	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud){
+	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, SpriteCuter imageCut){
 		this.handler = handler;
-		//this.cut = cut;
 		this.hud = hud;
 		this.game = game;
 		this.camera = camera;
+		this.imageCut = imageCut;
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 			level_1 = loader.loadImage("/kronosworld.png"); 	//lvl 1
@@ -56,27 +55,27 @@ public class LevelLoader {
 						
 				//Fal (piros)
 				if (red == 255 && green == 0 && blue == 0){
-					handler.addObject(new WallBlock(xx*32, yy*32, ID.WallBlock, cut));
+					handler.addObject(new WallBlock(xx*32, yy*32, ID.WallBlock, imageCut));
 				}	
 						
 				//SpaceMarine (kek)
 				if (red == 0 && green == 0 && blue == 255){
-					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, cut, handler, camera, game, hud, this));
+					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut, handler, camera, game, hud, this));
 				}
 					
 				//Khornet (zold)
 				if (red == 0 && green == 255 && blue == 0){
-					handler.addObject(new tesztEnemy(xx*32, yy*32, ID.Khornet, cut, handler, game, hud));
+					handler.addObject(new tesztEnemy(xx*32, yy*32, ID.Khornet, imageCut, handler, game, hud));
 				}
 					
 				//Loszereslada (cian)
 				if (red == 0 && green == 255 && blue == 255){ //cyen color: red: 0, green: 255, blue: 255
-					handler.addObject(new AmmoCrate(xx*32, yy*32, ID.AmmoCrate, cut, handler));
+					handler.addObject(new AmmoCrate(xx*32, yy*32, ID.AmmoCrate, imageCut, handler));
 				}
 					
 				//Kilepesi pont (sarga)
 				if (red == 255 && green == 255 && blue == 0){ //yellow color: red: 255, green: 255, blue: 0 
-					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, cut)); 
+					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut)); 
 				}
 			}
 		}

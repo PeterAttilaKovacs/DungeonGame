@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import animation.SpriteCuter;
 import enums.ID;
+import view.SpriteCuter;
 
 public class Flag extends BaseObject{
 

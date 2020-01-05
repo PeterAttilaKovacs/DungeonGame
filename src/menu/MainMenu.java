@@ -7,13 +7,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 
 import enums.STATES;
 import gui.MouseInput;
@@ -27,7 +21,7 @@ public class MainMenu {
 	/**
 	 * Fomenu konstruktora
 	 */
-	public MainMenu(){
+	public MainMenu() {
 		options = new Button[4];
 		
 		options[0] = new Button("PLAY", 200 + 0 * 80, 
@@ -52,7 +46,7 @@ public class MainMenu {
 	}
 	
 	//Menu grafika renderelese
-	public void render(Graphics g){
+	public void render(Graphics g) {
 		
 		g.setColor(Color.orange);
 		MenuFonts.drawString(g, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
@@ -76,21 +70,23 @@ public class MainMenu {
 		boolean event = false;
 		
 		//Opciok tomb figyelese
-		for (int i=0; i < options.length; i++){
+		for (int i=0; i < options.length; i++) {
 			if(options[i].intersects(new Rectangle(MouseInput.getX(), MouseInput.getY(), 1, 1))){
 				selectedMenu = i;
 				event = MouseInput.wasPressed(MouseEvent.BUTTON1);
 			}
 		}
+		
 		if (event) { 
 			selectState();
+			event = MouseInput.wasReleased(MouseEvent.BUTTON1); // <-- ez igy nem jo, atnezni
 		}
 	}
 	
-	//Allapot valtas
-	public void selectState(){
+	//MainMenu allapot valtas
+	public void selectState() {
 		
-		switch(selectedMenu){
+		switch(selectedMenu) {
 		
 			//Jatek statuszvaltas: jatekra
 			case 0:
@@ -104,22 +100,8 @@ public class MainMenu {
 			
 			//Jatek help
 			case 2:
-				//TODO ezt atalakitani, mert igy nem jo
-//				JMenuItem helpItem = new JMenuItem();
-//				JPopupMenu pmenu = new JPopupMenu();
-//				helpItem.addActionListener(new ActionListener(){
-//
-//					@Override
-//					public void actionPerformed(ActionEvent arg0) {
-//						JOptionPane.showInternalMessageDialog(pmenu, "Jatekos vezerlese WSAD gombokkal, loves az eger bal gombjaval.");
-//					}
-//				});
-//			
-//				pmenu.add(helpItem);
-//				pmenu.setLocation(MouseInput.getX(), MouseInput.getY());
-//				pmenu.setBounds(MouseInput.getX(), MouseInput.getY(), 200, 200);
-//				pmenu.setSize(200, 200);
-//				pmenu.setVisible(true);
+				Game.GameStatus = STATES.Help;
+				
 				System.out.println("HELP meghivodik"); //teszt
 			break;
 			

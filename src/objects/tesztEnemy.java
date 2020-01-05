@@ -7,10 +7,10 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import animation.SpriteCuter;
 import enums.ID;
 import main.Game;
 import main.Handler;
+import view.SpriteCuter;
 
 public class tesztEnemy extends BaseObject{
 
@@ -59,16 +59,21 @@ public class tesztEnemy extends BaseObject{
 					velY = diffY * speed;
 					
 					//ez igy nem mukodik...
-//					SpriteCuter cut = null;
-//					BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.BolterRound, cut, handler));
+//					fndEnemy();
+//
+//					if (tempEnemy != null){
+//						SpriteCuter cut = null;
+//						BaseObject tempBolt = handler.addObject(new BolterRound(tempEnemy.x + 16, tempEnemy.y + 16, ID.BolterRound, cut, handler));
 //					
-//					int mx = (int)diffX;
-//					int my = (int)diffY;
-//					float angle = (float) Math.atan2(my - this.y - 16, mx - this.x - 16);
-//					int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
-//					tempBolt.velX = (float) ((boltVelocity) * Math.cos(angle));
-//					tempBolt.velY = (float) ((boltVelocity) * Math.sin(angle));
-//					enemyAmmo--;
+//						int mx = (int)diffX;
+//						int my = (int)diffY;
+//						float angle = (float) Math.atan2(my - tempEnemy.y - 16, mx - tempEnemy.x - 16);
+//						int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
+//						tempBolt.velX = (float) ((boltVelocity) * Math.cos(angle));
+//						tempBolt.velY = (float) ((boltVelocity) * Math.sin(angle));
+//						enemyAmmo--;
+//						System.out.println("ellenseg loves meghiva: " + enemyAmmo);
+//					}
 				}
 				
 				else {
@@ -88,7 +93,19 @@ public class tesztEnemy extends BaseObject{
 			hud.MarineScore += 10; //jatekos pontszamainak novelese 10-el
 		}	
 	}
-
+	
+	//Ellenseg AI kereso metodus, ellenseg loveseihez
+//	private BaseObject tempEnemy;
+//
+//	public void fndEnemy(){
+//		for (int i = 0; i < handler.object.size(); i++){ 
+//			if (handler.object.get(i).getId() == ID.Khornet){ //jatekos keresese ID alapjan
+//				tempEnemy = handler.object.get(i);
+//				break;
+//			}
+//		}
+//	}
+	
 	/**
 	 * Utkozes figyeles
 	 * @param tempObject
@@ -121,18 +138,18 @@ public class tesztEnemy extends BaseObject{
 	
 	//Ellenseg elete es lovedek valtozoi
 	public int enemyLife = 75;
-	//public int enemyAmmo = 5;
+	public int enemyAmmo = 3;
 	
 	@Override
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g; //teszt
 		
 		//Ellenseg
-		g.setColor(Color.blue);
+		g.setColor(Color.red);
 		g.fillRect((int)x, (int)y, width, height);
 		
 		//EnemyHUD
-		g.setColor(Color.red);
+		g.setColor(Color.orange);
 		g.fillRect((int)x, (int)y-5, enemyLife/2, 5);
 		g.setColor(Color.black);
 		g.drawRect((int)x, (int)y-5, enemyLife/2, 5);
