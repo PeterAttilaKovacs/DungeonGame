@@ -79,7 +79,7 @@ public class MainMenu {
 		
 		if (event) { 
 			selectState();
-			event = MouseInput.wasReleased(MouseEvent.BUTTON1); // <-- ez igy nem jo, atnezni
+			event = MouseInput.wasReleased(MouseEvent.BUTTON1);
 		}
 	}
 	

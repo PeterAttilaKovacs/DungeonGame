@@ -26,7 +26,7 @@ import objects.PlayerHUD;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable {
 
 	/**
 	 * Szeria verzioszam

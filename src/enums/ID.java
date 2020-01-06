@@ -7,6 +7,7 @@ public enum ID {
 	WallBlock(),
 	AmmoCrate(),
 	BolterRound(),
+	EnemyBolt(),
 	Flag(),
 	GameOver();
 }

@@ -8,6 +8,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import enums.ID;
+import main.Camera;
 import main.Game;
 import main.Handler;
 import view.SpriteCuter;
@@ -36,44 +37,46 @@ public class tesztEnemy extends BaseObject{
 		y += velY;
 		
 		//objektumok vegigkeresese
-		for (int i = 0; i < handler.object.size(); i++){
+		for (int i = 0; i < handler.object.size(); i++) {
 			BaseObject tempTESZT = handler.object.get(i);
 			
 			//utkozes figyelese lovedekkel
 			if (tempTESZT.getId() == ID.BolterRound){
-				if (getBounds().intersects(tempTESZT.getBounds())){
+				if (getBounds().intersects(tempTESZT.getBounds())) {
 					handler.removeObject(tempTESZT); //lovedek torlese
 					enemyLife -= 25;
 				}
 			}	
 			
 			//utkozes figyelese jatekossal,  - AI
-			if (tempTESZT.getId() == ID.SpaceMarine){
+			if (tempTESZT.getId() == ID.SpaceMarine) {
 				
 				diffX = tempTESZT.getX() - x;
 				diffY = tempTESZT.getY() - y;
 				
 				//ha eszlelesikorbe lepett a jatekos, jatekos tamadasa
-				if (getAttack().intersects(tempTESZT.getBounds())){
+				if (getAttack().intersects(tempTESZT.getBounds())) {
 					velX = diffX * speed;
 					velY = diffY * speed;
 					
-					//ez igy nem mukodik...
-//					fndEnemy();
-//
-//					if (tempEnemy != null){
-//						SpriteCuter cut = null;
-//						BaseObject tempBolt = handler.addObject(new BolterRound(tempEnemy.x + 16, tempEnemy.y + 16, ID.BolterRound, cut, handler));
-//					
-//						int mx = (int)diffX;
-//						int my = (int)diffY;
-//						float angle = (float) Math.atan2(my - tempEnemy.y - 16, mx - tempEnemy.x - 16);
-//						int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
-//						tempBolt.velX = (float) ((boltVelocity) * Math.cos(angle));
-//						tempBolt.velY = (float) ((boltVelocity) * Math.sin(angle));
-//						enemyAmmo--;
-//						System.out.println("ellenseg loves meghiva: " + enemyAmmo);
-//					}
+					//ha AI rendelkezik meg loszerrel, akkor lo
+					if (enemyAmmo >= 0) {
+						SpriteCuter cut = null;
+						BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
+					
+						int mx = (int)x;
+						int my = (int)y;
+						float angle = (float) Math.atan2(tempTESZT.getX() - mx ,  tempTESZT.getY() - my);
+						int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
+						tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos es sin fuggveny felcserelve
+						tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
+						enemyAmmo--;
+					}
+					//TESZT
+					//System.out.println("tempTESZT: " + tempTESZT.getId() + tempTESZT.x + tempTESZT.y );
+					//System.out.println("x: " + this.x + " y: " + this.y );
+					//System.out.println("mx: " + mx + " my: " + my + " angle: " + angle);
+					//System.out.println("velX: " + tempBolt.velX + " velY: " + tempBolt.velY + " x: " + x + " y: " + y);
 				}
 				
 				else {
@@ -82,51 +85,39 @@ public class tesztEnemy extends BaseObject{
 				}
 			}
 			
-			if (tempTESZT.getId() == ID.WallBlock){
+			if (tempTESZT.getId() == ID.WallBlock) {
 				collision(tempTESZT);
 			}
 			
 		}
 		
-		if (enemyLife <= 0){ 
+		if (enemyLife <= 0) { 
 			handler.removeObject(this);
 			hud.MarineScore += 10; //jatekos pontszamainak novelese 10-el
 		}	
 	}
 	
-	//Ellenseg AI kereso metodus, ellenseg loveseihez
-//	private BaseObject tempEnemy;
-//
-//	public void fndEnemy(){
-//		for (int i = 0; i < handler.object.size(); i++){ 
-//			if (handler.object.get(i).getId() == ID.Khornet){ //jatekos keresese ID alapjan
-//				tempEnemy = handler.object.get(i);
-//				break;
-//			}
-//		}
-//	}
-	
 	/**
 	 * Utkozes figyeles
 	 * @param tempObject
 	 */
-	public void collision(BaseObject tempObject){
-		if (getBoundsTop().intersects(tempObject.getBounds())){
+	public void collision(BaseObject tempObject) {
+		if (getBoundsTop().intersects(tempObject.getBounds())) {
 			y = tempObject.getY() + height;
 			velY = 0;
 		}
 		
-		if (getBoundsBottom().intersects(tempObject.getBounds())){
+		if (getBoundsBottom().intersects(tempObject.getBounds())) {
 			y = tempObject.getY() - height;
 			velY = 0;
 		}
 		
-		if (getBoundsLeft().intersects(tempObject.getBounds())){
+		if (getBoundsLeft().intersects(tempObject.getBounds())) {
 			x = tempObject.getX() + width;
 			velX = 0;
 		}
 		
-		if (getBoundsRight().intersects(tempObject.getBounds())){
+		if (getBoundsRight().intersects(tempObject.getBounds())) {
 			x = tempObject.getX() - width;
 			velX = 0;
 		}
@@ -143,6 +134,9 @@ public class tesztEnemy extends BaseObject{
 	@Override
 	public void render(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g; //teszt
+		
+		//kovetes figyelese
+		g.setColor(Color.red);
 		
 		//Ellenseg
 		g.setColor(Color.red);

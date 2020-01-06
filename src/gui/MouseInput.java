@@ -78,21 +78,28 @@ public class MouseInput extends MouseAdapter {
 			buttons[e.getButton()] = true;
 		}
 		
+		if (Game.GameStatus == STATES.Help) {
+			buttons[e.getButton()] = true;
+		}
+		
 		//ha a jatek statusza: jatek
 		if (Game.GameStatus == STATES.Play) {
 
 			//ha a jatekos nem nulla, akkor hajtodik vegre
 			if (tempPlayer != null) {
-				BaseObject tempBolt = handler.addObject(new BolterRound(tempPlayer.x + 16, tempPlayer.y + 16, ID.BolterRound, imageCut, handler));
+				if (hud.MarineAmmo >= 1) {
+					BaseObject tempBolt = handler.addObject(new BolterRound(tempPlayer.x + 16, tempPlayer.y + 16, 
+																			ID.BolterRound, imageCut, handler));
 			
-				//Lovedek iranyszamitas
-				float angle = (float) Math.atan2(my - tempPlayer.y - 16 +camera.getY(), mx - tempPlayer.x - 16 +camera.getX());
+					//Lovedek iranyszamitas
+					float angle = (float) Math.atan2(my - tempPlayer.y - 16 +camera.getY(), mx - tempPlayer.x - 16 +camera.getX());
 			
-				int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
-				tempBolt.velX = (float) ((boltVelocity) * Math.cos(angle));
-				tempBolt.velY = (float) ((boltVelocity) * Math.sin(angle));
+					int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
+					tempBolt.velX = (float) ((boltVelocity) * Math.cos(angle));
+					tempBolt.velY = (float) ((boltVelocity) * Math.sin(angle));
 			
-				hud.MarineAmmo--;
+					hud.MarineAmmo--;
+				}
 			}
 			else { fndPlayer(); }
 		}	
@@ -103,9 +110,11 @@ public class MouseInput extends MouseAdapter {
 	public void mouseReleased(MouseEvent e) {
 		if (Game.GameStatus == STATES.Menu) {
 			buttons[e.getButton()] = false;
+			//e.consume();
 		}
-		if (Game.GameStatus == STATES.Help) { // <-- ez igy nem jo, atnezni!!
+		if (Game.GameStatus == STATES.Help) { // <-- ez igy nem az igazi (de jobb mint volt), meg 1x atnezni
 			buttons[e.getButton()] = false;
+			//e.consume();
 		}
 	}
 	

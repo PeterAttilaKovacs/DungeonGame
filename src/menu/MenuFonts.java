@@ -10,7 +10,7 @@ import main.Game;
 public class MenuFonts {
 
 	/**
-	 * Menu kirajzolast segito klassz
+	 * Menu kirajzolast segito osztaly
 	 * @param g - grafika
 	 * @param font - betu tipus
 	 * @param color - betu szin

@@ -35,6 +35,16 @@ public class HelpMenu {
 	//HelpMenu grafiaki renderelese
 	public void render(Graphics g) {
 	
+		//TODO width es height-t megnezni...
+		g.setColor(Color.black);
+		g.setFont(new Font("arial", Font.ITALIC, 30));
+		g.drawString("Ez a HELP menu a Jatekhoz.", Game.height/2, Game.width/7);
+		g.setFont(new Font("arial", Font.ITALIC, 20));
+		g.drawString("Jatekos mozgatasa: WSAD, loves: bal egergomb, Kilepes: ESC", Game.height/3, Game.width/6);
+		g.drawString("Jatek celja: tulelni a fertozott vilagokat. Egyik vilagbol a masikba a terkapuk vezetnek.", 
+						Game.height/4, Game.width/5);
+		g.drawString("Sok sikert Urgardista!", Game.height/2, Game.width/4);
+		
 		g.setColor(Color.orange);
 		MenuFonts.drawString(g, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
 		

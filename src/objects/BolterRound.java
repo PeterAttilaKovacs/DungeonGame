@@ -8,7 +8,7 @@ import enums.ID;
 import main.Handler;
 import view.SpriteCuter;
 
-public class BolterRound extends BaseObject{
+public class BolterRound extends BaseObject {
 
 	private Handler handler;
 	private int width = 8;
@@ -28,20 +28,40 @@ public class BolterRound extends BaseObject{
 		x += velX;
 		y += velY;
 		
-		for (int i = 0; i < handler.object.size(); i++){
+		for (int i = 0; i < handler.object.size(); i++) {
 			BaseObject tempBolt = handler.object.get(i);
 			
-			if (tempBolt.getId() == ID.WallBlock){
-				if (getBounds().intersects(tempBolt.getBounds())){
+			if (tempBolt.getId() == ID.WallBlock) {
+				if (getBounds().intersects(tempBolt.getBounds())) {
 					handler.removeObject(this);
 				}
 			}
 		}
 	}
 
+	/**
+	 * Lovedek renderelese
+	 */
 	@Override
 	public void render(Graphics g) {
-		g.setColor(Color.gray);
+		
+		/**
+		 * Lovedek szinenek renderelese
+		 */
+		for (int i = 0; i < handler.object.size(); i++) {
+			BaseObject tempBolt = handler.object.get(i);
+			
+			//ha ellenseg, akkor piros
+			if (tempBolt.getId() == ID.EnemyBolt) {
+				g.setColor(Color.red);
+			}
+			
+			//ha jatekos, akkor sarga
+			else {
+				g.setColor(Color.yellow);
+			}
+		}
+		//lovedek renderelese
 		g.fillOval((int)x, (int)y, width, height);
 	}
 	

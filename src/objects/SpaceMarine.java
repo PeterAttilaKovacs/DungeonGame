@@ -101,7 +101,7 @@ public class SpaceMarine extends BaseObject{
 		//g.setColor(Color.blue);
 		//g.fillRect((int)x, (int)y, 32, 48);
 		
-		if (velX == 0 && velY == 0){
+		if (velX == 0 && velY == 0) {
 			g.drawImage(spmarine[0], (int)x, (int)y, null);
 		}
 		
@@ -122,36 +122,44 @@ public class SpaceMarine extends BaseObject{
 	private LevelLoader level;
 	
 	private void collision(){
-		for (int i = 0; i < handler.object.size(); i++){
+		for (int i = 0; i < handler.object.size(); i++) {
 			
 			BaseObject tempObject = handler.object.get(i);
 			
 			//fallal utkozes figyeles
-			if (tempObject.getId() == ID.WallBlock){
-				if (getBounds().intersects(tempObject.getBounds())){
+			if (tempObject.getId() == ID.WallBlock) {
+				if (getBounds().intersects(tempObject.getBounds())) {
 					x += velX *- 1;
 					y += velY *- 1;
 				}
 			}
 			
 			//loszeres ladaval valo utkozes figyelese
-			if (tempObject.getId() == ID.AmmoCrate){
-				if (getBounds().intersects(tempObject.getBounds())){
+			if (tempObject.getId() == ID.AmmoCrate) {
+				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineAmmo += 50;
 					handler.removeObject(tempObject);
 				}
 			}
 			
 			//ellenseggel valo utkozes figyelese
-			if (tempObject.getId() == ID.Khornet){
-				if (getBounds().intersects(tempObject.getBounds())){
+			if (tempObject.getId() == ID.Khornet) {
+				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife--;
+				}
+			}
+			
+			//ellenseg lovesevel valo utkozes figyelese
+			if (tempObject.getId() == ID.EnemyBolt) {
+				if (getBounds().intersects(tempObject.getBounds())) {
+					hud.MarineLife -= 5;
+					handler.removeObject(tempObject); //ellenseg lovedekenek levetele
 				}
 			}
 			
 			//kilpesi ponttal valo utkozes figyelse
 			if (tempObject.getId() == ID.Flag){
-				if (getBounds().intersects(tempObject.getBounds())){
+				if (getBounds().intersects(tempObject.getBounds())) {
 					game.removeMouseListener(mouseSpMarine); //egerfigyelo eltavolitasa palyatoltes elott
 					level.nextLevel(); //kovetkezo palya hivasa
 				}
@@ -161,7 +169,7 @@ public class SpaceMarine extends BaseObject{
 		 * Jatekos elete 0, akkor GameOver peldanyositasa, 
 		 * jatekos torlese, egerfigyelo eltavolitasa
 		 */
-		if (hud.MarineLife <= 0){
+		if (hud.MarineLife <= 0) {
 			handler.addObject(new GameOver(this.x, this.y, ID.GameOver, imageCut));
 			game.removeMouseListener(mouseSpMarine);
 			handler.removeObject(this);
