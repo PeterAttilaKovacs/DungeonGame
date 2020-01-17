@@ -46,24 +46,24 @@ public class EnemyKhornet extends BaseObject{
 		y += velY;
 		
 		for (int i = 0; i < handler.object.size(); i++) {
-			BaseObject tempTESZT = handler.object.get(i);
+			BaseObject tempKhornet = handler.object.get(i);
 			
 			//Intersection check with player bolt
-			if (tempTESZT.getId() == ID.BolterRound){
-				if (getBounds().intersects(tempTESZT.getBounds())) {
-					handler.removeObject(tempTESZT); //lovedek torlese
+			if (tempKhornet.getId() == ID.BolterRound){
+				if (getBounds().intersects(tempKhornet.getBounds())) {
+					handler.removeObject(tempKhornet); //removing Player bolt
 					enemyLife -= 25;
 				}
 			}	
 			
 			//Intersection check with player - AI
-			if (tempTESZT.getId() == ID.SpaceMarine) {
+			if (tempKhornet.getId() == ID.SpaceMarine) {
 				
-				diffX = tempTESZT.getX() - x;
-				diffY = tempTESZT.getY() - y;
+				diffX = tempKhornet.getX() - x;
+				diffY = tempKhornet.getY() - y;
 				
 				//if player is in attack range, then attack player
-				if (getAttack().intersects(tempTESZT.getBounds())) {
+				if (getAttack().intersects(tempKhornet.getBounds())) {
 					velX = diffX * speed;
 					velY = diffY * speed;
 					
@@ -74,14 +74,13 @@ public class EnemyKhornet extends BaseObject{
 					
 						int mx = (int)x;
 						int my = (int)y;
-						float angle = (float) Math.atan2(tempTESZT.getX() - mx ,  tempTESZT.getY() - my);
+						float angle = (float) Math.atan2(tempKhornet.getX() - mx ,  tempKhornet.getY() - my);
 						int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
 						tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos es sin fuggveny felcserelve
 						tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
 						enemyAmmo--;
 					}
 					//TEST-DEBUG
-					//System.out.println("tempTESZT: " + tempTESZT.getId() + tempTESZT.x + tempTESZT.y );
 					//System.out.println("x: " + this.x + " y: " + this.y );
 					//System.out.println("mx: " + mx + " my: " + my + " angle: " + angle);
 					//System.out.println("velX: " + tempBolt.velX + " velY: " + tempBolt.velY + " x: " + x + " y: " + y);
@@ -93,8 +92,8 @@ public class EnemyKhornet extends BaseObject{
 				}
 			}
 			
-			if (tempTESZT.getId() == ID.WallBlock) {
-				collision(tempTESZT);
+			if (tempKhornet.getId() == ID.WallBlock) {
+				collision(tempKhornet);
 			}
 			
 		}
