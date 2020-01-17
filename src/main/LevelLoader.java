@@ -8,7 +8,7 @@ import objects.Flag;
 import objects.PlayerHUD;
 import objects.SpaceMarine;
 import objects.WallBlock;
-import objects.tesztEnemy;
+import objects.EnemyKhornet;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
 
@@ -21,7 +21,14 @@ public class LevelLoader {
 	public BufferedImage level_1 = null, level_2 = null, level_3 = null;
 	private Game game;
 		
-	//LevelLoader konstruktora
+	/**
+	 * LevelLoader constructor
+	 * @param handler - Handler class
+	 * @param game - Game class
+	 * @param camera - Camera class
+	 * @param hud - PlayerHUD class
+	 * @param imageCut - SpriteCuter class
+	 */
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
 	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, SpriteCuter imageCut){
 		this.handler = handler;
@@ -36,44 +43,47 @@ public class LevelLoader {
 			level_3 = loader.loadImage("/cadiaworld.png"); 		//lvl 3
 			//level_4 = loader.loadImage("/...png"); 	//lvl 4
 			//level_5 = loader.loadImage("/...png"); 	//lvl 5
-			//stb
+			//etc...
 				
 		nextLevel();
 	}
 		
-	//Level renderelese
+	/**
+	 * Level rendering
+	 * @param levelMap - loaded image for rendering the level
+	 */
 	public void loadMap(BufferedImage levelMap){
-		int w = levelMap.getWidth();
-		int h = levelMap.getHeight();
+		int width = levelMap.getWidth();
+		int height = levelMap.getHeight();
 				
-		for (int xx = 0; xx < w; xx++){
-			for (int yy = 0; yy < h; yy++){
+		for (int xx = 0; xx < width; xx++){
+			for (int yy = 0; yy < height; yy++){
 				int pixel = levelMap.getRGB(xx, yy);
 				int red	= (pixel >> 16) & 0xff;
 				int green = (pixel >> 8) & 0xff;
 				int blue = (pixel) & 0xff;
 						
-				//Fal (piros)
+				//Walls (red)
 				if (red == 255 && green == 0 && blue == 0){
 					handler.addObject(new WallBlock(xx*32, yy*32, ID.WallBlock, imageCut));
 				}	
 						
-				//SpaceMarine (kek)
+				//SpaceMarine (blue)
 				if (red == 0 && green == 0 && blue == 255){
 					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut, handler, camera, game, hud, this));
 				}
 					
-				//Khornet (zold)
+				//Khornet (green - enemy)
 				if (red == 0 && green == 255 && blue == 0){
-					handler.addObject(new tesztEnemy(xx*32, yy*32, ID.Khornet, imageCut, handler, game, hud));
+					handler.addObject(new EnemyKhornet(xx*32, yy*32, ID.Khornet, imageCut, handler, game, hud));
 				}
 					
-				//Loszereslada (cian)
+				//AmmoCrate (cyan)
 				if (red == 0 && green == 255 && blue == 255){ //cyen color: red: 0, green: 255, blue: 255
 					handler.addObject(new AmmoCrate(xx*32, yy*32, ID.AmmoCrate, imageCut, handler));
 				}
 					
-				//Kilepesi pont (sarga)
+				//Exitpoint (yellow)
 				if (red == 255 && green == 255 && blue == 0){ //yellow color: red: 255, green: 255, blue: 0 
 					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut)); 
 				}
@@ -81,7 +91,7 @@ public class LevelLoader {
 		}
 	}
 		
-	//Palya tovabbtoltes
+	//Loading next level
 	public void nextLevel(){
 		handler.clearLevel();
 			
@@ -90,25 +100,25 @@ public class LevelLoader {
 		//Lvl 1
 		case 1:
 			loadMap(level_1);
-			camera.fndPlayer();
+			camera.findPlayer();
 			break;
 			
 		//Lvl 2
 		case 2: 
 			loadMap(level_2);
-			camera.fndPlayer();
+			camera.findPlayer();
 			break;
 			
 		//Lvl 3
 		case 3: 
 			loadMap(level_3);
-			camera.fndPlayer();
+			camera.findPlayer();
 			break;
 		}
 			
 		/**
-		 * Szamlalo palyahoz, harmadik palya utan visszatoltja a szamlalot,
-		 * jatek palyatoltes ujraindul Lvl 1 - tol.
+		 * Counter for level, after level 3, counter is set to null,
+		 * level loading starts from level 1.
 		 */
 		if (Game.Level == 3){
 			Game.Level = 1;

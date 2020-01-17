@@ -1,5 +1,5 @@
 /**
- * Jatek Enumjai
+ * Game Enums
  * 
  */
 /**

@@ -1,7 +1,7 @@
 /**
- * Jatek bevitel
+ * Game User Interface
  * 
- * Bevitel: eger es billentyuzet
+ * Controll: mouse and keyboard
  */
 /**
  * @author Galaktika

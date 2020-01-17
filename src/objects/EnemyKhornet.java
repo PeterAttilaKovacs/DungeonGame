@@ -8,19 +8,28 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import enums.ID;
-import main.Camera;
 import main.Game;
 import main.Handler;
 import view.SpriteCuter;
 
-public class tesztEnemy extends BaseObject{
+public class EnemyKhornet extends BaseObject{
 
+	//Variables
 	private Handler handler;
 	private Game game;
 	private PlayerHUD hud;
 	
-	//tesztEnemy konstruktora
-	public tesztEnemy(float x, float y, ID id, SpriteCuter imageCut, Handler handler, Game game, PlayerHUD hud) {
+	/**
+	 * EnemyKhornet constructor
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 * @param id - Enum class ID
+	 * @param imageCut - SpriteCuter class
+	 * @param handler - Handler class
+	 * @param game - Game class
+	 * @param hud - PlayerHUD class
+	 */
+	public EnemyKhornet(float x, float y, ID id, SpriteCuter imageCut, Handler handler, Game game, PlayerHUD hud) {
 		super(x, y, id, imageCut);
 		this.handler = handler;
 		this.game = game;
@@ -28,7 +37,7 @@ public class tesztEnemy extends BaseObject{
 	}
 
 	float diffX, diffY;
-	float speed = 0.05f; //alapbeallitas: 0.05f
+	float speed = 0.05f; //base settings: 0.05f
 	
 	@Override
 	public void tick() {
@@ -36,11 +45,10 @@ public class tesztEnemy extends BaseObject{
 		x += velX;
 		y += velY;
 		
-		//objektumok vegigkeresese
 		for (int i = 0; i < handler.object.size(); i++) {
 			BaseObject tempTESZT = handler.object.get(i);
 			
-			//utkozes figyelese lovedekkel
+			//Intersection check with player bolt
 			if (tempTESZT.getId() == ID.BolterRound){
 				if (getBounds().intersects(tempTESZT.getBounds())) {
 					handler.removeObject(tempTESZT); //lovedek torlese
@@ -48,18 +56,18 @@ public class tesztEnemy extends BaseObject{
 				}
 			}	
 			
-			//utkozes figyelese jatekossal,  - AI
+			//Intersection check with player - AI
 			if (tempTESZT.getId() == ID.SpaceMarine) {
 				
 				diffX = tempTESZT.getX() - x;
 				diffY = tempTESZT.getY() - y;
 				
-				//ha eszlelesikorbe lepett a jatekos, jatekos tamadasa
+				//if player is in attack range, then attack player
 				if (getAttack().intersects(tempTESZT.getBounds())) {
 					velX = diffX * speed;
 					velY = diffY * speed;
 					
-					//ha AI rendelkezik meg loszerrel, akkor lo
+					//if AI has ammonition, it fires towards the player
 					if (enemyAmmo >= 0) {
 						SpriteCuter cut = null;
 						BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
@@ -72,7 +80,7 @@ public class tesztEnemy extends BaseObject{
 						tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
 						enemyAmmo--;
 					}
-					//TESZT
+					//TEST-DEBUG
 					//System.out.println("tempTESZT: " + tempTESZT.getId() + tempTESZT.x + tempTESZT.y );
 					//System.out.println("x: " + this.x + " y: " + this.y );
 					//System.out.println("mx: " + mx + " my: " + my + " angle: " + angle);
@@ -93,13 +101,13 @@ public class tesztEnemy extends BaseObject{
 		
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
-			hud.MarineScore += 10; //jatekos pontszamainak novelese 10-el
+			hud.MarineScore += 10;
 		}	
 	}
 	
 	/**
-	 * Utkozes figyeles
-	 * @param tempObject
+	 * Collision check
+	 * @param tempObject - BaseObject
 	 */
 	public void collision(BaseObject tempObject) {
 		if (getBoundsTop().intersects(tempObject.getBounds())) {
@@ -123,71 +131,70 @@ public class tesztEnemy extends BaseObject{
 		}
 	}
 	
+	//Variables for rendering
 	private int width = 32;
 	private int height = 32;
-	Shape circle = new Ellipse2D.Double(x-85, y-85, width*6, height*6); //teszt
+	Shape circle = new Ellipse2D.Double(x-85, y-85, width*6, height*6); //test-debug
 	
-	//Ellenseg elete es lovedek valtozoi
+	//Variables for enemy life and ammo
 	public int enemyLife = 75;
 	public int enemyAmmo = 3;
 	
 	@Override
-	public void render(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g; //teszt
+	public void render(Graphics graphics) {
+		Graphics2D graphics2D = (Graphics2D) graphics; //test-debug
 		
-		//kovetes figyelese
-		g.setColor(Color.red);
-		
-		//Ellenseg
-		g.setColor(Color.red);
-		g.fillRect((int)x, (int)y, width, height);
+		//Enemy
+		graphics.setColor(Color.red);
+		graphics.fillRect((int)x, (int)y, width, height);
 		
 		//EnemyHUD
-		g.setColor(Color.orange);
-		g.fillRect((int)x, (int)y-5, enemyLife/2, 5);
-		g.setColor(Color.black);
-		g.drawRect((int)x, (int)y-5, enemyLife/2, 5);
+		graphics.setColor(Color.orange);
+		graphics.fillRect((int)x, (int)y-5, enemyLife/2, 5);
+		graphics.setColor(Color.black);
+		graphics.drawRect((int)x, (int)y-5, enemyLife/2, 5);
 		
-		//teszt - eszlelesi kor
-		g2.draw(circle);
+		//test-debug only - circle shown to know when the enemy is detecting the player
+		graphics2D.draw(circle);
 		
 	}
 
 	/**
-	 * Alap utkozeshez
+	 * Base bounds of tesztEnemy
+	 * @return returns new rectangle for intersection check
 	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle((int)x, (int)y, width, height);
 	}
 	
-	//teszteleshez - eszlelesi kor kijelezese
+	//test-debug only
 	public Ellipse2D getAttack() {
 		return new Ellipse2D.Double(x-85, y-85, width*6, height*6);
 	}
 	
 	/**
-	 * Ellenseget korulolelo ter, fallal valo utkozes figyeleshez
-	 * @return getBounds
+	 * Bounds surrounding the enemy object, to get better intersection
+	 * @return returns new rectangles for intersection check with: top, bottom, left, right side
 	 */
 	
-	//felfele
+	//Top
 	public Rectangle getBoundsTop() {
-		return new Rectangle((int)x + (width/2)-((width/2)/2), (int)y, width/2, height/2); //ezzel szamolva az utkozes alapbeallitas: 64, 64
+		return new Rectangle((int)x + (width/2)-((width/2)/2), (int)y, width/2, height/2); //base settings: 64, 64
 	}
 	
-	//lefele
+	//Bottom
 	public Rectangle getBoundsBottom() {
-		return new Rectangle((int)x + (width/2)-((width/2)/2), (int)y + (height/2), width/2, height/2); //ezzel szamolva az utkozes alapbeallitas: 64, 64
+		return new Rectangle((int)x + (width/2)-((width/2)/2), (int)y + (height/2), width/2, height/2); //base settings:: 64, 64
 	}
 	
-	//balra
+	//Left
 	public Rectangle getBoundsLeft() {
-		return new Rectangle((int)x, (int)y + 4, 5, height-9); //ezzel szamolva az utkozes alapbeallitas: 64, 64
+		return new Rectangle((int)x, (int)y + 4, 5, height-9); //base settings:: 64, 64
 	}
 		
-	//jobbra
+	//Right
 	public Rectangle getBoundsRight() {
-		return new Rectangle((int)x + width - 5, (int)y + 4, 5, height-8); //ezzel szamolva az utkozes alapbeallitas: 64, 64
+		return new Rectangle((int)x + width - 5, (int)y + 4, 5, height-8); //base settings:: 64, 64
 	}
 }

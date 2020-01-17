@@ -5,23 +5,29 @@ import objects.BaseObject;
 
 public class Camera {
 
+	//Variables for camera
 	private int x, y;
 	private Handler handler;
 	private BaseObject tempPlayer;
 			
-	//camera konstruktora
+	/**
+	 * Camera constructor
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 * @param handler - Handler class
+	 */
 	public Camera(int x, int y, Handler handler){
 		this.x = x;
 		this.y = y;
 		this.handler = handler;
 			
-		fndPlayer();
+		findPlayer();
 	}
 			
-	//Jatekoskereso metodus
-	public void fndPlayer(){
+	//Finding Player method
+	public void findPlayer(){
 		for (int i = 0; i < handler.object.size(); i++){ 
-			if (handler.object.get(i).getId() == ID.SpaceMarine){ //jatekos keresese objektumok kozt ID alapjan
+			if (handler.object.get(i).getId() == ID.SpaceMarine){ //findig Player by: ID
 				tempPlayer = handler.object.get(i);
 				break;
 			}
@@ -36,23 +42,23 @@ public class Camera {
 			y = (int)tempPlayer.y - Game.height/2;
 		}
 				
-		else { fndPlayer(); }
+		else { findPlayer(); }
 			
-		//kamera palyaszel kielpes blokkolasa
+		//bloking camera to leave the Game-zone
 		if (x <= 0) { x = 0; }
 		if (x >= 1052) { x = 1052; } //width 0 - 1052
 		if (y <= 0) { y = 0; }
-		if (y >= 1108 + 48) { y = 1108 + 48; } //height 0 - 1108 + (48) <-- jatekos magassaga
+		if (y >= 1108 + 48) { y = 1108 + 48; } //height 0 - 1108 + (48) <-- height of the player
 	}
 			
-	//camera X gettere es settere
+	//Camera X getters and setters
 	public int getX(){ 
 		return x;}
 	
 	public void setX(int x){ 
 		this.x = x;}
 
-	//camera Y gettere es settere
+	//Camera Y getters and setters
 	public int getY(){ 
 		return y;}
 	

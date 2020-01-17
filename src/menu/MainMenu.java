@@ -1,6 +1,3 @@
-/**
- * TODO opciok, help allapotok
- */
 package menu;
 
 import java.awt.Color;
@@ -19,7 +16,7 @@ public class MainMenu {
 	private int selectedMenu;
 	
 	/**
-	 * Fomenu konstruktora
+	 * Main menu constructor
 	 */
 	public MainMenu() {
 		options = new Button[4];
@@ -45,11 +42,11 @@ public class MainMenu {
 						Color.blue, Color.white);
 	}
 	
-	//Menu grafika renderelese
-	public void render(Graphics g) {
+	//Menu rendering
+	public void render(Graphics graphics) {
 		
-		g.setColor(Color.orange);
-		MenuFonts.drawString(g, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
+		graphics.setColor(Color.orange);
+		MenuFonts.drawString(graphics, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
 		
 		for (int i=0; i < options.length; i++){
 			if (i == selectedMenu){
@@ -60,16 +57,16 @@ public class MainMenu {
 				options[i].setSelected(false);
 			}	
 			//rendereles
-			options[i].render(g);
+			options[i].render(graphics);
 		}
 	}
 	
-	//Menu tick hivasa
+	//Menu tick
 	public void tick(){
 		
 		boolean event = false;
 		
-		//Opciok tomb figyelese
+		//Observing Options Array
 		for (int i=0; i < options.length; i++) {
 			if(options[i].intersects(new Rectangle(MouseInput.getX(), MouseInput.getY(), 1, 1))){
 				selectedMenu = i;
@@ -83,31 +80,32 @@ public class MainMenu {
 		}
 	}
 	
-	//MainMenu allapot valtas
+	//Main menu status change on event
 	public void selectState() {
 		
 		switch(selectedMenu) {
 		
-			//Jatek statuszvaltas: jatekra
+			//GameStatus set to: Play
 			case 0:
 				Game.GameStatus = STATES.Play;
 			break;
 		
-			//Jatek opciok
+			//Options menu called
 			case 1:	
-				System.out.println("OPCIOK meghivodik"); //teszt
+				System.out.println("OPCIOK meghivodik"); //test-debug
+				//TODO make option menu
 			break;
 			
-			//Jatek help
+			//GameStatus set to: Help
 			case 2:
 				Game.GameStatus = STATES.Help;
 				
-				System.out.println("HELP meghivodik"); //teszt
+				System.out.println("HELP meghivodik"); //test-debug
 			break;
 			
-			//Jatekbol kilepes
+			//Exit Game
 			case 3:	
-				Runtime.getRuntime().exit(1);
+				Runtime.getRuntime().exit(0);
 			break;
 		}
 	}

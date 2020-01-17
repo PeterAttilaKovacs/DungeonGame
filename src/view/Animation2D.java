@@ -5,20 +5,20 @@ import java.awt.image.BufferedImage;
 
 public class Animation2D {
 
+	//Variables
 	private int frames;
 	private int speed;
 	private int count = 0;
-	private int index = 0;
-	
+	private int index = 0;	
 	private BufferedImage[] image = new BufferedImage[14];
 	private BufferedImage currentImage;
 	
 	/**
-	 * Animacio2D konstruktora
-	 * @param image - betoltott kep
+	 * Animatio2D constructor
+	 * @param image - loaded image
 	 * @param speed 
 	 */
-	public Animation2D(int speed, BufferedImage image[]){
+	public Animation2D(int speed, BufferedImage image[]) {
 		this.speed = speed;
 		
 		for(int i = 0; i < image.length; i++) {
@@ -28,8 +28,8 @@ public class Animation2D {
 		frames = image.length;
 	}
 	
-	//animacio futtatasa
-	public void runAnimation(){
+	//Running animation
+	public void runAnimation() {
 		index++;
 		
 		if(index > speed){
@@ -38,8 +38,8 @@ public class Animation2D {
 		}
 	}
 	
-	//kovetkezo frame hivasa
-	public void nextFrame(){
+	//Calling next frame
+	public void nextFrame() {
 
 		for(int i = 2; i < image.length; i++) {
 			if(frames == i) {
@@ -49,20 +49,20 @@ public class Animation2D {
 				}
 				count++;
 				
-				if(count > frames)
+				if(count > frames) {
 					count = 0;
-				
+				}
 				break;
 	        }
 	    }
 	}
 	
-	//animacio kirajzolasa
-	public void drawAnimation(Graphics g, double x, double y, int offset) {
-		g.drawImage(currentImage, (int)x - offset, (int)y, null);
+	//Rendering animation
+	public void drawAnimation(Graphics graphics, double x, double y, int offset) {
+		graphics.drawImage(currentImage, (int)x - offset, (int)y, null);
 	}
 	
-	//count setterei es getterei
+	//count setters and getters
 	public void setCount(int count) { 
 		this.count = count; 
 	}
@@ -71,7 +71,7 @@ public class Animation2D {
 		return count; 
 	}
 		
-	//speed setterei es getterei
+	//speed setters and getters
 	public void setSpeed(int speed) { 
 		this.speed = speed; 
 	}

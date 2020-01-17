@@ -16,7 +16,7 @@ public class HelpMenu {
 	private int selectedSubMenu;
 	
 	/**
-	 * HelpMenu konstruktora
+	 * HelpMenu constructor
 	 */
 	public HelpMenu() {
 		options = new Button[2];
@@ -32,21 +32,21 @@ public class HelpMenu {
 						Color.blue, Color.white);
 	}
 	
-	//HelpMenu grafiaki renderelese
-	public void render(Graphics g) {
+	//HelpMenu rendering
+	public void render(Graphics graphics) {
 	
-		//TODO width es height-t megnezni...
-		g.setColor(Color.black);
-		g.setFont(new Font("arial", Font.ITALIC, 30));
-		g.drawString("Ez a HELP menu a Jatekhoz.", Game.height/2, Game.width/7);
-		g.setFont(new Font("arial", Font.ITALIC, 20));
-		g.drawString("Jatekos mozgatasa: WSAD, loves: bal egergomb, Kilepes: ESC", Game.height/3, Game.width/6);
-		g.drawString("Jatek celja: tulelni a fertozott vilagokat. Egyik vilagbol a masikba a terkapuk vezetnek.", 
+		//TODO chek: width and height
+		graphics.setColor(Color.black);
+		graphics.setFont(new Font("arial", Font.ITALIC, 30));
+		graphics.drawString("Ez a HELP menu a Jatekhoz.", Game.height/2, Game.width/7);
+		graphics.setFont(new Font("arial", Font.ITALIC, 20));
+		graphics.drawString("Jatekos mozgatasa: WSAD, loves: bal egergomb, Kilepes: ESC", Game.height/3, Game.width/6);
+		graphics.drawString("Jatek celja: tulelni a fertozott vilagokat. Egyik vilagbol a masikba a terkapuk vezetnek.", 
 						Game.height/4, Game.width/5);
-		g.drawString("Sok sikert Urgardista!", Game.height/2, Game.width/4);
+		graphics.drawString("Sok sikert Urgardista!", Game.height/2, Game.width/4);
 		
-		g.setColor(Color.orange);
-		MenuFonts.drawString(g, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
+		graphics.setColor(Color.orange);
+		MenuFonts.drawString(graphics, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
 		
 		for (int i=0; i < options.length; i++){
 			if (i == selectedSubMenu){
@@ -56,49 +56,49 @@ public class HelpMenu {
 			else { 
 				options[i].setSelected(false);
 			}	
-			//rendereles
-			options[i].render(g);
+			//rendering
+			options[i].render(graphics);
 		}
 	}
 	
-	//HelpMenu tick hivasa
+	//HelpMenu tick
 	public void tick() {
 		
 		boolean event = false;
 		
-		//Opciok tomb figyelese
+		//Observing Options Array
 		for (int i=0; i < options.length; i++) {
 			if(options[i].intersects(new Rectangle(MouseInput.getX(), MouseInput.getY(), 1, 1))){
 				selectedSubMenu = i;
 				event = MouseInput.wasPressed(MouseEvent.BUTTON1);
-				System.out.println("Click meghivodik" + event); //teszt
+				System.out.println("Click meghivodik" + event); //test-debug
 			}
 		}
 		
 		if (event) { 
 			selectState();
-			System.out.println("SelectState meghivodik"); //teszt
+			System.out.println("SelectState meghivodik"); //test-debug
 			event = MouseInput.wasReleased(MouseEvent.BUTTON1);
 		}
 	}
 	
-	//HelpMenu allapot valtas
+	//Help menu status change on event
 	public void selectState() {
 		
 		switch(selectedSubMenu) {
 		
-		//Vissza a fomenube
+		//GameStatus set to: Main menu
 		case 0:
 			Game.GameStatus = STATES.Menu;
 			
-			System.out.println("BACK meghivodik"); //teszt
+			System.out.println("BACK meghivodik"); //test-debug
 		break;
 	
-		//Kilepes Jatekbol
+		//Exit Game
 		case 1:	
 			Runtime.getRuntime().exit(1);
 			
-			System.out.println("KILEPES meghivodik"); //teszt
+			System.out.println("KILEPES meghivodik"); //test-debug
 		break;
 		}
 	}

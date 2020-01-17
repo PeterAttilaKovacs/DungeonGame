@@ -8,13 +8,20 @@ import view.SpriteCuter;
 
 public abstract class BaseObject {
 
+	//Variables
 	public float x;
 	public float y;
 	public float velX, velY;
 	protected ID id;
 	protected SpriteCuter imageCut;
 	
-	//kozos os jatek objektumoknak
+	/**
+	 * BaseObject for all objects in game
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 * @param id - Enum class ID
+	 * @param imageCut - SpriteCuter class
+	 */
 	public BaseObject(float x, float y, ID id, SpriteCuter imageCut) {
 		this.x = x;
 		this.y = y;
@@ -22,11 +29,12 @@ public abstract class BaseObject {
 		this.imageCut = imageCut;
 	}
 	
+	//Abstract definitions
 	public abstract void tick();
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics graphics);
 	public abstract Rectangle getBounds();
 	
-	//getterek es setterek X
+	//getters and setters for X
 	public float getX() {
 		return x;
 	}
@@ -35,7 +43,7 @@ public abstract class BaseObject {
 		this.x = x;
 	}
 
-	//getterek es setterek Y
+	//getters and setters for Y
 	public float getY() {
 		return y;
 	}
@@ -44,7 +52,7 @@ public abstract class BaseObject {
 		this.y = y;
 	}
 
-	//getterek es setterek velX
+	//getters and setters for velX
 	public float getVelX() {
 		return velX;
 	}
@@ -53,7 +61,7 @@ public abstract class BaseObject {
 		this.velX = velX;
 	}
 
-	//getterek es setterek velY
+	//getters and setters for velY
 	public float getVelY() {
 		return velY;
 	}
@@ -62,7 +70,7 @@ public abstract class BaseObject {
 		this.velY = velY;
 	}
 
-	//getterek es setterek ID
+	//getters for ID
 	public ID getId() {
 		return id;
 	}

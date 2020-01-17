@@ -9,16 +9,20 @@ public class BufferedImageLoader {
 
 	private BufferedImage image_loader;
 	
-	//Keptolto metodus
+	/**
+	 * Image loader method
+	 * @param path - path of the loaded image
+	 * @return the loaded image
+	 */
 	public BufferedImage loadImage(String path){
 		
 		try {
 			image_loader = ImageIO.read(getClass().getResource(path));
 		}
 		
-		catch (IOException e) {
-			e.printStackTrace();
-			System.err.println("File I/O error: "+e);
+		catch (IOException exception) {
+			exception.printStackTrace();
+			System.err.println("File I/O error: " + exception); //Basic exception handeling
 		}
 		
 		return image_loader;

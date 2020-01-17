@@ -10,6 +10,7 @@ import main.Game;
 
 public class Button extends Rectangle{
 	
+	//Variables
 	private Font font, selectedFont;
 	private Color color, selectedColor;
 	private boolean selected;
@@ -17,14 +18,14 @@ public class Button extends Rectangle{
 	private int textY;
 	
 	/**
-	 * Gomb konstruktora
+	 * Button constructor
 	 * 
-	 * @param text - kiirando szoveg
-	 * @param textY - text Y koordinataja
-	 * @param font - betutipus
-	 * @param selectedFont - kivalasztott szoveg
-	 * @param color - szoveg alap szine
-	 * @param selectedColor - kivalasztott szoveg szine
+	 * @param text - text to show
+	 * @param textY - text Y coordinat
+	 * @param font - font type
+	 * @param selectedFont - selected font type
+	 * @param color - font type color
+	 * @param selectedColor - selected font type color
 	 */
 	public Button(String text, int textY, Font font, Font selectedFont, Color color, Color selectedColor) {
 		super();
@@ -36,26 +37,25 @@ public class Button extends Rectangle{
 		this.selectedColor = selectedColor;
 	}
 	
-	//kivalasztva settere
+	//setSelected setter
 	public void setSelected(boolean selected){
 		this.selected = selected;
 	}
 	
-	//render felulirasa
-	public void render(Graphics g){
+	//Rendering
+	public void render(Graphics graphics){
 		if(selected){
-			MenuFonts.drawString(g, selectedFont, selectedColor, text, textY);
+			MenuFonts.drawString(graphics, selectedFont, selectedColor, text, textY);
 		}
 		else{
-			MenuFonts.drawString(g, font, color, text, textY);
+			MenuFonts.drawString(graphics, font, color, text, textY);
 		}
 		
-		FontMetrics fontMet = g.getFontMetrics();
-		this.x = (Game.width - fontMet.stringWidth(text)) / 2;
-		this.y = textY - fontMet.getHeight();
-		this.width = fontMet.stringWidth(text);
-		this.height = fontMet.getHeight();
-		
-		g.drawRect(x, y, width, height);
+		FontMetrics fontMet = graphics.getFontMetrics();
+			this.x = (Game.width - fontMet.stringWidth(text)) / 2;
+			this.y = textY - fontMet.getHeight();
+			this.width = fontMet.stringWidth(text);
+			this.height = fontMet.getHeight();
+		graphics.drawRect(x, y, width, height);
 	}
 }

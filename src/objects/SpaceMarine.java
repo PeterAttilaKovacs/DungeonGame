@@ -16,6 +16,7 @@ import view.SpriteCuter;
 
 public class SpaceMarine extends BaseObject{
 
+	//Variables
 	private int width;
 	private int height;
 	private Handler handler;
@@ -28,22 +29,22 @@ public class SpaceMarine extends BaseObject{
 	
 	
 	/**
-	 * Jatekos konstruktora
-	 * @param x - x koordinataja
-	 * @param y - y koordinataja
-	 * @param id - azonosito
-	 * @param imageCut - kepvago
-	 * @param handler - vegrahajto
-	 * @param cam - kameranezet
-	 * @param game - jatekter
-	 * @param hud - elet/loszer kijelzo
-	 * @param level - palya
+	 * SpaceMarine constructor
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 * @param id - Enum class ID
+	 * @param imageCut - SpriteCuter class
+	 * @param handler - Handler class
+	 * @param camera - Camera class
+	 * @param game - Game class
+	 * @param hud - PlayerHUD class
+	 * @param level - LevelLoader class
 	 */
 	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut, Handler handler, 
-						Camera cam, Game game, PlayerHUD hud, LevelLoader level) {
+						Camera camera, Game game, PlayerHUD hud, LevelLoader level) {
 		super(x, y, id, imageCut);
 		this.handler = handler;
-		this.camera = cam;
+		this.camera = camera;
 		this.game = game;
 		this.hud = hud;
 		this.level = level;
@@ -52,9 +53,10 @@ public class SpaceMarine extends BaseObject{
 		width = 32;
 		height = 48;
 		
-		mouseSpMarine = new MouseInput(handler, cam, game, imageCut, hud);
+		mouseSpMarine = new MouseInput(handler, camera, game, imageCut, hud);
 		game.addMouseListener(mouseSpMarine);
 		
+		//Sprites for animation
 		spmarine[0] = imageCut.grabImage(1, 1, width, 39);
 		spmarine[1] = imageCut.grabImage(2, 1, 33, 39);
 		spmarine[2] = imageCut.grabImage(3, 1, width, 35);
@@ -69,64 +71,68 @@ public class SpaceMarine extends BaseObject{
 		
 		collision();
 				
-		// key D --> jobbra
-		// key A --> balra
+		// key D --> Right
+		// key A --> Left
 		if (handler.isRight()){ velX = +5;}
 		else if (!handler.isLeft()){ velX = 0; }
 		
 		if (handler.isLeft()){ velX = -5; }
 		else if (!handler.isRight()){ velX = 0; }
 		
-		// key W --> fel
-		// key S --> le
+		// key W --> UP
+		// key S --> DOWN
 		if (handler.isUp()){ velY = -5;}
 		else if (!handler.isDown()){ velY = 0; }
 		
 		if (handler.isDown()){ velY = +5; }
 		else if (!handler.isUp()){ velY = 0; }
 		
-		//Esc <-- kilepes
-		if (handler.isEsc()){ Runtime.getRuntime().exit(1); }
+		//Esc --> Exit game
+		if (handler.isEsc()){ Runtime.getRuntime().exit(0); }
 		
 		animation.runAnimation();
 		
 	}
 
 	/**
-	 * Render metodus felulirasa
+	 * Rendering method
 	 */
 	@Override
-	public void render(Graphics g) {
-		// Teszt render
+	public void render(Graphics graphics) {
+		// Test render
 		//g.setColor(Color.blue);
 		//g.fillRect((int)x, (int)y, 32, 48);
 		
 		if (velX == 0 && velY == 0) {
-			g.drawImage(spmarine[0], (int)x, (int)y, null);
+			graphics.drawImage(spmarine[0], (int)x, (int)y, null);
 		}
 		
 		else { 
-			animation.drawAnimation(g, x, y, 0); 
+			animation.drawAnimation(graphics, x, y, 0); 
 		}
 	}
 
+	/**
+	 * Bounds of SpaceMarine
+	 * @return returns new rectangle for intersection check
+	 */
 	@Override
 	public Rectangle getBounds() {
 		return new Rectangle((int)x, (int)y, width, height);
 	}
 	
-	/**
-	 * Utkozes figyelese metodus
-	 */
-	
+	//Variables for level loading
 	private LevelLoader level;
 	
+	/**
+	 * Collision check for player
+	 */
 	private void collision(){
 		for (int i = 0; i < handler.object.size(); i++) {
 			
 			BaseObject tempObject = handler.object.get(i);
 			
-			//fallal utkozes figyeles
+			//Collision with Wall
 			if (tempObject.getId() == ID.WallBlock) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					x += velX *- 1;
@@ -134,7 +140,7 @@ public class SpaceMarine extends BaseObject{
 				}
 			}
 			
-			//loszeres ladaval valo utkozes figyelese
+			//Collision with AmmoCrate
 			if (tempObject.getId() == ID.AmmoCrate) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineAmmo += 50;
@@ -142,32 +148,32 @@ public class SpaceMarine extends BaseObject{
 				}
 			}
 			
-			//ellenseggel valo utkozes figyelese
+			//Collision with Enemy
 			if (tempObject.getId() == ID.Khornet) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife--;
 				}
 			}
 			
-			//ellenseg lovesevel valo utkozes figyelese
+			//Collision with Enemy Bolt
 			if (tempObject.getId() == ID.EnemyBolt) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife -= 5;
-					handler.removeObject(tempObject); //ellenseg lovedekenek levetele
+					handler.removeObject(tempObject); //removing enemy bolt from array
 				}
 			}
 			
-			//kilpesi ponttal valo utkozes figyelse
+			//Collision with Flag - level exit point
 			if (tempObject.getId() == ID.Flag){
 				if (getBounds().intersects(tempObject.getBounds())) {
-					game.removeMouseListener(mouseSpMarine); //egerfigyelo eltavolitasa palyatoltes elott
-					level.nextLevel(); //kovetkezo palya hivasa
+					game.removeMouseListener(mouseSpMarine); //removing mouse listener from player
+					level.nextLevel(); //loading next level
 				}
 			}
 		}
 		/**
-		 * Jatekos elete 0, akkor GameOver peldanyositasa, 
-		 * jatekos torlese, egerfigyelo eltavolitasa
+		 * If player life = null, then GameOver call
+		 * Deleting player from Array, removing Mouse Listener from palyer
 		 */
 		if (hud.MarineLife <= 0) {
 			handler.addObject(new GameOver(this.x, this.y, ID.GameOver, imageCut));

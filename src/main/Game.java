@@ -4,7 +4,7 @@
  * 
  * author: Galaktika
  * 
- * TODO: animalt grafika - spritok, zene, hangok, menu, menu/jatek allapot
+ * TODO: animated sprites, music, sound
  * 
  */
 
@@ -29,46 +29,46 @@ import view.SpriteCuter;
 public class Game extends Canvas implements Runnable {
 
 	/**
-	 * Szeria verzioszam
+	 * Serial Number
 	 */
 	private static final long serialVersionUID = 5307833864394498312L;
 	
-	//Jatek allapot valtozoja
+	//Game state on start
 	public static STATES GameStatus = STATES.Menu;
 	
-	//Jatek-ablak valtozoi
+	//Game - Window variables
 	public static int width = 1000;
 	public static int height = 600;
 	public static String title;
 	public static int Level = 1;
 	
-	//Game konstruktora
+	//Game constructor
 	public Game() {
 		init();
-		new Window(width, height, title, this); //uj megjelenitesi ablak hivasa
-		new LevelLoader(handler, this, camera, hud, imageCut); //uj palya betoltese
+		new Window(width, height, title, this); //creating new window
+		new LevelLoader(handler, this, camera, hud, imageCut); //loading first level
 		start();
 	}
 	
-	//Handler es Camera referencia
+	//Handler and Camera references
 	private Handler handler;
 	private Camera camera;
 	private PlayerHUD hud;
 	
-	//Menupontok referencia
+	//Menu options references
 	private MainMenu menu;
 	private HelpMenu subHelpMenu;
 	
-	//Eger referencia
+	//Mouse references
 	public MouseInput mouse;
 	
-	//Animacio es kepvagas referencia
+	//Animation and image-handler references
 	private SpriteCuter imageCut;
 	private BufferedImageLoader imageloader;
 	private BufferedImage trySprite;
 	
 	/**
-	 * Inicializalas (valtozok inicializalasa)
+	 * Inicialization
 	 */
 	public void init() {
 		title = "SpaceMarine Game pA 0.1";
@@ -81,7 +81,7 @@ public class Game extends Canvas implements Runnable {
 		menu = new MainMenu();
 		subHelpMenu = new HelpMenu();
 		
-			//eger figyeles felvetele menure
+			//adding mouse listeners for menu
 			this.addMouseMotionListener(mouse);
 			this.addMouseListener(mouse);
 		
@@ -94,23 +94,23 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	/**
-	 * Szal valtozoi
+	 * Thread variables
 	 */
-	private Thread myThread = null; //uj futasi szal letrehozasa
-	private final Object threadLock = new Object(); //zarolasi referencia objektum, nem modosithato
+	private Thread myThread = null; //creating new Thread
+	private final Object threadLock = new Object(); //lock referency
 	private boolean canRun = false;
 	
-	//uj futtatasi szal inditasa
+	//Staring new Thread
 	public void start() {
-		synchronized (threadLock) { //olyan objektum szinkronizalasa ami biztos, hogy letezik!
-            if (myThread instanceof Thread){ //van-e szal?
-                if(!myThread.isAlive()) stop(); //ha a szal nem el, akkor stop
+		synchronized (threadLock) { 
+            if (myThread instanceof Thread){ 
+                if(!myThread.isAlive()) stop();
             }
         
-            if (myThread==null){ //ha nincs szal, akkor uj szal inditasa
+            if (myThread==null){ //if Thread is null, then start new Thread
             
-                //uj szal letrehozasa es takariktasa (ez a profi megoldas!)
-                myThread = new Thread(()->{ //lambda kifejezeses fuggveny
+                //creating new thread with lambda expression
+                myThread = new Thread(()->{
                     try{
                         canRun = true;
                         while (canRun) {
@@ -120,7 +120,7 @@ public class Game extends Canvas implements Runnable {
                     }
                     
                     catch (InterruptedException ie) { 
-                    	System.err.println("Hiba a szal futatasaban: " + ie); //nagyon alap hibaelfogas
+                    	System.err.println("Hiba a szal futatasaban: " + ie); //basic exception catch
                     }
                     
                     finally {
@@ -132,30 +132,30 @@ public class Game extends Canvas implements Runnable {
         }    
 	}
 	
-	//futasban levo szal leallitasa
+	//Stoping already running Trehad
 	public void stop() {
-		synchronized(threadLock) { //olyan objektum szinkronizalasa ami biztos, hogy letezik!
-            if (myThread instanceof Thread){ //van-e szal?
+		synchronized(threadLock) {
+            if (myThread instanceof Thread){
                 if(myThread.isAlive()) {
                     canRun = false;
                     try {
-                        myThread.join(2000); //2 masodperces varas
+                        myThread.join(2000); //waiting 2 seconds for thread to stop
                     } 
                     
                     catch (InterruptedException ex) {
-                    	System.err.println("Hiba a szal leallitasaban: " + ex);
+                    	System.err.println("Hiba a szal leallitasaban: " + ex); //basic exception catch
                     }
                 
-                    //vizsgalat, hogy el-e meg a szal
+                    //is thread still alive?
                     if(myThread.isAlive()) {
-                        myThread.interrupt(); //ha 3 mp utan nem all meg, akkor jelzes a szalnak a megallasra
+                        myThread.interrupt(); //if thread dose not stop, then interrupt thread
                     }
                 }    
             }
         } 
 	}
 	
-	//futatatasban levo szal
+	//Running Thread
 	@Override
 	public void run() {
 		this.requestFocus();
@@ -164,17 +164,17 @@ public class Game extends Canvas implements Runnable {
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
-		while(canRun){ //amig a szal fut
+		while(canRun){ //while thread canRun
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			
 			while(delta >= 1){
-				tick(); //tick hivasa
+				tick(); //calling main tick 
 				delta--;
 			}
 			
-			render(); //rendereles hivasa
+			render(); //calling main render
 			
 			if (System.currentTimeMillis() - timer > 1000){
 				timer += 1000;
@@ -184,7 +184,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	/**
-	 * Frissites metodus
+	 * Refres (tick) method
 	 */
 	private void tick() {
 		//main - menu tick
@@ -196,8 +196,7 @@ public class Game extends Canvas implements Runnable {
 			subHelpMenu.tick();
 		}
 		
-		
-		//jatek tick
+		//game tick
 		if (GameStatus == STATES.Play) {
 			handler.tick();
 			camera.tick();
@@ -205,67 +204,67 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	/**
-	 * Grafika renderelese
+	 * Graphics rendering
 	 */
 	private void render() {
 		
 		/**
-		 * Elotoltesi strategia
+		 * Buffer Strategy
 		 */
-		BufferStrategy bs = this.getBufferStrategy();
-		if (bs == null) { //ez csak egyszer fog meghivodni a jatek elejen
-			this.createBufferStrategy(3); //alapbeallitas: 3x elotoltes - tulnovelese pl. 5-8-15x-re lassitja a jatekot
+		BufferStrategy bufferStrategy = this.getBufferStrategy();
+		if (bufferStrategy == null) { //singleton
+			this.createBufferStrategy(3); //base settings: 3x buffering
 			return;
 		}
 		
-		Graphics g = bs.getDrawGraphics();
-		Graphics g2D = (Graphics2D) g;
+		Graphics graphics = bufferStrategy.getDrawGraphics();
+		Graphics graphics2D = (Graphics2D) graphics;
 			
-			//alap piros talaj
-			g.setColor(Color.magenta);
-			g.fillRect(0, 0, width, height);
+			//red floor
+			graphics.setColor(Color.magenta);
+			graphics.fillRect(0, 0, width, height);
 		
 		/**
-		 * Jatek indul, ha a jatekstatusza: jatek
+		 * Game starts, if Game STATES is set to: Play
 		 */	
 		if (GameStatus == STATES.Play) {
 			
-			//eger figyles levetele a menurol
+			//removing mouselisteners from menu
 			this.removeMouseMotionListener(mouse);
 			this.removeMouseListener(mouse);
 			
-			///kamera szerinti nezet renderelese -START-
-			g2D.translate(-camera.getX(), -camera.getY());
+			///camera-view rendering -START-
+			graphics2D.translate(-camera.getX(), -camera.getY());
 		
-				handler.render(g);
+				handler.render(graphics);
 			
-			g2D.translate(camera.getX(), camera.getY());
-			///kamera szerinti nezet renderelese -STOP-
+			graphics2D.translate(camera.getX(), camera.getY());
+			///camera-view rendering -STOP-
 		
 			/**
-			 * Jatekos HUD renderelese
+			 * Player HUD rendering
 			 * 
-			 * g2D alatt, mivel ez statikusan kell, hogy egy pozicioba legyen mindig
+			 * must be under g2D, to stay in static position
 			 */
-			hud.render(g);
+			hud.render(graphics);
 		}
 		
 		/**
-		 * Menu funkcio inditasa uj jatek inditasakor
+		 * Menu function is called at starting a new Game
 		 */
 		if (GameStatus == STATES.Menu) {
-			menu.render(g);
+			menu.render(graphics);
 		}
 		else if (GameStatus == STATES.Help) {
-			subHelpMenu.render(g);
+			subHelpMenu.render(graphics);
 		}
 		
-		bs.show();
-		g.dispose();
+		bufferStrategy.show();
+		graphics.dispose();
 	}
 	
 	/**
-	 * Main metodus, uj jatek hivasa
+	 * Main method, starting new Game
 	 */
 	public static void main(String[] args) {
 		new Game();

@@ -8,17 +8,24 @@ import enums.ID;
 import view.SpriteCuter;
 
 public class GameOver extends BaseObject{
-
-	private int timer = 300;
 	
-	//Jatekvege konstruktora
+	/**
+	 * GameOver constructor
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 * @param id - Enum class ID
+	 * @param imageCut - SpriteCuter class
+	 */
 	public GameOver(float x, float y, ID id, SpriteCuter imageCut) {
 		super(x, y, id, imageCut);
 	}
 
+	//Variables for tick()
+	private int timer = 300;
+	
 	@Override
 	public void tick() {
-		//automatikus kilepes a jatekbol kb. 30 mp elteltevel
+		//auto close of game after ~30 seconds
 		if (timer <= 0){
 			System.exit(timer);
 		}
@@ -26,12 +33,14 @@ public class GameOver extends BaseObject{
 	}
 
 	@Override
-	public void render(Graphics g) {
-		g.setColor(Color.black);
-		g.drawString("GAME OVER", (int)x, (int)y);
+	public void render(Graphics graphics) {
+		graphics.setColor(Color.black);
+		graphics.drawString("GAME OVER", (int)x, (int)y);
 	}
 
 	@Override
-	public Rectangle getBounds() { return null; }
+	public Rectangle getBounds() { 
+		return null; 
+	}
 
 }
