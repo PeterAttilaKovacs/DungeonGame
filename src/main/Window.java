@@ -5,14 +5,15 @@ import javax.swing.JFrame;
 
 public class Window {
 
+	//Variables for creating the window of the game
+	public static int width = 1000;
+	public static int height = 600;
+	
 	/**
 	 * Window constructor
-	 * @param width - width of game-field/zone
-	 * @param height - height of game-field/zone
-	 * @param title - title of the game
 	 * @param game - Game class
 	 */
-	public Window(int width, int height, String title, Game game){
+	public Window(Game game) {	
 		
 		//Variables
 		JFrame frame = new JFrame();

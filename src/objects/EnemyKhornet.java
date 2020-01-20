@@ -75,7 +75,7 @@ public class EnemyKhornet extends BaseObject{
 						int mx = (int)x;
 						int my = (int)y;
 						float angle = (float) Math.atan2(tempKhornet.getX() - mx ,  tempKhornet.getY() - my);
-						int boltVelocity = 10; //Loszer sebesseg alapbeallita: 10
+						int boltVelocity = 5; //Loszer sebesseg alapbeallita: 10
 						tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos es sin fuggveny felcserelve
 						tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
 						enemyAmmo--;
@@ -100,7 +100,7 @@ public class EnemyKhornet extends BaseObject{
 		
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
-			hud.MarineScore += 10;
+			hud.MarineScore += 1;
 		}	
 	}
 	

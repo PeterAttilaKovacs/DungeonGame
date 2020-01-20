@@ -50,16 +50,16 @@ public class SpaceMarine extends BaseObject{
 		this.level = level;
 		this.imageCut = imageCut;
 		
-		width = 32;
+		width = 41;
 		height = 48;
 		
 		mouseSpMarine = new MouseInput(handler, camera, game, imageCut, hud);
 		game.addMouseListener(mouseSpMarine);
 		
 		//Sprites for animation
-		spmarine[0] = imageCut.grabImage(1, 1, width, 39);
-		spmarine[1] = imageCut.grabImage(2, 1, 33, 39);
-		spmarine[2] = imageCut.grabImage(3, 1, width, 35);
+		spmarine[0] = imageCut.grabImage(1, 1, 32, 38);
+		spmarine[1] = imageCut.grabImage(2, 1, 32, 38);
+		spmarine[2] = imageCut.grabImage(3, 1, 32, 38);
 		
 		animation = new Animation2D(3, spmarine);
 	}
@@ -73,7 +73,7 @@ public class SpaceMarine extends BaseObject{
 				
 		// key D --> Right
 		// key A --> Left
-		if (handler.isRight()){ velX = +5;}
+		if (handler.isRight()){ velX = +5; }
 		else if (!handler.isLeft()){ velX = 0; }
 		
 		if (handler.isLeft()){ velX = -5; }
@@ -81,7 +81,7 @@ public class SpaceMarine extends BaseObject{
 		
 		// key W --> UP
 		// key S --> DOWN
-		if (handler.isUp()){ velY = -5;}
+		if (handler.isUp()){ velY = -5; }
 		else if (!handler.isDown()){ velY = 0; }
 		
 		if (handler.isDown()){ velY = +5; }
@@ -99,10 +99,6 @@ public class SpaceMarine extends BaseObject{
 	 */
 	@Override
 	public void render(Graphics graphics) {
-		// Test render
-		//g.setColor(Color.blue);
-		//g.fillRect((int)x, (int)y, 32, 48);
-		
 		if (velX == 0 && velY == 0) {
 			graphics.drawImage(spmarine[0], (int)x, (int)y, null);
 		}

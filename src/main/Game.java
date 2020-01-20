@@ -4,7 +4,7 @@
  * 
  * author: Galaktika
  * 
- * TODO: animated sprites, music, sound
+ * TODO: animated sprites, music, sound, menu Options
  * 
  */
 
@@ -36,16 +36,18 @@ public class Game extends Canvas implements Runnable {
 	//Game state on start
 	public static STATES GameStatus = STATES.Menu;
 	
-	//Game - Window variables
+	//Menu variables
 	public static int width = 1000;
 	public static int height = 600;
 	public static String title;
+	
+	//LevelLoader variables
 	public static int Level = 1;
 	
 	//Game constructor
 	public Game() {
 		init();
-		new Window(width, height, title, this); //creating new window
+		new Window(this);
 		new LevelLoader(handler, this, camera, hud, imageCut); //loading first level
 		start();
 	}
@@ -89,7 +91,7 @@ public class Game extends Canvas implements Runnable {
 		
 		imageloader = new BufferedImageLoader();
 			
-			trySprite = imageloader.loadImage("/spm.png");
+			trySprite = imageloader.loadImage("/sp2prbt2.png");
 			imageCut = new SpriteCuter(trySprite);
 	}
 

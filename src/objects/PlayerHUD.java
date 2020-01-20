@@ -40,11 +40,11 @@ public class PlayerHUD extends BaseObject{
 			
 		//Ammo meter
 		graphics.setColor(Color.white);
-		graphics.drawString("Loszer: " + MarineAmmo, 5, 50); //x, y
+		graphics.drawString("Bolter Rounds left: " + MarineAmmo, 5, 50); //x, y
 				
 		//Slay meter
 		graphics.setColor(Color.orange);
-		graphics.drawString("Pont: " + MarineScore, 5, 70); //x, y
+		graphics.drawString("Slaying of Heretics: " + MarineScore, 5, 70); //x, y
 	}
 
 	@Override
