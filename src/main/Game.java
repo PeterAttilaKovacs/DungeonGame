@@ -1,10 +1,10 @@
 /**
  * 
- * Space Marine on Demon Worlds
+ * Space Marine on Heretic Worlds
  * 
  * author: Galaktika
  * 
- * TODO: animated sprites, music, sound, menu Options
+ * TODO: music, sound, menu Options
  * 
  */
 
@@ -22,7 +22,7 @@ import gui.KeyInput;
 import gui.MouseInput;
 import menu.HelpMenu;
 import menu.MainMenu;
-import objects.PlayerHUD;
+import objectplayer.PlayerHUD;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
 
@@ -42,16 +42,21 @@ public class Game extends Canvas implements Runnable {
 	public static String title;
 	
 	//LevelLoader variables
-	public static int Level = 1;
+	protected static int Level = 1;
 	
-	//Game constructor
+	/**
+	 * Main Game constructor
+	 */
 	public Game() {
 		init();
 		new Window(this);
-		new LevelLoader(handler, this, camera, hud, imageCut); //loading first level
+		new LevelLoader(handler, this, camera, hud, imageCut_level, imageCut_player, imageCut_enemy); //loading first level
 		start();
 	}
 	
+	/**
+	 * Init variables
+	 */
 	//Handler and Camera references
 	private Handler handler;
 	private Camera camera;
@@ -62,18 +67,23 @@ public class Game extends Canvas implements Runnable {
 	private HelpMenu subHelpMenu;
 	
 	//Mouse references
-	public MouseInput mouse;
+	protected MouseInput mouse;
 	
 	//Animation and image-handler references
-	private SpriteCuter imageCut;
+	private SpriteCuter imageCut_player;
+	private SpriteCuter imageCut_level;
+	private SpriteCuter imageCut_enemy;
+	private BufferedImage playerSprite = null;
+	private BufferedImage enemySprite = null;
+	private BufferedImage level_layout = null;
+	private BufferedImage level_ground = null;
 	private BufferedImageLoader imageloader;
-	private BufferedImage trySprite;
 	
 	/**
 	 * Inicialization
 	 */
 	public void init() {
-		title = "SpaceMarine Game pA 0.1";
+		title = "SpaceMarine Game pA 1.0";
 		handler = new Handler(); 
 		camera = new Camera(0, 0, handler);
 		this.addKeyListener(new KeyInput(handler));
@@ -87,12 +97,19 @@ public class Game extends Canvas implements Runnable {
 			this.addMouseMotionListener(mouse);
 			this.addMouseListener(mouse);
 		
-		hud = new PlayerHUD(25, 25, null, imageCut);
+		hud = new PlayerHUD(25, 25, null, imageCut_player);
 		
 		imageloader = new BufferedImageLoader();
 			
-			trySprite = imageloader.loadImage("/sp2prbt2.png");
-			imageCut = new SpriteCuter(trySprite);
+			//Step 1
+			level_layout = imageloader.loadImage("/spacecity.png");
+			playerSprite = imageloader.loadImage("/spm.png");
+			enemySprite  = imageloader.loadImage("/enmheretic.png");
+			//Step 2
+			imageCut_level = new SpriteCuter(level_layout);
+			imageCut_player = new SpriteCuter(playerSprite);
+			imageCut_enemy = new SpriteCuter(enemySprite);
+			level_ground = imageCut_level.grabImage(2, 2, 32, 32); //loading level ground for rendering
 	}
 
 	/**
@@ -105,15 +122,15 @@ public class Game extends Canvas implements Runnable {
 	//Staring new Thread
 	public void start() {
 		synchronized (threadLock) { 
-            if (myThread instanceof Thread){ 
+            if (myThread instanceof Thread) { 
                 if(!myThread.isAlive()) stop();
             }
         
-            if (myThread==null){ //if Thread is null, then start new Thread
+            if (myThread==null) { //if Thread is null, then start new Thread
             
                 //creating new thread with lambda expression
-                myThread = new Thread(()->{
-                    try{
+                myThread = new Thread(()-> {
+                    try {
                         canRun = true;
                         while (canRun) {
                             this.run();
@@ -122,7 +139,7 @@ public class Game extends Canvas implements Runnable {
                     }
                     
                     catch (InterruptedException ie) { 
-                    	System.err.println("Hiba a szal futatasaban: " + ie); //basic exception catch
+                    	System.err.println("Thread start failed: " + ie); //basic exception catch
                     }
                     
                     finally {
@@ -137,7 +154,7 @@ public class Game extends Canvas implements Runnable {
 	//Stoping already running Trehad
 	public void stop() {
 		synchronized(threadLock) {
-            if (myThread instanceof Thread){
+            if (myThread instanceof Thread) {
                 if(myThread.isAlive()) {
                     canRun = false;
                     try {
@@ -145,7 +162,7 @@ public class Game extends Canvas implements Runnable {
                     } 
                     
                     catch (InterruptedException ex) {
-                    	System.err.println("Hiba a szal leallitasaban: " + ex); //basic exception catch
+                    	System.err.println("Thread exception: " + ex); //basic exception catch
                     }
                 
                     //is thread still alive?
@@ -171,14 +188,14 @@ public class Game extends Canvas implements Runnable {
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			
-			while(delta >= 1){
+			while(delta >= 1) {
 				tick(); //calling main tick 
 				delta--;
 			}
 			
 			render(); //calling main render
 			
-			if (System.currentTimeMillis() - timer > 1000){
+			if (System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 			}
 		}
@@ -222,8 +239,8 @@ public class Game extends Canvas implements Runnable {
 		Graphics graphics = bufferStrategy.getDrawGraphics();
 		Graphics graphics2D = (Graphics2D) graphics;
 			
-			//red floor
-			graphics.setColor(Color.magenta);
+			//Menu screen background rendering
+			graphics.setColor(Color.orange);
 			graphics.fillRect(0, 0, width, height);
 		
 		/**
@@ -235,13 +252,21 @@ public class Game extends Canvas implements Runnable {
 			this.removeMouseMotionListener(mouse);
 			this.removeMouseListener(mouse);
 			
-			///camera-view rendering -START-
+			/// Camera-view rendering -START- ///
 			graphics2D.translate(-camera.getX(), -camera.getY());
 		
+				//rendering ground
+				for (int xx = 0; xx < 30*72; xx += 32) {			
+					for (int yy = 0; yy < 30*72; yy += 32) {		
+						graphics.drawImage(level_ground, xx, yy, null);
+					}
+				}
+			
+			
 				handler.render(graphics);
 			
 			graphics2D.translate(camera.getX(), camera.getY());
-			///camera-view rendering -STOP-
+			/// Camera-view rendering -STOP- ///
 		
 			/**
 			 * Player HUD rendering

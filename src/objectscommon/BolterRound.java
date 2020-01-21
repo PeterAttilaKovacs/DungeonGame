@@ -1,4 +1,4 @@
-package objects;
+package objectscommon;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -32,7 +32,7 @@ public class BolterRound extends BaseObject {
 	 * If bolt intersects with wall, bolt is deleted from Array
 	 */
 	@Override
-	public void tick(){
+	public void tick() {
 		x += velX;
 		y += velY;
 		
@@ -70,7 +70,7 @@ public class BolterRound extends BaseObject {
 	}
 	
 	/**
-	 * Bounds of AmmoCrate
+	 * Bounds of BolterRound
 	 * @return returns new rectangle for intersection check
 	 */
 	@Override

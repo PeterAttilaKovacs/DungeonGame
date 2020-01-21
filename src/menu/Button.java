@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 
 import main.Game;
 
-public class Button extends Rectangle{
+public class Button extends Rectangle {
 	
 	//Variables
 	private Font font, selectedFont;
@@ -38,16 +38,17 @@ public class Button extends Rectangle{
 	}
 	
 	//setSelected setter
-	public void setSelected(boolean selected){
+	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 	
 	//Rendering
-	public void render(Graphics graphics){
-		if(selected){
+	public void render(Graphics graphics) {
+		if(selected) {
 			MenuFonts.drawString(graphics, selectedFont, selectedColor, text, textY);
 		}
-		else{
+		
+		else {
 			MenuFonts.drawString(graphics, font, color, text, textY);
 		}
 		

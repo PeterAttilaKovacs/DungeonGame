@@ -1,29 +1,30 @@
-package objects;
+package objectslevel;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import enums.ID;
-import main.Handler;
+import objectscommon.BaseObject;
 import view.SpriteCuter;
 
-public class AmmoCrate extends BaseObject{
+public class WallBlock extends BaseObject{
 
 	//Variables
-	private Handler handler;
+	private BufferedImage wallBlock;
 	
 	/**
-	 * AmmoCrate constructor
+	 * WallBlock constuctor
 	 * @param x - X coordinate
 	 * @param y - Y coordinate
 	 * @param id - Enum class ID
 	 * @param imageCut - SpriteCuter class
-	 * @param handler - Handler class
 	 */
-	public AmmoCrate(float x, float y, ID id, SpriteCuter imageCut, Handler handler) {
-		super(x, y, id, imageCut);
-		this.handler = handler;
+	public WallBlock(float x, float y, ID id, SpriteCuter imageCut_level) {
+		super(x, y, id, imageCut_level);
+		
+		wallBlock = imageCut.grabImage(1, 2, width, height);
 	}
 
 	@Override
@@ -31,8 +32,7 @@ public class AmmoCrate extends BaseObject{
 
 	@Override
 	public void render(Graphics graphics) {
-		graphics.setColor(Color.cyan);
-		graphics.fillRect((int)x, (int)y, 32, 32);
+		graphics.drawImage(wallBlock, (int)x, (int)y, null);
 	}
 
 	//Variables for getBounds
@@ -40,7 +40,7 @@ public class AmmoCrate extends BaseObject{
 	private int height = 32;
 	
 	/**
-	 * Bounds of AmmoCrate
+	 * Bounds of WallBlock
 	 * @return returns new rectangle for intersection check
 	 */
 	@Override

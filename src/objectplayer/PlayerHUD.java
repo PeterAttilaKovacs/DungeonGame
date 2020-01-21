@@ -1,10 +1,11 @@
-package objects;
+package objectplayer;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import enums.ID;
+import objectscommon.BaseObject;
 import view.SpriteCuter;
 
 public class PlayerHUD extends BaseObject{

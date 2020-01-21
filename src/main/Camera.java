@@ -1,7 +1,7 @@
 package main;
 
 import enums.ID;
-import objects.BaseObject;
+import objectscommon.BaseObject;
 
 public class Camera {
 

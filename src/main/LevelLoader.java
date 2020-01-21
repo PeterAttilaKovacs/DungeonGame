@@ -3,12 +3,12 @@ package main;
 import java.awt.image.BufferedImage;
 
 import enums.ID;
-import objects.AmmoCrate;
-import objects.Flag;
-import objects.PlayerHUD;
-import objects.SpaceMarine;
-import objects.WallBlock;
-import objects.EnemyKhornet;
+import objectplayer.PlayerHUD;
+import objectplayer.SpaceMarine;
+import objectscommon.EnemyHeretic;
+import objectslevel.AmmoCrate;
+import objectslevel.Flag;
+import objectslevel.WallBlock;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
 
@@ -16,7 +16,9 @@ public class LevelLoader {
 
 	private Handler handler;
 	public PlayerHUD hud;
-	public SpriteCuter imageCut;
+	public SpriteCuter imageCut_level;
+	public SpriteCuter imageCut_enemy;
+	public SpriteCuter imageCut_player;
 	public Camera camera;
 	public BufferedImage level_1 = null, level_2 = null, level_3 = null;
 	private Game game;
@@ -27,15 +29,19 @@ public class LevelLoader {
 	 * @param game - Game class
 	 * @param camera - Camera class
 	 * @param hud - PlayerHUD class
-	 * @param imageCut - SpriteCuter class
+	 * @param imageCut - SpriteCuter class, imageCut for player & enemy rendering
+	 * @param imageCut_level - SpriteCuter class, imageCut for level rendering
 	 */
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
-	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, SpriteCuter imageCut){
+	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, 
+						SpriteCuter imageCut_level, SpriteCuter imageCut_player, SpriteCuter imageCut_enemy) {
 		this.handler = handler;
 		this.hud = hud;
 		this.game = game;
 		this.camera = camera;
-		this.imageCut = imageCut;
+		this.imageCut_level = imageCut_level;
+		this.imageCut_player = imageCut_player;
+		this.imageCut_enemy = imageCut_enemy;
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 			level_1 = loader.loadImage("/kronosworld.png"); 	//lvl 1
@@ -62,30 +68,30 @@ public class LevelLoader {
 				int red	= (pixel >> 16) & 0xff;
 				int green = (pixel >> 8) & 0xff;
 				int blue = (pixel) & 0xff;
-						
+				
 				//Walls (red)
-				if (red == 255 && green == 0 && blue == 0){
-					handler.addObject(new WallBlock(xx*32, yy*32, ID.WallBlock, imageCut));
+				if (red == 255 && green == 0 && blue == 0) {
+					handler.addObject(new WallBlock(xx*32, yy*32, ID.WallBlock, imageCut_level));
 				}	
 						
 				//SpaceMarine (blue)
-				if (red == 0 && green == 0 && blue == 255){
-					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut, handler, camera, game, hud, this));
+				if (red == 0 && green == 0 && blue == 255) {
+					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut_player, handler, camera, game, hud, this));
 				}
 					
 				//Khornet (green - enemy)
-				if (red == 0 && green == 255 && blue == 0){
-					handler.addObject(new EnemyKhornet(xx*32, yy*32, ID.Khornet, imageCut, handler, game, hud));
+				if (red == 0 && green == 255 && blue == 0) {
+					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.Heretic, imageCut_enemy, handler, game, hud));
 				}
 					
 				//AmmoCrate (cyan)
-				if (red == 0 && green == 255 && blue == 255){ //cyen color: red: 0, green: 255, blue: 255
-					handler.addObject(new AmmoCrate(xx*32, yy*32, ID.AmmoCrate, imageCut, handler));
+				if (red == 0 && green == 255 && blue == 255) { //cyen color: red: 0, green: 255, blue: 255
+					handler.addObject(new AmmoCrate(xx*32, yy*32, ID.AmmoCrate, imageCut_level, handler));
 				}
 					
 				//Exitpoint (yellow)
-				if (red == 255 && green == 255 && blue == 0){ //yellow color: red: 255, green: 255, blue: 0 
-					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut)); 
+				if (red == 255 && green == 255 && blue == 0) { //yellow color: red: 255, green: 255, blue: 0 
+					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut_level)); 
 				}
 			}
 		}

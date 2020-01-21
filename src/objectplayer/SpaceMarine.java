@@ -1,4 +1,4 @@
-package objects;
+package objectplayer;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,6 +11,7 @@ import main.Camera;
 import main.Game;
 import main.Handler;
 import main.LevelLoader;
+import objectscommon.BaseObject;
 import view.Animation2D;
 import view.SpriteCuter;
 
@@ -40,15 +41,15 @@ public class SpaceMarine extends BaseObject{
 	 * @param hud - PlayerHUD class
 	 * @param level - LevelLoader class
 	 */
-	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut, Handler handler, 
+	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut_player, Handler handler, 
 						Camera camera, Game game, PlayerHUD hud, LevelLoader level) {
-		super(x, y, id, imageCut);
+		super(x, y, id, imageCut_player);
 		this.handler = handler;
 		this.camera = camera;
 		this.game = game;
 		this.hud = hud;
 		this.level = level;
-		this.imageCut = imageCut;
+		//this.imageCut_player = imageCut_player;
 		
 		width = 41;
 		height = 48;
@@ -145,7 +146,7 @@ public class SpaceMarine extends BaseObject{
 			}
 			
 			//Collision with Enemy
-			if (tempObject.getId() == ID.Khornet) {
+			if (tempObject.getId() == ID.Heretic) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife--;
 				}

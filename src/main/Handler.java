@@ -2,7 +2,8 @@ package main;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import objects.BaseObject;
+
+import objectscommon.BaseObject;
 
 public class Handler {
 

@@ -1,13 +1,19 @@
-package objects;
+package objectplayer;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import enums.ID;
+import objectscommon.BaseObject;
+import view.BufferedImageLoader;
 import view.SpriteCuter;
 
 public class GameOver extends BaseObject{
+	
+	//Variables
+	private BufferedImage game_over_image = null;
+	private BufferedImageLoader gameoverLoader = new BufferedImageLoader();
 	
 	/**
 	 * GameOver constructor
@@ -18,6 +24,9 @@ public class GameOver extends BaseObject{
 	 */
 	public GameOver(float x, float y, ID id, SpriteCuter imageCut) {
 		super(x, y, id, imageCut);
+		
+		//loading gameover.png image
+		game_over_image = gameoverLoader.loadImage("/gameover.png");
 	}
 
 	//Variables for tick()
@@ -32,15 +41,17 @@ public class GameOver extends BaseObject{
 		timer--;
 	}
 
+	/**
+	 * Rendering Game Over image on players death
+	 */
 	@Override
 	public void render(Graphics graphics) {
-		graphics.setColor(Color.black);
-		graphics.drawString("GAME OVER", (int)x, (int)y);
+		
+		graphics.drawImage(game_over_image, (int)x, (int)y, null);
 	}
 
 	@Override
-	public Rectangle getBounds() { 
+	public Rectangle getBounds() {
 		return null; 
 	}
-
 }

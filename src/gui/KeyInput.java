@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 
 import enums.ID;
 import main.Handler;
-import objects.BaseObject;
+import objectscommon.BaseObject;
 
 public class KeyInput extends KeyAdapter {
 

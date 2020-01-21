@@ -1,4 +1,4 @@
-package objects;
+package objectscommon;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,21 +6,26 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 
 import enums.ID;
 import main.Game;
 import main.Handler;
+import objectplayer.PlayerHUD;
+import view.Animation2D;
 import view.SpriteCuter;
 
-public class EnemyKhornet extends BaseObject{
+public class EnemyHeretic extends BaseObject{
 
 	//Variables
 	private Handler handler;
 	private Game game;
 	private PlayerHUD hud;
+	private BufferedImage enmheretic[] = new BufferedImage[3];
+	public Animation2D animation;
 	
 	/**
-	 * EnemyKhornet constructor
+	 * EnemyHeretic constructor
 	 * @param x - X coordinate
 	 * @param y - Y coordinate
 	 * @param id - Enum class ID
@@ -29,11 +34,17 @@ public class EnemyKhornet extends BaseObject{
 	 * @param game - Game class
 	 * @param hud - PlayerHUD class
 	 */
-	public EnemyKhornet(float x, float y, ID id, SpriteCuter imageCut, Handler handler, Game game, PlayerHUD hud) {
-		super(x, y, id, imageCut);
+	public EnemyHeretic(float x, float y, ID id, SpriteCuter imageCut_enemy, Handler handler, Game game, PlayerHUD hud) {
+		super(x, y, id, imageCut_enemy);
 		this.handler = handler;
 		this.game = game;
 		this.hud = hud;
+		
+		enmheretic[0] = imageCut.grabImage(1, 1, 33, 32);
+		enmheretic[1] = imageCut.grabImage(2, 1, 33, 32);
+		enmheretic[2] = imageCut.grabImage(3, 1, 33, 32);
+		
+		animation = new Animation2D(3, enmheretic);
 	}
 
 	float diffX, diffY;
@@ -75,8 +86,8 @@ public class EnemyKhornet extends BaseObject{
 						int mx = (int)x;
 						int my = (int)y;
 						float angle = (float) Math.atan2(tempKhornet.getX() - mx ,  tempKhornet.getY() - my);
-						int boltVelocity = 5; //Loszer sebesseg alapbeallita: 10
-						tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos es sin fuggveny felcserelve
+						int boltVelocity = 8; //base settings: 10
+						tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched!
 						tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
 						enemyAmmo--;
 					}
@@ -101,7 +112,9 @@ public class EnemyKhornet extends BaseObject{
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
 			hud.MarineScore += 1;
-		}	
+		}
+		
+		animation.runAnimation();
 	}
 	
 	/**
@@ -144,8 +157,13 @@ public class EnemyKhornet extends BaseObject{
 		Graphics2D graphics2D = (Graphics2D) graphics; //test-debug
 		
 		//Enemy
-		graphics.setColor(Color.red);
-		graphics.fillRect((int)x, (int)y, width, height);
+		if (velX == 0 && velY == 0) {
+			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
+		}
+		
+		else { 
+			animation.drawAnimation(graphics, x, y, 0); 
+		}
 		
 		//EnemyHUD
 		graphics.setColor(Color.orange);

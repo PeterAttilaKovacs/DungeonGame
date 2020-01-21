@@ -8,9 +8,9 @@ import enums.STATES;
 import main.Camera;
 import main.Game;
 import main.Handler;
-import objects.BaseObject;
-import objects.BolterRound;
-import objects.PlayerHUD;
+import objectplayer.PlayerHUD;
+import objectscommon.BaseObject;
+import objectscommon.BolterRound;
 import view.SpriteCuter;
 
 public class MouseInput extends MouseAdapter {
@@ -44,7 +44,7 @@ public class MouseInput extends MouseAdapter {
 	}
 	
 	//Finding Player
-	public void findPlayer(){
+	public void findPlayer() {
 		for (int i = 0; i < handler.object.size(); i++) { 
 			if (handler.object.get(i).getId() == ID.SpaceMarine) { //finding player by: ID
 				tempPlayer = handler.object.get(i);

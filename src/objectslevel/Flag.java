@@ -1,14 +1,19 @@
-package objects;
+package objectslevel;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import enums.ID;
+import objectscommon.BaseObject;
 import view.SpriteCuter;
 
 public class Flag extends BaseObject{
 
+	//Variables
+	private BufferedImage exitFlag;
+	
 	/**
 	 * Flag constructor
 	 * @param x - X coordinate
@@ -16,8 +21,10 @@ public class Flag extends BaseObject{
 	 * @param id - Enum class ID
 	 * @param imageCut - SpriteCuter class
 	 */
-	public Flag(float x, float y, ID id, SpriteCuter imageCut) {
-		super(x, y, id, imageCut);
+	public Flag(float x, float y, ID id, SpriteCuter imageCut_level) {
+		super(x, y, id, imageCut_level);
+		
+		exitFlag = imageCut_level.grabImage(5, 3, width, height);
 	}
 
 	@Override
@@ -25,8 +32,7 @@ public class Flag extends BaseObject{
 	
 	@Override
 	public void render(Graphics graphics) {
-		graphics.setColor(Color.yellow);
-		graphics.fillRect((int)x, (int)y, width, height);
+		graphics.drawImage(exitFlag, (int)x, (int)y, null);
 	}
 	
 	//Varibales for getBounds

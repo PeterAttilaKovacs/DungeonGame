@@ -3,7 +3,7 @@ package enums;
 public enum ID {
 
 	SpaceMarine(),
-	Khornet(),
+	Heretic(),
 	WallBlock(),
 	AmmoCrate(),
 	BolterRound(),
