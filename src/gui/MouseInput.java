@@ -8,6 +8,7 @@ import enums.STATES;
 import main.Camera;
 import main.Game;
 import main.Handler;
+import main.Sound;
 import objectplayer.PlayerHUD;
 import objectscommon.BaseObject;
 import objectscommon.BolterRound;
@@ -21,6 +22,7 @@ public class MouseInput extends MouseAdapter {
 	private Camera camera;
 	private SpriteCuter imageCut;
 	private PlayerHUD hud;
+	private Sound effectPlayer;
 	
 	/*
 	 * MouseInput base consturctor
@@ -35,12 +37,15 @@ public class MouseInput extends MouseAdapter {
 	 * @param spritecuter - SpriteCuter class
 	 * @param hud - PlayerHUD class
 	 */
-	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter imageCut, PlayerHUD hud) {
+	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter imageCut, PlayerHUD hud, Sound eP) {
 		this.handler = handler;
 		this.camera = camera;
 		this.game = game;
 		this.imageCut = imageCut;
 		this.hud = hud;
+		this.effectPlayer = eP;
+		
+		//effectPlayer = new Sound();
 	}
 	
 	//Finding Player
@@ -98,6 +103,12 @@ public class MouseInput extends MouseAdapter {
 					tempBolt.velY = (float) ((boltVelocity) * Math.sin(angle));
 			
 					hud.MarineAmmo--;
+					//bolter shoot effect
+					effectPlayer.soundEffect_PlayerShoot.play(); //bolt shoot effect
+				}
+				else {
+					//bolter out of ammo effect
+					effectPlayer.soundEffect_PlayerOutOfAmmo.play();
 				}
 			}
 			else { findPlayer(); }

@@ -1,4 +1,4 @@
-package objectscommon;
+package objectsenemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +11,10 @@ import java.awt.image.BufferedImage;
 import enums.ID;
 import main.Game;
 import main.Handler;
+import main.Sound;
 import objectplayer.PlayerHUD;
+import objectscommon.BaseObject;
+import objectscommon.BolterRound;
 import view.Animation2D;
 import view.SpriteCuter;
 
@@ -23,6 +26,7 @@ public class EnemyHeretic extends BaseObject{
 	private PlayerHUD hud;
 	private BufferedImage enmheretic[] = new BufferedImage[3];
 	public Animation2D animation;
+	private Sound effect_Enemy;
 	
 	/**
 	 * EnemyHeretic constructor
@@ -34,11 +38,13 @@ public class EnemyHeretic extends BaseObject{
 	 * @param game - Game class
 	 * @param hud - PlayerHUD class
 	 */
-	public EnemyHeretic(float x, float y, ID id, SpriteCuter imageCut_enemy, Handler handler, Game game, PlayerHUD hud) {
+	public EnemyHeretic(float x, float y, ID id, SpriteCuter imageCut_enemy, Handler handler, 
+												Game game, PlayerHUD hud, Sound effect_Enemy) {
 		super(x, y, id, imageCut_enemy);
 		this.handler = handler;
 		this.game = game;
 		this.hud = hud;
+		this.effect_Enemy = effect_Enemy;
 		
 		enmheretic[0] = imageCut.grabImage(1, 1, 33, 32);
 		enmheretic[1] = imageCut.grabImage(2, 1, 33, 32);
@@ -50,6 +56,9 @@ public class EnemyHeretic extends BaseObject{
 	float diffX, diffY;
 	float speed = 0.05f; //base settings: 0.05f
 	
+	/**
+	 * Tick method
+	 */
 	@Override
 	public void tick() {
 		
@@ -57,60 +66,65 @@ public class EnemyHeretic extends BaseObject{
 		y += velY;
 		
 		for (int i = 0; i < handler.object.size(); i++) {
-			BaseObject tempKhornet = handler.object.get(i);
+			BaseObject tempHeretic = handler.object.get(i);
 			
 			//Intersection check with player bolt
-			if (tempKhornet.getId() == ID.BolterRound){
-				if (getBounds().intersects(tempKhornet.getBounds())) {
-					handler.removeObject(tempKhornet); //removing Player bolt
+			if (tempHeretic.getId() == ID.BolterRound){
+				if (getBounds().intersects(tempHeretic.getBounds())) {
+					handler.removeObject(tempHeretic); //removing Player bolt
 					enemyLife -= 25;
 				}
 			}	
 			
 			//Intersection check with player - AI
-			if (tempKhornet.getId() == ID.SpaceMarine) {
+			if (tempHeretic.getId() == ID.SpaceMarine) {
 				
-				diffX = tempKhornet.getX() - x;
-				diffY = tempKhornet.getY() - y;
+				diffX = tempHeretic.getX() - x;
+				diffY = tempHeretic.getY() - y;
 				
 				//if player is in attack range, then attack player
-				if (getAttack().intersects(tempKhornet.getBounds())) {
+				if (getAttack().intersects(tempHeretic.getBounds())) {
 					velX = diffX * speed;
 					velY = diffY * speed;
 					
-					//if AI has ammonition, it fires towards the player
+					//if enemyAI has ammonition, it fires towards the player
 					if (enemyAmmo >= 0) {
 						SpriteCuter cut = null;
-						BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
+						
+						//enemyAI randomly fires his shoots
+						if (Math.random() > 0.9) {
+							BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
 					
-						int mx = (int)x;
-						int my = (int)y;
-						float angle = (float) Math.atan2(tempKhornet.getX() - mx ,  tempKhornet.getY() - my);
-						int boltVelocity = 8; //base settings: 10
-						tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched!
-						tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
-						enemyAmmo--;
+							int mx = (int)x;
+							int my = (int)y;
+							float angle = (float) Math.atan2(tempHeretic.getX() - mx ,  tempHeretic.getY() - my);
+							int boltVelocity = 8; //base settings: 10
+							tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched!
+							tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
+							enemyAmmo--;
+							effect_Enemy.soundEffect_EnemyShoot.play();
+						}
+						
 					}
 					//TEST-DEBUG
 					//System.out.println("x: " + this.x + " y: " + this.y );
 					//System.out.println("mx: " + mx + " my: " + my + " angle: " + angle);
 					//System.out.println("velX: " + tempBolt.velX + " velY: " + tempBolt.velY + " x: " + x + " y: " + y);
+					
 				}
-				
 				else {
 					velX = 0;
 					velY = 0;
 				}
 			}
-			
-			if (tempKhornet.getId() == ID.WallBlock) {
-				collision(tempKhornet);
+			if (tempHeretic.getId() == ID.WallBlock) {
+				collision(tempHeretic);
 			}
-			
 		}
 		
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
+			effect_Enemy.soundEffect_EnemyDeath.play();
 			hud.MarineScore += 1;
 		}
 		
@@ -146,15 +160,19 @@ public class EnemyHeretic extends BaseObject{
 	//Variables for rendering
 	private int width = 32;
 	private int height = 32;
-	Shape circle = new Ellipse2D.Double(x-85, y-85, width*6, height*6); //test-debug
+	//Shape circle = new Ellipse2D.Double(x-85, y-85, width*6, height*6); //test-debug
 	
 	//Variables for enemy life and ammo
 	public int enemyLife = 75;
 	public int enemyAmmo = 3;
 	
+	/**
+	 * Rendering method
+	 */
 	@Override
 	public void render(Graphics graphics) {
-		Graphics2D graphics2D = (Graphics2D) graphics; //test-debug
+		//test-debug only - circle shown to know when the enemy is detecting the player
+		//Graphics2D graphics2D = (Graphics2D) graphics;
 		
 		//Enemy
 		if (velX == 0 && velY == 0) {
@@ -172,7 +190,7 @@ public class EnemyHeretic extends BaseObject{
 		graphics.drawRect((int)x, (int)y-5, enemyLife/2, 5);
 		
 		//test-debug only - circle shown to know when the enemy is detecting the player
-		graphics2D.draw(circle);
+		//graphics2D.draw(circle);
 		
 	}
 
@@ -185,7 +203,7 @@ public class EnemyHeretic extends BaseObject{
 		return new Rectangle((int)x, (int)y, width, height);
 	}
 	
-	//test-debug only
+	//Attack sphear
 	public Ellipse2D getAttack() {
 		return new Ellipse2D.Double(x-85, y-85, width*6, height*6);
 	}

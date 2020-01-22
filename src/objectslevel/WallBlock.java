@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import enums.ID;
 import objectscommon.BaseObject;
@@ -13,6 +14,7 @@ public class WallBlock extends BaseObject{
 
 	//Variables
 	private BufferedImage wallBlock;
+	private int row;
 	
 	/**
 	 * WallBlock constuctor
@@ -24,7 +26,11 @@ public class WallBlock extends BaseObject{
 	public WallBlock(float x, float y, ID id, SpriteCuter imageCut_level) {
 		super(x, y, id, imageCut_level);
 		
-		wallBlock = imageCut.grabImage(1, 2, width, height);
+		//randomized wal creation
+		Random random= new Random();
+		row = random.nextInt(5) + 1;
+		
+		wallBlock = imageCut.grabImage(1, row, width, height);
 	}
 
 	@Override

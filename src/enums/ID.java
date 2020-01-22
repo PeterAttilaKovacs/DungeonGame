@@ -6,6 +6,7 @@ public enum ID {
 	Heretic(),
 	WallBlock(),
 	AmmoCrate(),
+	MediPack(),
 	BolterRound(),
 	EnemyBolt(),
 	Flag(),

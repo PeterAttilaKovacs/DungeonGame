@@ -28,12 +28,15 @@ public class AmmoCrate extends BaseObject{
 		super(x, y, id, imageCut_level);
 		this.handler = handler;
 		
-		ammoCrate = imageCut_level.grabImage(1, 3, width, height);
+		ammoCrate = imageCut_level.grabImage(9, 2, width, height);
 	}
 
 	@Override
 	public void tick() {}
 
+	/**
+	 * Rendering method
+	 */
 	@Override
 	public void render(Graphics graphics) {
 		graphics.drawImage(ammoCrate, (int)x, (int)y, null);

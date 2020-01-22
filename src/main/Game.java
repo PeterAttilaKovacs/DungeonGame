@@ -4,7 +4,8 @@
  * 
  * author: Galaktika
  * 
- * TODO: music, sound, menu Options
+ * TODO: menu Options, sources packageing
+ * TODO: louder exit-level sound .wav
  * 
  */
 
@@ -16,6 +17,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+
+import com.sun.javafx.application.PlatformImpl;
 
 import enums.STATES;
 import gui.KeyInput;
@@ -50,7 +53,9 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		init();
 		new Window(this);
-		new LevelLoader(handler, this, camera, hud, imageCut_level, imageCut_player, imageCut_enemy); //loading first level
+		new LevelLoader(handler, this, camera, hud, 
+						imageCut_level, imageCut_player, imageCut_enemy, 
+						audioPlayer, audioPlayer); //loading first level
 		start();
 	}
 	
@@ -79,10 +84,20 @@ public class Game extends Canvas implements Runnable {
 	private BufferedImage level_ground = null;
 	private BufferedImageLoader imageloader;
 	
+	//Sound references
+	private static Sound musicPlayer;
+	private static Sound audioPlayer;
+	
 	/**
 	 * Inicialization
 	 */
 	public void init() {
+		//Step 1
+		PlatformImpl.startup(() -> {}); //for music player, javafx platform initialization!!
+		//Step 2
+		musicPlayer = new Sound();
+		audioPlayer = new Sound();
+		
 		title = "SpaceMarine Game pA 1.0";
 		handler = new Handler(); 
 		camera = new Camera(0, 0, handler);
@@ -102,7 +117,7 @@ public class Game extends Canvas implements Runnable {
 		imageloader = new BufferedImageLoader();
 			
 			//Step 1
-			level_layout = imageloader.loadImage("/spacecity.png");
+			level_layout = imageloader.loadImage("/spacecity2.png");
 			playerSprite = imageloader.loadImage("/spm.png");
 			enemySprite  = imageloader.loadImage("/enmheretic.png");
 			//Step 2
@@ -247,6 +262,9 @@ public class Game extends Canvas implements Runnable {
 		 * Game starts, if Game STATES is set to: Play
 		 */	
 		if (GameStatus == STATES.Play) {
+			
+			//starting music
+			musicPlayer.playMusic.play();
 			
 			//removing mouselisteners from menu
 			this.removeMouseMotionListener(mouse);

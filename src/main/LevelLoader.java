@@ -5,9 +5,10 @@ import java.awt.image.BufferedImage;
 import enums.ID;
 import objectplayer.PlayerHUD;
 import objectplayer.SpaceMarine;
-import objectscommon.EnemyHeretic;
+import objectsenemy.EnemyHeretic;
 import objectslevel.AmmoCrate;
 import objectslevel.Flag;
+import objectslevel.MediPack;
 import objectslevel.WallBlock;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
@@ -22,6 +23,8 @@ public class LevelLoader {
 	public Camera camera;
 	public BufferedImage level_1 = null, level_2 = null, level_3 = null;
 	private Game game;
+	private Sound effect_Player;
+	private Sound effect_Enemy;
 		
 	/**
 	 * LevelLoader constructor
@@ -34,7 +37,8 @@ public class LevelLoader {
 	 */
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
 	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, 
-						SpriteCuter imageCut_level, SpriteCuter imageCut_player, SpriteCuter imageCut_enemy) {
+						SpriteCuter imageCut_level, SpriteCuter imageCut_player, SpriteCuter imageCut_enemy, 
+						Sound effect_Player, Sound effect_Enemy) {
 		this.handler = handler;
 		this.hud = hud;
 		this.game = game;
@@ -42,6 +46,8 @@ public class LevelLoader {
 		this.imageCut_level = imageCut_level;
 		this.imageCut_player = imageCut_player;
 		this.imageCut_enemy = imageCut_enemy;
+		this.effect_Player = effect_Player;
+		this.effect_Enemy = effect_Enemy;
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
 			level_1 = loader.loadImage("/kronosworld.png"); 	//lvl 1
@@ -49,8 +55,8 @@ public class LevelLoader {
 			level_3 = loader.loadImage("/cadiaworld.png"); 		//lvl 3
 			//level_4 = loader.loadImage("/...png"); 	//lvl 4
 			//level_5 = loader.loadImage("/...png"); 	//lvl 5
-			//etc...
-				
+			//etc...	
+			
 		nextLevel();
 	}
 		
@@ -76,12 +82,12 @@ public class LevelLoader {
 						
 				//SpaceMarine (blue)
 				if (red == 0 && green == 0 && blue == 255) {
-					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut_player, handler, camera, game, hud, this));
+					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut_player, handler, camera, game, hud, effect_Player, this));
 				}
 					
 				//Khornet (green - enemy)
 				if (red == 0 && green == 255 && blue == 0) {
-					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.Heretic, imageCut_enemy, handler, game, hud));
+					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.Heretic, imageCut_enemy, handler, game, hud, effect_Enemy));
 				}
 					
 				//AmmoCrate (cyan)
@@ -93,6 +99,11 @@ public class LevelLoader {
 				if (red == 255 && green == 255 && blue == 0) { //yellow color: red: 255, green: 255, blue: 0 
 					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut_level)); 
 				}
+				
+				//Exitpoint (yellow)
+				if (red == 255 && green == 255 && blue == 255) { //white color: red: 255, green: 255, blue: 255 
+					handler.addObject(new MediPack(xx*32, yy*32, ID.MediPack, imageCut_level, handler)); 
+				}
 			}
 		}
 	}
@@ -100,7 +111,7 @@ public class LevelLoader {
 	//Loading next level
 	public void nextLevel(){
 		handler.clearLevel();
-			
+		
 		switch(Game.Level){
 			
 		//Lvl 1

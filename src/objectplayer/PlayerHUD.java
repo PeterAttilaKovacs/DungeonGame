@@ -1,6 +1,7 @@
 package objectplayer;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -29,6 +30,9 @@ public class PlayerHUD extends BaseObject{
 	@Override
 	public void tick() {}
 
+	/**
+	 * Rendering method
+	 */
 	@Override
 	public void render(Graphics graphics) {
 		//Life meter
@@ -40,12 +44,21 @@ public class PlayerHUD extends BaseObject{
 		graphics.drawRect(5, 5, 200, 32); //x, y, width, height
 			
 		//Ammo meter
-		graphics.setColor(Color.white);
-		graphics.drawString("Bolter Rounds left: " + MarineAmmo, 5, 50); //x, y
+		graphics.setFont(new Font("arial", Font.PLAIN, 15));
+		
+		if (MarineAmmo <= 10) {
+			graphics.setColor(Color.red); //low ammo color indication
+		}
+		
+		else {
+			graphics.setColor(Color.white);
+		}
+		
+		graphics.drawString("Bolter Rounds left: " + MarineAmmo, 6, 60); //x, y
 				
 		//Slay meter
 		graphics.setColor(Color.orange);
-		graphics.drawString("Slaying of Heretics: " + MarineScore, 5, 70); //x, y
+		graphics.drawString("Slaying of Heretics: " + MarineScore, 6, 90); //x, y
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import enums.ID;
+import main.Game;
 import objectscommon.BaseObject;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
@@ -47,6 +48,7 @@ public class GameOver extends BaseObject{
 	@Override
 	public void render(Graphics graphics) {
 		
+		//graphics.drawImage(game_over_image, (int)x, (int)y, null);
 		graphics.drawImage(game_over_image, (int)x, (int)y, null);
 	}
 

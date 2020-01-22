@@ -1,6 +1,5 @@
 package objectplayer;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -11,6 +10,7 @@ import main.Camera;
 import main.Game;
 import main.Handler;
 import main.LevelLoader;
+import main.Sound;
 import objectscommon.BaseObject;
 import view.Animation2D;
 import view.SpriteCuter;
@@ -27,6 +27,7 @@ public class SpaceMarine extends BaseObject{
 	private final MouseInput mouseSpMarine;
 	private BufferedImage spmarine[] = new BufferedImage[3];
 	public Animation2D animation;
+	private Sound effect_Player;
 	
 	
 	/**
@@ -42,29 +43,32 @@ public class SpaceMarine extends BaseObject{
 	 * @param level - LevelLoader class
 	 */
 	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut_player, Handler handler, 
-						Camera camera, Game game, PlayerHUD hud, LevelLoader level) {
+						Camera camera, Game game, PlayerHUD hud, Sound effect_Player, LevelLoader level) {
 		super(x, y, id, imageCut_player);
 		this.handler = handler;
 		this.camera = camera;
 		this.game = game;
 		this.hud = hud;
 		this.level = level;
-		//this.imageCut_player = imageCut_player;
+		this.effect_Player = effect_Player;
 		
-		width = 41;
-		height = 48;
+		width = 32;
+		height = 38;
 		
-		mouseSpMarine = new MouseInput(handler, camera, game, imageCut, hud);
+		mouseSpMarine = new MouseInput(handler, camera, game, imageCut, hud, effect_Player);
 		game.addMouseListener(mouseSpMarine);
 		
 		//Sprites for animation
-		spmarine[0] = imageCut.grabImage(1, 1, 32, 38);
-		spmarine[1] = imageCut.grabImage(2, 1, 32, 38);
-		spmarine[2] = imageCut.grabImage(3, 1, 32, 38);
+		spmarine[0] = imageCut.grabImage(1, 1, width, height);
+		spmarine[1] = imageCut.grabImage(2, 1, width, height);
+		spmarine[2] = imageCut.grabImage(3, 1, width, height);
 		
 		animation = new Animation2D(3, spmarine);
 	}
 
+	/**
+	 * Tick method
+	 */
 	@Override
 	public void tick() {
 		x += velX;
@@ -145,6 +149,19 @@ public class SpaceMarine extends BaseObject{
 				}
 			}
 			
+			//Collision with MediPack
+			if (tempObject.getId() == ID.MediPack) {
+				if (getBounds().intersects(tempObject.getBounds())) {
+					hud.MarineLife += 50;
+					
+					//Life overload disabeling
+					if (hud.MarineLife >= 100) {
+						hud.MarineLife = 100;
+					}
+					handler.removeObject(tempObject);
+				}
+			}
+			
 			//Collision with Enemy
 			if (tempObject.getId() == ID.Heretic) {
 				if (getBounds().intersects(tempObject.getBounds())) {
@@ -163,6 +180,7 @@ public class SpaceMarine extends BaseObject{
 			//Collision with Flag - level exit point
 			if (tempObject.getId() == ID.Flag){
 				if (getBounds().intersects(tempObject.getBounds())) {
+					effect_Player.soundEffect_ExitLevel.play();
 					game.removeMouseListener(mouseSpMarine); //removing mouse listener from player
 					level.nextLevel(); //loading next level
 				}
