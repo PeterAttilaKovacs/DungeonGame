@@ -12,8 +12,8 @@ public class BolterRound extends BaseObject {
 
 	//Variables
 	private Handler handler;
-	private int width = 8;
-	private int height = 8;
+	private int width = 6;
+	private int height = 6;
 	
 	/**
 	 * Bolt constructor

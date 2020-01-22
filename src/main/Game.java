@@ -5,8 +5,7 @@
  * author: Galaktika
  * 
  * TODO: menu Options, sources packageing
- * TODO: louder exit-level sound .wav
- * 
+ * TODO: Set Volume option
  */
 
 package main;
@@ -26,6 +25,7 @@ import gui.MouseInput;
 import menu.HelpMenu;
 import menu.MainMenu;
 import objectplayer.PlayerHUD;
+import sound.Sound;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
 
@@ -53,9 +53,10 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		init();
 		new Window(this);
+		//loading first level
 		new LevelLoader(handler, this, camera, hud, 
 						imageCut_level, imageCut_player, imageCut_enemy, 
-						audioPlayer, audioPlayer); //loading first level
+						audioPlayer, audioPlayer);
 		start();
 	}
 	
@@ -141,7 +142,7 @@ public class Game extends Canvas implements Runnable {
                 if(!myThread.isAlive()) stop();
             }
         
-            if (myThread==null) { //if Thread is null, then start new Thread
+            if (myThread == null) { //if Thread is null, then start new Thread
             
                 //creating new thread with lambda expression
                 myThread = new Thread(()-> {
@@ -149,7 +150,7 @@ public class Game extends Canvas implements Runnable {
                         canRun = true;
                         while (canRun) {
                             this.run();
-                            myThread.sleep(100);
+                            Thread.sleep(100);
                         }
                     }
                     
@@ -162,6 +163,7 @@ public class Game extends Canvas implements Runnable {
                     }    
                 });
                 myThread.start();
+                //System.out.println(myThread); //Test-Debug only
             }
         }    
 	}
@@ -214,11 +216,11 @@ public class Game extends Canvas implements Runnable {
 				timer += 1000;
 			}
 		}
-		stop();
+		stop(); //stoping thread in canRun
 	}
 	
 	/**
-	 * Refres (tick) method
+	 * Main Tick method
 	 */
 	private void tick() {
 		//main - menu tick
@@ -238,7 +240,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	/**
-	 * Graphics rendering
+	 * Main Rendering method
 	 */
 	private void render() {
 		
@@ -288,7 +290,6 @@ public class Game extends Canvas implements Runnable {
 		
 			/**
 			 * Player HUD rendering
-			 * 
 			 * must be under g2D, to stay in static position
 			 */
 			hud.render(graphics);

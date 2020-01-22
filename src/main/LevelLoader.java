@@ -10,6 +10,7 @@ import objectslevel.AmmoCrate;
 import objectslevel.Flag;
 import objectslevel.MediPack;
 import objectslevel.WallBlock;
+import sound.Sound;
 import view.BufferedImageLoader;
 import view.SpriteCuter;
 
@@ -34,6 +35,7 @@ public class LevelLoader {
 	 * @param hud - PlayerHUD class
 	 * @param imageCut - SpriteCuter class, imageCut for player & enemy rendering
 	 * @param imageCut_level - SpriteCuter class, imageCut for level rendering
+	 * @param Sound effect_Player & effect_Enemy - Sound class, for sound effects
 	 */
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
 	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, 

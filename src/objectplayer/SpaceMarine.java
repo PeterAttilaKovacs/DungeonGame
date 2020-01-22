@@ -10,8 +10,8 @@ import main.Camera;
 import main.Game;
 import main.Handler;
 import main.LevelLoader;
-import main.Sound;
 import objectscommon.BaseObject;
+import sound.Sound;
 import view.Animation2D;
 import view.SpriteCuter;
 
@@ -41,6 +41,7 @@ public class SpaceMarine extends BaseObject{
 	 * @param game - Game class
 	 * @param hud - PlayerHUD class
 	 * @param level - LevelLoader class
+	 * @param effect_Player - Sound class
 	 */
 	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut_player, Handler handler, 
 						Camera camera, Game game, PlayerHUD hud, Sound effect_Player, LevelLoader level) {
@@ -106,6 +107,12 @@ public class SpaceMarine extends BaseObject{
 	public void render(Graphics graphics) {
 		if (velX == 0 && velY == 0) {
 			graphics.drawImage(spmarine[0], (int)x, (int)y, null);
+			
+			//idel stance sound // TODO better idel sound solution...
+			if (Math.random() > 0.99) {
+				effect_Player.soundEffect_PlayerIdel.play();
+				System.out.println(Math.random());
+			}
 		}
 		
 		else { 

@@ -10,6 +10,11 @@ import main.Game;
 
 public class Button extends Rectangle {
 	
+	/**
+	 * Default Serial Version ID
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	//Variables
 	private Font font, selectedFont;
 	private Color color, selectedColor;

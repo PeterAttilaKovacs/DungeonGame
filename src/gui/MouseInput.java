@@ -8,10 +8,10 @@ import enums.STATES;
 import main.Camera;
 import main.Game;
 import main.Handler;
-import main.Sound;
 import objectplayer.PlayerHUD;
 import objectscommon.BaseObject;
 import objectscommon.BolterRound;
+import sound.Sound;
 import view.SpriteCuter;
 
 public class MouseInput extends MouseAdapter {

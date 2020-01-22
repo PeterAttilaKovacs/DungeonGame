@@ -11,10 +11,10 @@ import java.awt.image.BufferedImage;
 import enums.ID;
 import main.Game;
 import main.Handler;
-import main.Sound;
 import objectplayer.PlayerHUD;
 import objectscommon.BaseObject;
 import objectscommon.BolterRound;
+import sound.Sound;
 import view.Animation2D;
 import view.SpriteCuter;
 
@@ -37,6 +37,7 @@ public class EnemyHeretic extends BaseObject{
 	 * @param handler - Handler class
 	 * @param game - Game class
 	 * @param hud - PlayerHUD class
+	 * @param effect_Enemy - Sound class
 	 */
 	public EnemyHeretic(float x, float y, ID id, SpriteCuter imageCut_enemy, Handler handler, 
 												Game game, PlayerHUD hud, Sound effect_Enemy) {
@@ -92,7 +93,7 @@ public class EnemyHeretic extends BaseObject{
 						SpriteCuter cut = null;
 						
 						//enemyAI randomly fires his shoots
-						if (Math.random() > 0.9) {
+						if (Math.random() > 0.97) {
 							BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
 					
 							int mx = (int)x;
@@ -104,13 +105,7 @@ public class EnemyHeretic extends BaseObject{
 							enemyAmmo--;
 							effect_Enemy.soundEffect_EnemyShoot.play();
 						}
-						
 					}
-					//TEST-DEBUG
-					//System.out.println("x: " + this.x + " y: " + this.y );
-					//System.out.println("mx: " + mx + " my: " + my + " angle: " + angle);
-					//System.out.println("velX: " + tempBolt.velX + " velY: " + tempBolt.velY + " x: " + x + " y: " + y);
-					
 				}
 				else {
 					velX = 0;
@@ -121,7 +116,6 @@ public class EnemyHeretic extends BaseObject{
 				collision(tempHeretic);
 			}
 		}
-		
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
 			effect_Enemy.soundEffect_EnemyDeath.play();
@@ -160,7 +154,7 @@ public class EnemyHeretic extends BaseObject{
 	//Variables for rendering
 	private int width = 32;
 	private int height = 32;
-	//Shape circle = new Ellipse2D.Double(x-85, y-85, width*6, height*6); //test-debug
+	//Shape circle = new Ellipse2D.Double(x-125, y-125, width*9, height*9); //test-debug
 	
 	//Variables for enemy life and ammo
 	public int enemyLife = 75;
@@ -184,7 +178,7 @@ public class EnemyHeretic extends BaseObject{
 		}
 		
 		//EnemyHUD
-		graphics.setColor(Color.orange);
+		graphics.setColor(Color.red);
 		graphics.fillRect((int)x, (int)y-5, enemyLife/2, 5);
 		graphics.setColor(Color.black);
 		graphics.drawRect((int)x, (int)y-5, enemyLife/2, 5);
@@ -203,9 +197,12 @@ public class EnemyHeretic extends BaseObject{
 		return new Rectangle((int)x, (int)y, width, height);
 	}
 	
-	//Attack sphear
+	/**
+	 * Attack sphear
+	 * @return Ellipse2D of attack-range / base settings: x-85, y-85, width*6, height*6
+	 */
 	public Ellipse2D getAttack() {
-		return new Ellipse2D.Double(x-85, y-85, width*6, height*6);
+		return new Ellipse2D.Double(x-125, y-125, width*9, height*9);
 	}
 	
 	/**

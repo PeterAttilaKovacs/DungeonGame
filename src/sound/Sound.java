@@ -2,7 +2,7 @@
  * Music: "Dark Ambience Loop by Iwan Gabovitch qubodup.net"
  */
 
-package main;
+package sound;
 
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -20,7 +20,7 @@ public class Sound {
 	private String soundFile_boltgun;
 	private String soundFile_outofammo;
 	//private String soundFile_playerdeath; //pedding
-	//private String soundFile_playermove; //pedding
+	private String soundFile_playeridle; //pedding
 	//private String soundFile_lowammo; //pedding
 	
 	//enemy
@@ -35,6 +35,7 @@ public class Sound {
 	public Media music;
 	public MediaPlayer playMusic;
 	public AudioClip soundEffect_PlayerShoot;
+	public AudioClip soundEffect_PlayerIdel;
 	public AudioClip soundEffect_PlayerOutOfAmmo;
 	public AudioClip soundEffect_EnemyDeath;
 	public AudioClip soundEffect_EnemyShoot;
@@ -49,7 +50,8 @@ public class Sound {
 		soundFile_outofammo = "/outofammo.wav";
 		soundFile_enemydeath = "/enemydeath1.wav";
 		soundFile_enemybolt = "/enemypistol.wav";
-		soundFile_exitlevel = "/exitlevel.wav";
+		soundFile_exitlevel = "/exitdoor.wav";
+		soundFile_playeridle = "/playeridel.wav";
 		
 		init();
 		
@@ -69,6 +71,7 @@ public class Sound {
 			
 			soundEffect_PlayerShoot = new AudioClip(getClass().getResource(soundFile_boltgun).toString());
 			soundEffect_PlayerOutOfAmmo = new AudioClip(getClass().getResource(soundFile_outofammo).toString());
+			soundEffect_PlayerIdel = new AudioClip(getClass().getResource(soundFile_playeridle).toString());
 			soundEffect_EnemyDeath = new AudioClip(getClass().getResource(soundFile_enemydeath).toString());
 			soundEffect_EnemyShoot = new AudioClip(getClass().getResource(soundFile_enemybolt).toString());
 			soundEffect_ExitLevel = new AudioClip(getClass().getResource(soundFile_exitlevel).toString());
