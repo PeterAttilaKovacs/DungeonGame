@@ -41,11 +41,15 @@ public class KeyInput extends KeyAdapter {
 			BaseObject tempObject = handler.object.get(i);
 				
 			if (tempObject.getId() == ID.SpaceMarine){
-				if (key == KeyEvent.VK_W){ 		handler.setUp(true); }
-				if (key == KeyEvent.VK_S){ 		handler.setDown(true); }
-				if (key == KeyEvent.VK_A){ 		handler.setLeft(true); }
-				if (key == KeyEvent.VK_D){ 		handler.setRight(true); }
-				if (key == KeyEvent.VK_ESCAPE){ handler.setEsc(true); } //only pressed is checkd
+				if (key == KeyEvent.VK_W) { 		handler.setUp(true); }
+				if (key == KeyEvent.VK_S) { 		handler.setDown(true); }
+				if (key == KeyEvent.VK_A) { 		handler.setLeft(true); }
+				if (key == KeyEvent.VK_D) { 		handler.setRight(true); }
+				
+				if (key == KeyEvent.VK_ESCAPE) { 	handler.setEsc(true); } //only pressed is checkd
+				
+				if (key == KeyEvent.VK_N) {	handler.setUP(true); }
+				if (key == KeyEvent.VK_M) {	handler.setDOWN(true); }
 			}
 		}
 	}
@@ -66,6 +70,9 @@ public class KeyInput extends KeyAdapter {
 				if (key == KeyEvent.VK_S){ handler.setDown(false); }
 				if (key == KeyEvent.VK_A){ handler.setLeft(false); }
 				if (key == KeyEvent.VK_D){ handler.setRight(false); }
+				
+				if (key == KeyEvent.VK_N) {	handler.setUP(false); }
+				if (key == KeyEvent.VK_M) {	handler.setDOWN(false); }
 			}
 		}
 	}

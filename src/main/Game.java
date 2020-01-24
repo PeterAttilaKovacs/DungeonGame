@@ -1,11 +1,12 @@
 /**
  * 
- * Space Marine on Heretic Worlds
+ * Space Marine on a Heretic World (Hive City)
  * 
  * author: Galaktika
  * 
- * TODO: menu Options, sources packageing
- * TODO: Set Volume option
+ * TODO: sources packageing, Sound class
+ * TODO: volume control for effects, make effects array?...
+ * TODO debug: fix ammo color for enemyAI...pedding
  */
 
 package main;
@@ -53,8 +54,7 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		init();
 		new Window(this);
-		//loading first level
-		new LevelLoader(handler, this, camera, hud, 
+		new LevelLoader(handler, this, camera, hud,
 						imageCut_level, imageCut_player, imageCut_enemy, 
 						audioPlayer, audioPlayer);
 		start();
@@ -93,14 +93,16 @@ public class Game extends Canvas implements Runnable {
 	 * Inicialization
 	 */
 	public void init() {
-		//Step 1
+		//Step 1 for music
 		PlatformImpl.startup(() -> {}); //for music player, javafx platform initialization!!
-		//Step 2
-		musicPlayer = new Sound();
-		audioPlayer = new Sound();
 		
-		title = "SpaceMarine Game pA 1.0";
+		title = "HiveCity Infestation Game (Alpha 1.0)";
 		handler = new Handler(); 
+		
+		//Step 2 for music
+		musicPlayer = new Sound(handler);
+		audioPlayer = new Sound(handler);
+		
 		camera = new Camera(0, 0, handler);
 		this.addKeyListener(new KeyInput(handler));
 		
@@ -117,11 +119,12 @@ public class Game extends Canvas implements Runnable {
 		
 		imageloader = new BufferedImageLoader();
 			
-			//Step 1
+			//Step 1 of level image loading
 			level_layout = imageloader.loadImage("/spacecity2.png");
 			playerSprite = imageloader.loadImage("/spm.png");
 			enemySprite  = imageloader.loadImage("/enmheretic.png");
-			//Step 2
+			
+			//Step 2 of level image loading
 			imageCut_level = new SpriteCuter(level_layout);
 			imageCut_player = new SpriteCuter(playerSprite);
 			imageCut_enemy = new SpriteCuter(enemySprite);
@@ -200,7 +203,7 @@ public class Game extends Canvas implements Runnable {
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
-		while(canRun){ //while thread canRun
+		while(canRun) { //while thread canRun
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -216,7 +219,7 @@ public class Game extends Canvas implements Runnable {
 				timer += 1000;
 			}
 		}
-		stop(); //stoping thread in canRun
+		stop(); //stoping thread (in canRun)
 	}
 	
 	/**
@@ -236,6 +239,7 @@ public class Game extends Canvas implements Runnable {
 		if (GameStatus == STATES.Play) {
 			handler.tick();
 			camera.tick();
+			musicPlayer.tick();
 		}	
 	}
 	

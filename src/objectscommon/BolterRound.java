@@ -36,6 +36,7 @@ public class BolterRound extends BaseObject {
 		x += velX;
 		y += velY;
 		
+		//Collision with WallBlock
 		for (int i = 0; i < handler.object.size(); i++) {
 			BaseObject tempBolt = handler.object.get(i);
 			
@@ -49,6 +50,7 @@ public class BolterRound extends BaseObject {
 
 	/**
 	 * Rendering of bolts
+	 * Add bolt image for player and AI to remove coloring problems!
 	 */
 	@Override
 	public void render(Graphics graphics) {
@@ -59,14 +61,16 @@ public class BolterRound extends BaseObject {
 			//Enemy bolt color: red
 			if (tempBolt.getId() == ID.EnemyBolt) {
 				graphics.setColor(Color.red);
+				graphics.fillOval((int)x, (int)y, width, height);
 			}
 			
 			//Player bolt color: yellow
 			else {
+			//else if (tempBolt.getId() == ID.SpaceMarine) {
 				graphics.setColor(Color.yellow);
+				graphics.fillOval((int)x, (int)y, width, height);
 			}
 		}
-		graphics.fillOval((int)x, (int)y, width, height);
 	}
 	
 	/**

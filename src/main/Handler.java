@@ -17,6 +17,9 @@ public class Handler {
 	//Variables for KeyInput
 	private boolean up = false, down = false, left = false, right = false, esc = false;
 	
+	//Variables for Volume control
+	private boolean volUP = false, volDOWN = false;
+	
 	/**
 	 * Main tick method
 	 */
@@ -96,5 +99,22 @@ public class Handler {
 	
 	public void setEsc(boolean esc) {
 		this.esc = esc;
+	}
+	
+	//Volume Control
+	public boolean volUP() {
+		return volUP;
+	}
+	
+	public void setUP(boolean volUP) {
+		this.volUP = volUP;
+	}
+	
+	public boolean volDOWN() {
+		return volDOWN;
+	}
+	
+	public void setDOWN(boolean volDOWN) {
+		this.volDOWN = volDOWN;
 	}
 }

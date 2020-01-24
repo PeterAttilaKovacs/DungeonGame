@@ -8,6 +8,7 @@ public enum ID {
 	AmmoCrate(),
 	MediPack(),
 	BolterRound(),
+	PlasmaRound(),
 	EnemyBolt(),
 	Flag(),
 	GameOver();

@@ -32,18 +32,34 @@ public class HelpMenu {
 						Color.blue, Color.white);
 	}
 	
+	/**
+	 * drawString method for drawing text, spliced 
+	 * @param graphics - Graphics utile class
+	 * @param text - text as String to be drawn
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 */
+	private void drawString(Graphics graphics, String text, int x, int y) {
+        int lineHeight = graphics.getFontMetrics().getHeight();
+        for (String line : text.split("\nl"))
+            graphics.drawString(line, x, y += lineHeight);
+    }
+	
 	//HelpMenu rendering
 	public void render(Graphics graphics) {
 	
-		//TODO chek: width and height
 		graphics.setColor(Color.black);
 		graphics.setFont(new Font("arial", Font.ITALIC, 30));
-		graphics.drawString("Ez a HELP menu a Jatekhoz.", Game.height/2, Game.width/7);
-		graphics.setFont(new Font("arial", Font.ITALIC, 20));
-		graphics.drawString("Jatekos mozgatasa: WSAD, loves: bal egergomb, Kilepes: ESC", Game.height/3, Game.width/6);
-		graphics.drawString("Jatek celja: tulelni a fertozott vilagokat. Egyik vilagbol a masikba a terkapuk vezetnek.", 
-						Game.height/4, Game.width/5);
-		graphics.drawString("Sok sikert Urgardista!", Game.height/2, Game.width/4);
+		graphics.drawString("Game Help Menu", Game.height/2, Game.width/7);
+		
+		graphics.setFont(new Font("arial", Font.ITALIC, 19));
+		drawString(graphics, 
+				  "Move Player: W S A D, Fire Bolter: Right MouseButton, Fire Plasmabolt: Left Mouse Button\nl"
+				+ "Exit in Game: ESC, Music Volume Control: N = vol+ and M = vol-\nl"
+				+ "Plasmabolt kills enemies instantly (and goes over them), but has 8 sec. cooldown time!\nl"
+				+ "If low on health or ammo, seek out Ammo Crate (+50 Ammo) and Medi Pack (+50 Life)!\nl"
+				+ "Your Mission: Kill the Mutant, burn the Heretic, purge the Unclean...and surviev!",
+				Game.height/8, Game.width/6);
 		
 		graphics.setColor(Color.orange);
 		MenuFonts.drawString(graphics, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);

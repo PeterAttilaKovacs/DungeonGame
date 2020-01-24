@@ -7,9 +7,10 @@ import java.awt.Rectangle;
 
 import enums.ID;
 import objectscommon.BaseObject;
+import sound.Sound;
 import view.SpriteCuter;
 
-public class PlayerHUD extends BaseObject{
+public class PlayerHUD extends BaseObject {
 
 	//Variables
 	public int MarineLife = 100;
@@ -53,17 +54,23 @@ public class PlayerHUD extends BaseObject{
 		else {
 			graphics.setColor(Color.white);
 		}
-		
 		graphics.drawString("Bolter Rounds left: " + MarineAmmo, 6, 60); //x, y
-				
+		
+		//Plasma cooldown
+		graphics.setColor(Color.white);
+		graphics.drawString("Plasma Bolt cooldown: " + SpaceMarine.getAttackTimer(), 6, 90); //x, y
+		
 		//Slay meter
 		graphics.setColor(Color.orange);
-		graphics.drawString("Slaying of Heretics: " + MarineScore, 6, 90); //x, y
+		graphics.drawString("Slaying of Heretics: " + MarineScore, 6, 120); //x, y
+		
+		//Game volume
+		graphics.setColor(Color.magenta);
+		graphics.drawString("Music volume: " + Sound.getVolume(), 6, 150); //x, y
 	}
 
 	@Override
 	public Rectangle getBounds() {
 		return null;
 	}
-
 }

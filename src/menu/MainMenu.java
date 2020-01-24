@@ -19,27 +19,27 @@ public class MainMenu {
 	 * Main menu constructor
 	 */
 	public MainMenu() {
-		options = new Button[4];
+		options = new Button[3];
 		
 		options[0] = new Button("PLAY", 200 + 0 * 80, 
 						new Font("arial", Font.PLAIN, 20), 
 						new Font("arial", Font.BOLD, 40),
 						Color.blue, Color.white);
 		
-		options[1] = new Button("OPTIONS", 200 + 1 * 80, 
+		options[1] = new Button("HELP", 280 + 1 * 80, 		//Options - 200
 						new Font("arial", Font.PLAIN, 20), 
 						new Font("arial", Font.BOLD, 40),
 						Color.blue, Color.white);
 		
-		options[2] = new Button("HELP", 200 + 2 * 80, 
+		options[2] = new Button("EXIT", 280 + 2 * 80, 		//Help - 200
 						new Font("arial", Font.PLAIN, 20), 
 						new Font("arial", Font.BOLD, 40),
 						Color.blue, Color.white);
 		
-		options[3] = new Button("EXIT", 200 + 3 * 80, 
-						new Font("arial", Font.PLAIN, 20), 
-						new Font("arial", Font.BOLD, 40),
-						Color.blue, Color.white);
+//		options[3] = new Button("EXIT", 200 + 3 * 80, 
+//						new Font("arial", Font.PLAIN, 20), 
+//						new Font("arial", Font.BOLD, 40),
+//						Color.blue, Color.white);
 	}
 	
 	//Menu rendering
@@ -91,20 +91,20 @@ public class MainMenu {
 			break;
 		
 			//Options menu called
-			case 1:	
-				System.out.println("OPCIOK meghivodik"); //test-debug
-				//TODO make option menu
-			break;
+//			case 1:	
+//				System.out.println("OPCIOK meghivodik"); //test-debug
+//				//TODO make option menu
+//			break;
 			
 			//GameStatus set to: Help
-			case 2:
+			case 1:
 				Game.GameStatus = STATES.Help;
 				
 				System.out.println("HELP meghivodik"); //test-debug
 			break;
 			
 			//Exit Game
-			case 3:	
+			case 2:	
 				Runtime.getRuntime().exit(0);
 			break;
 		}

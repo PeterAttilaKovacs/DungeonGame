@@ -18,12 +18,13 @@ import sound.Sound;
 import view.Animation2D;
 import view.SpriteCuter;
 
-public class EnemyHeretic extends BaseObject{
+public class EnemyHeretic extends BaseObject {
 
 	//Variables
 	private Handler handler;
 	private Game game;
 	private PlayerHUD hud;
+	private BaseObject tempPlayerBolt;
 	private BufferedImage enmheretic[] = new BufferedImage[3];
 	public Animation2D animation;
 	private Sound effect_Enemy;
@@ -54,8 +55,10 @@ public class EnemyHeretic extends BaseObject{
 		animation = new Animation2D(3, enmheretic);
 	}
 
+	//Variables for Enemy movement and fireing
 	float diffX, diffY;
 	float speed = 0.05f; //base settings: 0.05f
+	int mx, my;
 	
 	/**
 	 * Tick method
@@ -67,53 +70,41 @@ public class EnemyHeretic extends BaseObject{
 		y += velY;
 		
 		for (int i = 0; i < handler.object.size(); i++) {
-			BaseObject tempHeretic = handler.object.get(i);
+			tempPlayerBolt = handler.object.get(i);
 			
 			//Intersection check with player bolt
-			if (tempHeretic.getId() == ID.BolterRound){
-				if (getBounds().intersects(tempHeretic.getBounds())) {
-					handler.removeObject(tempHeretic); //removing Player bolt
+			if (tempPlayerBolt.getId() == ID.BolterRound) {
+				if (getBounds().intersects(tempPlayerBolt.getBounds())) {
+					handler.removeObject(tempPlayerBolt); //removing Player bolt
 					enemyLife -= 25;
 				}
 			}	
 			
+			if (tempPlayerBolt.getId() == ID.PlasmaRound) {
+				if (getBounds().intersects(tempPlayerBolt.getBounds())) {
+					enemyLife = 0;
+				}
+			}
+			
 			//Intersection check with player - AI
-			if (tempHeretic.getId() == ID.SpaceMarine) {
+			if (tempPlayerBolt.getId() == ID.SpaceMarine) {
 				
-				diffX = tempHeretic.getX() - x;
-				diffY = tempHeretic.getY() - y;
+				diffX = tempPlayerBolt.getX() - x;
+				diffY = tempPlayerBolt.getY() - y;
 				
 				//if player is in attack range, then attack player
-				if (getAttack().intersects(tempHeretic.getBounds())) {
+				if (getAttack().intersects(tempPlayerBolt.getBounds())) {
 					velX = diffX * speed;
 					velY = diffY * speed;
-					
-					//if enemyAI has ammonition, it fires towards the player
-					if (enemyAmmo >= 0) {
-						SpriteCuter cut = null;
-						
-						//enemyAI randomly fires his shoots
-						if (Math.random() > 0.97) {
-							BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
-					
-							int mx = (int)x;
-							int my = (int)y;
-							float angle = (float) Math.atan2(tempHeretic.getX() - mx ,  tempHeretic.getY() - my);
-							int boltVelocity = 8; //base settings: 10
-							tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched!
-							tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
-							enemyAmmo--;
-							effect_Enemy.soundEffect_EnemyShoot.play();
-						}
-					}
+					fireEnemyWeapon();
 				}
 				else {
 					velX = 0;
 					velY = 0;
 				}
 			}
-			if (tempHeretic.getId() == ID.WallBlock) {
-				collision(tempHeretic);
+			if (tempPlayerBolt.getId() == ID.WallBlock) {
+				collision(tempPlayerBolt);
 			}
 		}
 		if (enemyLife <= 0) { 
@@ -123,6 +114,28 @@ public class EnemyHeretic extends BaseObject{
 		}
 		
 		animation.runAnimation();
+	}
+	
+	//Fireing Enemy weapon if attacking player
+	public void fireEnemyWeapon() {
+		//if enemyAI has ammonition, it fires towards the player
+		if (enemyAmmo >= 0) {
+			SpriteCuter cut = null;
+			
+			//enemyAI randomly fires his shoots
+			if (Math.random() > 0.97) {
+				BaseObject tempBolt = handler.addObject(new BolterRound(this.x + 16, this.y + 16, ID.EnemyBolt, cut, handler));
+		
+				mx = (int)x;
+				my = (int)y;
+				float angle = (float) Math.atan2(tempPlayerBolt.getX() - mx ,  tempPlayerBolt.getY() - my);
+				int boltVelocity = 8; //base settings: 10
+				tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched, like this now!
+				tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
+				enemyAmmo--;
+				effect_Enemy.soundEffect_EnemyShoot.play();
+			}
+		}
 	}
 	
 	/**
@@ -172,7 +185,6 @@ public class EnemyHeretic extends BaseObject{
 		if (velX == 0 && velY == 0) {
 			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
 		}
-		
 		else { 
 			animation.drawAnimation(graphics, x, y, 0); 
 		}

@@ -7,7 +7,7 @@ public class Window {
 
 	//Variables for creating the window of the game
 	public static int width = 1000;
-	public static int height = 600;
+	public static int height = 570;
 	
 	/**
 	 * Window constructor
@@ -24,8 +24,9 @@ public class Window {
 		frame.setMinimumSize(new Dimension(width, height));
 			
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		//frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
+		frame.setUndecorated(true);
 		frame.add(game);
 		frame.setVisible(true);
 	}

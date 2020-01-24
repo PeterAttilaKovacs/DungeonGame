@@ -11,11 +11,12 @@ import main.Game;
 import main.Handler;
 import main.LevelLoader;
 import objectscommon.BaseObject;
+import objectscommon.PlasmaRound;
 import sound.Sound;
 import view.Animation2D;
 import view.SpriteCuter;
 
-public class SpaceMarine extends BaseObject{
+public class SpaceMarine extends BaseObject {
 
 	//Variables
 	private int width;
@@ -67,6 +68,21 @@ public class SpaceMarine extends BaseObject{
 		animation = new Animation2D(3, spmarine);
 	}
 
+	//Variables for palsma-weapon recharge
+	protected static long lastAttackTimer, attackCooldown = 8000, attackTimer = attackCooldown;
+
+	//PlasmaRound cooldown counter
+	public void coolDown() {
+		attackTimer += System.currentTimeMillis() - lastAttackTimer;
+		lastAttackTimer = System.currentTimeMillis();
+			
+		if (attackTimer >= 8000) {
+			attackTimer = 8000;
+		}
+	}
+	
+	//test-debug
+	//int c = 0;
 	/**
 	 * Tick method
 	 */
@@ -76,7 +92,8 @@ public class SpaceMarine extends BaseObject{
 		y += velY;
 		
 		collision();
-				
+		coolDown();
+		
 		// key D --> Right
 		// key A --> Left
 		if (handler.isRight()){ velX = +5; }
@@ -98,6 +115,9 @@ public class SpaceMarine extends BaseObject{
 		
 		animation.runAnimation();
 		
+		//test-debug
+		//c++;
+		//System.out.println("SpPlayer tick meghivva" + c);
 	}
 
 	/**
@@ -111,10 +131,8 @@ public class SpaceMarine extends BaseObject{
 			//idel stance sound // TODO better idel sound solution...
 			if (Math.random() > 0.99) {
 				effect_Player.soundEffect_PlayerIdel.play();
-				System.out.println(Math.random());
 			}
 		}
-		
 		else { 
 			animation.drawAnimation(graphics, x, y, 0); 
 		}
@@ -161,7 +179,7 @@ public class SpaceMarine extends BaseObject{
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife += 50;
 					
-					//Life overload disabeling
+					//Life overload disabling
 					if (hud.MarineLife >= 100) {
 						hud.MarineLife = 100;
 					}
@@ -202,5 +220,18 @@ public class SpaceMarine extends BaseObject{
 			game.removeMouseListener(mouseSpMarine);
 			handler.removeObject(this);
 		}
+	}
+	
+	//PlasmaRound Attack timer and AttackCooldown setter and getter
+	public static void setAttackTimer(long attackTimer) {
+		SpaceMarine.attackTimer = attackTimer;
+	}
+
+	public static long getAttackTimer() {
+		return attackTimer;
+	}
+	
+	public static long getAttackCooldown() {
+		return attackCooldown;
 	}
 }

@@ -52,9 +52,9 @@ public class LevelLoader {
 		this.effect_Enemy = effect_Enemy;
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
-			level_1 = loader.loadImage("/kronosworld.png"); 	//lvl 1
-			level_2 = loader.loadImage("/davinworld.png"); 		//lvl 2
-			level_3 = loader.loadImage("/cadiaworld.png"); 		//lvl 3
+			level_1 = loader.loadImage("/underhivelvl1.png"); 	//level 1
+			level_2 = loader.loadImage("/underhivelvl2.png"); 	//level 2
+			level_3 = loader.loadImage("/underhivelvl3.png"); 	//level 3
 			//level_4 = loader.loadImage("/...png"); 	//lvl 4
 			//level_5 = loader.loadImage("/...png"); 	//lvl 5
 			//etc...	
@@ -66,12 +66,12 @@ public class LevelLoader {
 	 * Level rendering
 	 * @param levelMap - loaded image for rendering the level
 	 */
-	public void loadMap(BufferedImage levelMap){
+	public void loadMap(BufferedImage levelMap) {
 		int width = levelMap.getWidth();
 		int height = levelMap.getHeight();
 				
-		for (int xx = 0; xx < width; xx++){
-			for (int yy = 0; yy < height; yy++){
+		for (int xx = 0; xx < width; xx++) {
+			for (int yy = 0; yy < height; yy++) {
 				int pixel = levelMap.getRGB(xx, yy);
 				int red	= (pixel >> 16) & 0xff;
 				int green = (pixel >> 8) & 0xff;
@@ -82,12 +82,12 @@ public class LevelLoader {
 					handler.addObject(new WallBlock(xx*32, yy*32, ID.WallBlock, imageCut_level));
 				}	
 						
-				//SpaceMarine (blue)
+				//SpaceMarine (blue - player)
 				if (red == 0 && green == 0 && blue == 255) {
 					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut_player, handler, camera, game, hud, effect_Player, this));
 				}
 					
-				//Khornet (green - enemy)
+				//EnemyHeretic (green - enemy)
 				if (red == 0 && green == 255 && blue == 0) {
 					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.Heretic, imageCut_enemy, handler, game, hud, effect_Enemy));
 				}
@@ -102,7 +102,7 @@ public class LevelLoader {
 					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut_level)); 
 				}
 				
-				//Exitpoint (yellow)
+				//MediPack (white)
 				if (red == 255 && green == 255 && blue == 255) { //white color: red: 255, green: 255, blue: 255 
 					handler.addObject(new MediPack(xx*32, yy*32, ID.MediPack, imageCut_level, handler)); 
 				}
@@ -111,10 +111,10 @@ public class LevelLoader {
 	}
 		
 	//Loading next level
-	public void nextLevel(){
+	public void nextLevel() {
 		handler.clearLevel();
 		
-		switch(Game.Level){
+		switch(Game.Level) {
 			
 		//Lvl 1
 		case 1:
@@ -139,7 +139,7 @@ public class LevelLoader {
 		 * Counter for level, after level 3, counter is set to null,
 		 * level loading starts from level 1.
 		 */
-		if (Game.Level == 3){
+		if (Game.Level == 3) {
 			Game.Level = 1;
 		}
 		else {
