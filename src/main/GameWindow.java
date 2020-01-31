@@ -3,7 +3,7 @@ package main;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
-public class Window {
+public class GameWindow {
 
 	//Variables for creating the window of the game
 	public static int width = 1000;
@@ -13,7 +13,7 @@ public class Window {
 	 * Window constructor
 	 * @param game - Game class
 	 */
-	public Window(Game game) {	
+	public GameWindow(Game game) {	
 		
 		//Variables
 		JFrame frame = new JFrame();

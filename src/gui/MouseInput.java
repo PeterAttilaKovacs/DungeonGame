@@ -7,7 +7,7 @@ import enums.ID;
 import enums.STATES;
 import main.Camera;
 import main.Game;
-import main.Handler;
+import main.GameHandler;
 import objectplayer.PlayerHUD;
 import objectplayer.SpaceMarine;
 import objectscommon.BaseObject;
@@ -18,7 +18,7 @@ import view.SpriteCuter;
 
 public class MouseInput extends MouseAdapter {
 
-	private Handler handler;
+	private GameHandler handler;
 	private BaseObject tempPlayer;
 	private Game game;
 	private Camera camera;
@@ -39,7 +39,7 @@ public class MouseInput extends MouseAdapter {
 	 * @param spritecuter - SpriteCuter class
 	 * @param hud - PlayerHUD class
 	 */
-	public MouseInput(Handler handler, Camera camera, Game game, SpriteCuter imageCut, PlayerHUD hud, Sound eP) {
+	public MouseInput(GameHandler handler, Camera camera, Game game, SpriteCuter imageCut, PlayerHUD hud, Sound eP) {
 		this.handler = handler;
 		this.camera = camera;
 		this.game = game;
@@ -58,10 +58,16 @@ public class MouseInput extends MouseAdapter {
 		}
 	}
 	
-	//Variables for Mosue Pressed
-	private static final int numberOfButtons = 5;
-	private static final boolean buttons[] = new boolean[numberOfButtons];
-	//private static final boolean lastButtons[] = new boolean[NM_BTN];
+	public static void updateMouse() {
+		for (int i = 0; i < numberOfButtons; i++) {
+			lastButtons[i] = currentButtons[i];
+		}
+	}
+	
+	//Variables for Mosue Pressed & Released
+	private static final int numberOfButtons = 5; //for mouse with 5 button (like gamer-mouse, etc.)
+	private static final boolean currentButtons[] = new boolean[numberOfButtons];
+	private static final boolean lastButtons[] = new boolean[numberOfButtons];
 		
 	//Variables for Mouse-fire event
 	private int my;
@@ -83,12 +89,12 @@ public class MouseInput extends MouseAdapter {
 	
 		//If game state is: menu
 		if (Game.GameStatus == STATES.Menu) {
-			buttons[event.getButton()] = true;
+			currentButtons[event.getButton()] = true;
 		}
 		
 		//If game state is: help
 		if (Game.GameStatus == STATES.Help) {
-			buttons[event.getButton()] = true;
+			currentButtons[event.getButton()] = true;
 		}
 		
 		//If game state is: Play
@@ -112,10 +118,10 @@ public class MouseInput extends MouseAdapter {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (Game.GameStatus == STATES.Menu) {
-			buttons[e.getButton()] = false;
+			currentButtons[e.getButton()] = false;
 		}
-		if (Game.GameStatus == STATES.Help) { // <-- ez igy nem az igazi (de jobb mint volt), meg 1x atnezni
-			buttons[e.getButton()] = false;
+		if (Game.GameStatus == STATES.Help) {
+			currentButtons[e.getButton()] = false;
 		}
 	}
 	
@@ -153,7 +159,6 @@ public class MouseInput extends MouseAdapter {
 		else { findPlayer(); }
 	}
 	
-	//TODO do collision checks
 	//Weapon 2 - Mouse button 3
 	public void fireWeaponTwo() {
 		if (tempPlayer != null) { //only works, if player is not null
@@ -184,7 +189,7 @@ public class MouseInput extends MouseAdapter {
 	 * @return the pressed mouse button value
 	 */
 	public static boolean wasPressed(int button) {
-		return buttons[button];
+		return currentButtons[button] && !lastButtons[button];
 	}
 	
 	/**
@@ -192,7 +197,7 @@ public class MouseInput extends MouseAdapter {
 	 * @return the pressed mouse button value
 	 */
 	public static boolean wasReleased(int button) {
-		return buttons[button];
+		return !currentButtons[button] && lastButtons[button];
 	}
 	
 	//Mouse getter X

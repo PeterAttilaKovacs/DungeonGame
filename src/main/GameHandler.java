@@ -7,7 +7,7 @@ import java.util.List;
 
 import objectscommon.BaseObject;
 
-public class Handler {
+public class GameHandler {
 
 	/**
 	 * Synchronized ArrayList of BaseObjects
@@ -30,12 +30,12 @@ public class Handler {
 	}
 	
 	/**
-	 * Main synchronized render method
+	 * Main render method
 	 * @param graphics - renderd graphics
 	 */
-	public synchronized void render(Graphics graphics){
+	public void render(Graphics graphics){
 		for (int i = 0; i < object.size(); i++) {
-			object.get(i).render(graphics);;
+			object.get(i).render(graphics);
 		}
 	}
 	
@@ -54,6 +54,7 @@ public class Handler {
 	//Clearing level befor loading next level
 	public void clearLevel() {
 		object.clear();
+		System.gc(); //running garbage-collectore to free up memory in use
 	}
 	
 	//Player (SpaceMarine) movement getters and setters UP

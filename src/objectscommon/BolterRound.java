@@ -5,13 +5,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import enums.ID;
-import main.Handler;
+import main.GameHandler;
 import view.SpriteCuter;
 
 public class BolterRound extends BaseObject {
 
 	//Variables
-	private Handler handler;
+	private GameHandler handler;
 	private int width = 6;
 	private int height = 6;
 	
@@ -23,7 +23,7 @@ public class BolterRound extends BaseObject {
 	 * @param imageCut - SpriteCuter class
 	 * @param handler - Handler class
 	 */
-	public BolterRound(float x, float y, ID id, SpriteCuter imageCut, Handler handler) {
+	public BolterRound(float x, float y, ID id, SpriteCuter imageCut, GameHandler handler) {
 		super(x, y, id, imageCut);
 		this.handler = handler;
 	}

@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import enums.ID;
-import main.Handler;
+import main.GameHandler;
 import objectscommon.BaseObject;
 
 public class KeyInput extends KeyAdapter {
@@ -18,14 +18,14 @@ public class KeyInput extends KeyAdapter {
 	 * key Esc --> EXIT
 	 * 
 	 */
-	Handler handler;
+	GameHandler handler;
 	public boolean keys[] = new boolean[5];
 	
 	/**
 	 * KeyInput constructor
 	 * @param handler - Handler class
 	 */
-	public KeyInput(Handler handler){
+	public KeyInput(GameHandler handler){
 		this.handler = handler;
 	}
 	

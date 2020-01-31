@@ -2,9 +2,7 @@ package objectsenemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
@@ -19,7 +17,7 @@ import sound.Sound;
 import view.Animation2D;
 import view.SpriteCuter;
 
-public class EnemyHeretic extends BaseObject {
+public class EnemyMutant extends BaseObject {
 
 	//Variables
 	private GameHandler handler;
@@ -31,7 +29,7 @@ public class EnemyHeretic extends BaseObject {
 	private Sound effect_Enemy;
 	
 	/**
-	 * EnemyHeretic constructor
+	 * EnemyMutant constructor
 	 * @param x - X coordinate
 	 * @param y - Y coordinate
 	 * @param id - Enum class ID
@@ -41,7 +39,7 @@ public class EnemyHeretic extends BaseObject {
 	 * @param hud - PlayerHUD class
 	 * @param effect_Enemy - Sound class
 	 */
-	public EnemyHeretic(float x, float y, ID id, SpriteCuter imageCut_enemy, GameHandler handler, 
+	public EnemyMutant(float x, float y, ID id, SpriteCuter imageCut_enemy, GameHandler handler, 
 												Game game, PlayerHUD hud, Sound effect_Enemy) {
 		super(x, y, id, imageCut_enemy);
 		this.handler = handler;
@@ -49,11 +47,12 @@ public class EnemyHeretic extends BaseObject {
 		this.hud = hud;
 		this.effect_Enemy = effect_Enemy;
 		
-		enmheretic[0] = imageCut.grabImage(1, 1, 33, 32);
-		enmheretic[1] = imageCut.grabImage(2, 1, 33, 32);
-		enmheretic[2] = imageCut.grabImage(3, 1, 33, 32);
-		
-		animation = new Animation2D(3, enmheretic);
+		//TODO set image on enemy image sprite_sheet!!!!
+//		enmheretic[0] = imageCut.grabImage(1, 1, 33, 32);
+//		enmheretic[1] = imageCut.grabImage(2, 1, 33, 32);
+//		enmheretic[2] = imageCut.grabImage(3, 1, 33, 32);
+//		
+//		animation = new Animation2D(3, enmheretic);
 	}
 
 	//Variables for Enemy movement and fireing
@@ -64,15 +63,11 @@ public class EnemyHeretic extends BaseObject {
 	private Random randomPath = new Random();
 	
 	//Variables for enemy life and ammo
-	public int enemyLife = 75;
+	public int enemyLife = 100;
 	public int enemyAmmo = 3;
 	
-	/**
-	 * Tick method
-	 */
 	@Override
 	public void tick() {
-		
 		speed = 0.05f;
 		maxSpeed = 3;
 		timer = 30;
@@ -117,12 +112,12 @@ public class EnemyHeretic extends BaseObject {
 				}
 				else if (movePath == 0) {
 					//Enemys move randomly on level - bit laggy when moveing
-					//velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
-					//velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
 					
-					//TEST-DEBUG
-					velX = 0;
-					velY = 0;
+					//Basic settings: Enemys dont move, unless detecting the Player
+					//velX = 0;
+					//velY = 0;
 				}
 			}
 			if (tempPlayerBolt.getId() == ID.WallBlock) {
@@ -134,16 +129,16 @@ public class EnemyHeretic extends BaseObject {
 			effect_Enemy.soundEffect_EnemyDeath.play();
 			hud.MarineScore += 1;
 		}
-		animation.runAnimation();
-		timer--;
+		//animation.runAnimation();
+		timer--;	
 	}
-	
+
 	//Fireing Enemy weapon if attacking player
 	public void fireEnemyWeapon() {
 		//if enemyAI has ammonition, it fires towards the player
 		if (enemyAmmo >= 1) {
 			SpriteCuter cut = null;
-			
+				
 			//enemyAI randomly fires his shoots
 			if (Math.random() > 0.97) {
 				enemyAmmo--;
@@ -156,10 +151,10 @@ public class EnemyHeretic extends BaseObject {
 				tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched, like this now!
 				tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
 				effect_Enemy.soundEffect_EnemyShoot.play();
-				System.out.println(enemyAmmo);
+				System.out.println(enemyAmmo);				
 			}
 		}
-	}
+	}	
 	
 	/**
 	 * Collision check
@@ -190,32 +185,29 @@ public class EnemyHeretic extends BaseObject {
 	//Variables for rendering and collision
 	private int width = 32;
 	private int height = 32;
-	//Shape circle = new Ellipse2D.Double(x-125, y-125, width*9, height*9); //test-debug
 	
-	/**
-	 * Rendering method
-	 */
 	@Override
 	public void render(Graphics graphics) {
-		//test-debug only - circle shown to know when the enemy is detecting the player
-		//Graphics2D graphics2D = (Graphics2D) graphics;
-		//graphics2D.draw(circle);
+		
+		//test-debug
+		graphics.setColor(Color.green);
+		graphics.drawRect((int)x, (int)y, width, height);
 		
 		//Enemy
-		if (velX == 0 && velY == 0) {
-			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
-		}
-		else { 
-			animation.drawAnimation(graphics, x, y, 0); 
-		}
-		
+//		if (velX == 0 && velY == 0) {
+//			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
+//		}
+//		else { 
+//			animation.drawAnimation(graphics, x, y, 0); 
+//		}
+
 		//EnemyHUD
 		graphics.setColor(Color.red);
 		graphics.fillRect((int)x, (int)y-5, enemyLife/2, 5);
 		graphics.setColor(Color.black);
 		graphics.drawRect((int)x, (int)y-5, enemyLife/2, 5);
 	}
-
+	
 	/**
 	 * Base bounds of tesztEnemy
 	 * @return returns new rectangle for intersection check

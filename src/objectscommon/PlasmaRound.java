@@ -5,13 +5,13 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import enums.ID;
-import main.Handler;
+import main.GameHandler;
 import view.SpriteCuter;
 
 public class PlasmaRound extends BaseObject {
 
 	//Variables
-	private Handler handler;
+	private GameHandler handler;
 	private int width = 12;
 	private int height = 9;
 	private int arcWidth = 3;
@@ -25,7 +25,7 @@ public class PlasmaRound extends BaseObject {
 	 * @param imageCut - SpriteCuter class
 	 * @param handler - Handler class
 	 */
-	public PlasmaRound(float x, float y, ID id, SpriteCuter imageCut, Handler handler) {
+	public PlasmaRound(float x, float y, ID id, SpriteCuter imageCut, GameHandler handler) {
 		super(x, y, id, imageCut);
 		this.handler = handler;
 	}

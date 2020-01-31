@@ -6,6 +6,7 @@ import enums.ID;
 import objectplayer.PlayerHUD;
 import objectplayer.SpaceMarine;
 import objectsenemy.EnemyHeretic;
+import objectsenemy.EnemyMutant;
 import objectslevel.AmmoCrate;
 import objectslevel.Flag;
 import objectslevel.MediPack;
@@ -16,7 +17,7 @@ import view.SpriteCuter;
 
 public class LevelLoader {
 
-	private Handler handler;
+	private GameHandler handler;
 	public PlayerHUD hud;
 	public SpriteCuter imageCut_level;
 	public SpriteCuter imageCut_enemy;
@@ -38,7 +39,7 @@ public class LevelLoader {
 	 * @param Sound effect_Player & effect_Enemy - Sound class, for sound effects
 	 */
 	//public LevelLoader(Handler handler, SpriteCuter cut, Game game, Camera camera){
-	public LevelLoader(Handler handler, Game game, Camera camera, PlayerHUD hud, 
+	public LevelLoader(GameHandler handler, Game game, Camera camera, PlayerHUD hud, 
 						SpriteCuter imageCut_level, SpriteCuter imageCut_player, SpriteCuter imageCut_enemy, 
 						Sound effect_Player, Sound effect_Enemy) {
 		this.handler = handler;
@@ -87,10 +88,16 @@ public class LevelLoader {
 					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut_player, handler, camera, game, hud, effect_Player, this));
 				}
 					
-				//EnemyHeretic (green - enemy)
+				//EnemyHeretic (green - enemy1)
 				if (red == 0 && green == 255 && blue == 0) {
-					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.Heretic, imageCut_enemy, handler, game, hud, effect_Enemy));
+					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.EnemyHeretic, imageCut_enemy, handler, game, hud, effect_Enemy));
 				}
+				
+				//EnemyMutant (gray - enemy2)
+				if (red == 192 && green == 192 && blue == 192) {
+					handler.addObject(new EnemyMutant(xx*32, yy*32, ID.EnemyMutant, imageCut_enemy, handler, game, hud, effect_Enemy));
+				}
+				
 					
 				//AmmoCrate (cyan)
 				if (red == 0 && green == 255 && blue == 255) { //cyen color: red: 0, green: 255, blue: 255

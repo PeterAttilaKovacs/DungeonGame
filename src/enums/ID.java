@@ -3,7 +3,8 @@ package enums;
 public enum ID {
 
 	SpaceMarine(),
-	Heretic(),
+	EnemyHeretic(),
+	EnemyMutant(),
 	WallBlock(),
 	AmmoCrate(),
 	MediPack(),

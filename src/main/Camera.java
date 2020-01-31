@@ -7,7 +7,7 @@ public class Camera {
 
 	//Variables for camera
 	private int x, y;
-	private Handler handler;
+	private GameHandler handler;
 	private BaseObject tempPlayer;
 			
 	/**
@@ -16,7 +16,7 @@ public class Camera {
 	 * @param y - Y coordinate
 	 * @param handler - Handler class
 	 */
-	public Camera(int x, int y, Handler handler){
+	public Camera(int x, int y, GameHandler handler){
 		this.x = x;
 		this.y = y;
 		this.handler = handler;

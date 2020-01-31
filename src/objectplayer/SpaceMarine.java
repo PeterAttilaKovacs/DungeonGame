@@ -8,7 +8,7 @@ import enums.ID;
 import gui.MouseInput;
 import main.Camera;
 import main.Game;
-import main.Handler;
+import main.GameHandler;
 import main.LevelLoader;
 import objectscommon.BaseObject;
 import objectscommon.PlasmaRound;
@@ -21,7 +21,7 @@ public class SpaceMarine extends BaseObject {
 	//Variables
 	private int width;
 	private int height;
-	private Handler handler;
+	private GameHandler handler;
 	private Camera camera;
 	private Game game;
 	private PlayerHUD hud;
@@ -44,7 +44,7 @@ public class SpaceMarine extends BaseObject {
 	 * @param level - LevelLoader class
 	 * @param effect_Player - Sound class
 	 */
-	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut_player, Handler handler, 
+	public SpaceMarine(float x, float y, ID id, SpriteCuter imageCut_player, GameHandler handler, 
 						Camera camera, Game game, PlayerHUD hud, Sound effect_Player, LevelLoader level) {
 		super(x, y, id, imageCut_player);
 		this.handler = handler;
@@ -188,7 +188,7 @@ public class SpaceMarine extends BaseObject {
 			}
 			
 			//Collision with Enemy
-			if (tempObject.getId() == ID.Heretic) {
+			if (tempObject.getId() == ID.EnemyHeretic) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife--;
 				}

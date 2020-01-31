@@ -9,12 +9,12 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import main.Handler;
+import main.GameHandler;
 
 public class Sound {
 
 	//Variables - Handler and volume
-	private Handler handler;
+	private GameHandler handler;
 	private static int volume = 0;
 
 	//Variables - Music
@@ -41,7 +41,7 @@ public class Sound {
 	/**
 	 * Sound constructor
 	 */
-	public Sound(Handler handler) {
+	public Sound(GameHandler handler) {
 		this.handler = handler;
 		
 		loadSoundFiles();

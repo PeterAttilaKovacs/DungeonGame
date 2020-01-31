@@ -1,8 +1,10 @@
 /**
  * 
- * Space Marine on a Heretic World (Hive City)
+ * SpaceMarine on a Heretic World (Hive City)
  * 
  * author: Galaktika
+ * 
+ * Added new enemy, no sprite renderd yet
  * 
  * TODO: sources packageing, Sound class
  * TODO: volume control for effects, make effects array?...
@@ -21,10 +23,10 @@ import java.awt.image.BufferedImage;
 import com.sun.javafx.application.PlatformImpl;
 
 import enums.STATES;
+import gamemenu.HelpMenu;
+import gamemenu.MainMenu;
 import gui.KeyInput;
 import gui.MouseInput;
-import menu.HelpMenu;
-import menu.MainMenu;
 import objectplayer.PlayerHUD;
 import sound.Sound;
 import view.BufferedImageLoader;
@@ -37,7 +39,7 @@ public class Game extends Canvas implements Runnable {
 	 */
 	private static final long serialVersionUID = 5307833864394498312L;
 	
-	//Game state on start
+	//Game state on start of the Game
 	public static STATES GameStatus = STATES.Menu;
 	
 	//Menu variables
@@ -53,7 +55,7 @@ public class Game extends Canvas implements Runnable {
 	 */
 	public Game() {
 		init();
-		new Window(this);
+		new GameWindow(this);
 		new LevelLoader(handler, this, camera, hud,
 						imageCut_level, imageCut_player, imageCut_enemy, 
 						audioPlayer, audioPlayer);
@@ -64,7 +66,7 @@ public class Game extends Canvas implements Runnable {
 	 * Init variables
 	 */
 	//Handler and Camera references
-	private Handler handler;
+	private GameHandler handler;
 	private Camera camera;
 	private PlayerHUD hud;
 	
@@ -97,7 +99,7 @@ public class Game extends Canvas implements Runnable {
 		PlatformImpl.startup(() -> {}); //for music player, javafx platform initialization!!
 		
 		title = "HiveCity Infestation Game (Alpha 1.0)";
-		handler = new Handler(); 
+		handler = new GameHandler(); 
 		
 		//Step 2 for music
 		musicPlayer = new Sound(handler);
@@ -119,7 +121,7 @@ public class Game extends Canvas implements Runnable {
 		
 		imageloader = new BufferedImageLoader();
 			
-			//Step 1 of level image loading
+			//Step 1 of level image loading (loading main sprite-sheets for rendering)
 			level_layout = imageloader.loadImage("/spacecity2.png");
 			playerSprite = imageloader.loadImage("/spm.png");
 			enemySprite  = imageloader.loadImage("/enmheretic.png");
@@ -144,7 +146,6 @@ public class Game extends Canvas implements Runnable {
             if (myThread instanceof Thread) { 
                 if(!myThread.isAlive()) stop();
             }
-        
             if (myThread == null) { //if Thread is null, then start new Thread
             
                 //creating new thread with lambda expression
@@ -156,11 +157,9 @@ public class Game extends Canvas implements Runnable {
                             Thread.sleep(100);
                         }
                     }
-                    
                     catch (InterruptedException ie) { 
                     	System.err.println("Thread start failed: " + ie); //basic exception catch
                     }
-                    
                     finally {
                         myThread = null;
                     }    
@@ -180,7 +179,6 @@ public class Game extends Canvas implements Runnable {
                     try {
                         myThread.join(2000); //waiting 2 seconds for thread to stop
                     } 
-                    
                     catch (InterruptedException ex) {
                     	System.err.println("Thread exception: " + ex); //basic exception catch
                     }
@@ -211,6 +209,7 @@ public class Game extends Canvas implements Runnable {
 			while(delta >= 1) {
 				tick(); //calling main tick 
 				delta--;
+				MouseInput.updateMouse(); //updateing MouseInput 
 			}
 			
 			render(); //calling main render
@@ -285,8 +284,6 @@ public class Game extends Canvas implements Runnable {
 						graphics.drawImage(level_ground, xx, yy, null);
 					}
 				}
-			
-			
 				handler.render(graphics);
 			
 			graphics2D.translate(camera.getX(), camera.getY());

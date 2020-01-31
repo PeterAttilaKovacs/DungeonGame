@@ -11,4 +11,4 @@
  * @author Galaktika
  *
  */
-package menu;
+package gamemenu;

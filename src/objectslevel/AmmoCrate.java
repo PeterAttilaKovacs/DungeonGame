@@ -5,14 +5,14 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import enums.ID;
-import main.Handler;
+import main.GameHandler;
 import objectscommon.BaseObject;
 import view.SpriteCuter;
 
 public class AmmoCrate extends BaseObject{
 
 	//Variables
-	private Handler handler;
+	private GameHandler handler;
 	private BufferedImage ammoCrate;
 	
 	/**
@@ -23,7 +23,7 @@ public class AmmoCrate extends BaseObject{
 	 * @param imageCut - SpriteCuter class
 	 * @param handler - Handler class
 	 */
-	public AmmoCrate(float x, float y, ID id, SpriteCuter imageCut_level, Handler handler) {
+	public AmmoCrate(float x, float y, ID id, SpriteCuter imageCut_level, GameHandler handler) {
 		super(x, y, id, imageCut_level);
 		this.handler = handler;
 		

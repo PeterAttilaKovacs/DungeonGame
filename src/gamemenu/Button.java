@@ -1,4 +1,4 @@
-package menu;
+package gamemenu;
 
 import java.awt.Color;
 import java.awt.Font;

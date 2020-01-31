@@ -1,4 +1,4 @@
-package menu;
+package gamemenu;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -35,7 +35,7 @@ public class MainMenu {
 						new Font("arial", Font.PLAIN, 20), 
 						new Font("arial", Font.BOLD, 40),
 						Color.blue, Color.white);
-		
+// !! out of use !!		
 //		options[3] = new Button("EXIT", 200 + 3 * 80, 
 //						new Font("arial", Font.PLAIN, 20), 
 //						new Font("arial", Font.BOLD, 40),
@@ -56,7 +56,6 @@ public class MainMenu {
 			else { 
 				options[i].setSelected(false);
 			}	
-			//rendereles
 			options[i].render(graphics);
 		}
 	}
@@ -92,15 +91,14 @@ public class MainMenu {
 		
 			//Options menu called
 //			case 1:	
-//				System.out.println("OPCIOK meghivodik"); //test-debug
+//				System.out.println("OPTIONS work"); //test-debug
 //				//TODO make option menu
 //			break;
 			
 			//GameStatus set to: Help
 			case 1:
 				Game.GameStatus = STATES.Help;
-				
-				System.out.println("HELP meghivodik"); //test-debug
+				//System.out.println("HELP work"); //test-debug
 			break;
 			
 			//Exit Game
