@@ -123,9 +123,9 @@ public class Game extends Canvas implements Runnable {
 		imageloader = new BufferedImageLoader();
 			
 			//Step 1 of level image loading (loading main sprite-sheets for rendering)
-			level_layout = imageloader.loadImage("/spacecity2.png");
-			playerSprite = imageloader.loadImage("/spm.png");
-			enemySprite  = imageloader.loadImage("/enmheretic.png");
+			level_layout = imageloader.loadImage("/sprites/spacecity2.png");
+			playerSprite = imageloader.loadImage("/sprites/spm.png");
+			enemySprite  = imageloader.loadImage("/sprites/enmheretic.png");
 			
 			//Step 2 of level image loading
 			imageCut_level = new SpriteCuter(level_layout);

@@ -60,14 +60,14 @@ public class Sound {
 		if (handler.volUP()) 	{ 
 			volume += 1;
 			if (volume >= 100) { volume = 100; }
-			System.out.println("volup?: " + volume);
+			//System.out.println("volup?: " + volume); //test-debug
 		}
 		
 		//Volume DOWN
 		if (handler.volDOWN()) 	{ 
 			volume -= 1; 
 			if (volume <= 0) { volume = 0; }
-			System.out.println("voldown?: " + volume);
+			//System.out.println("voldown?: " + volume); //test-debug
 		}
 
 		//int to float
@@ -89,15 +89,15 @@ public class Sound {
 	
 	//Loading sound files
 	public void loadSoundFiles() {
-		musicFile = "/ambient.mp3";
-		soundFile_boltgun = "/boltgun.wav";
-		soundFile_plasmabolt = "/plasmabolt.wav";
-		soundFile_plasmacharg = "/plasmacharg.wav";
-		soundFile_outofammo = "/outofammo.wav";
-		soundFile_enemydeath = "/enemydeath1.wav";
-		soundFile_enemybolt = "/enemypistol.wav";
-		soundFile_exitlevel = "/exitdoor.wav";
-		soundFile_playeridle = "/playeridel.wav";
+		musicFile = "/sounds/ambient.mp3";
+		soundFile_boltgun = "/sounds/boltgun.wav";
+		soundFile_plasmabolt = "/sounds/plasmabolt.wav";
+		soundFile_plasmacharg = "/sounds/plasmacharg.wav";
+		soundFile_outofammo = "/sounds/outofammo.wav";
+		soundFile_enemydeath = "/sounds/enemydeath1.wav";
+		soundFile_enemybolt = "/sounds/enemypistol.wav";
+		soundFile_exitlevel = "/sounds/exitdoor.wav";
+		soundFile_playeridle = "/sounds/playeridel.wav";
 	}
 	
 	//Play - inicialization method

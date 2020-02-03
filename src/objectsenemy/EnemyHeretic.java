@@ -117,12 +117,13 @@ public class EnemyHeretic extends BaseObject {
 				}
 				else if (movePath == 0) {
 					//Enemys move randomly on level - bit laggy when moveing
-					//velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
-					//velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
 					
-					//TEST-DEBUG
-					velX = 0;
-					velY = 0;
+					//test-debug
+					//Basic settings: Enemys dont move, unless detecting the Player
+					//velX = 0;
+					//velY = 0;
 				}
 			}
 			if (tempPlayerBolt.getId() == ID.WallBlock) {
@@ -156,7 +157,7 @@ public class EnemyHeretic extends BaseObject {
 				tempBolt.velY = (float) ((boltVelocity) * Math.cos(angle)); //cos and sin must be switched, like this now!
 				tempBolt.velX = (float) ((boltVelocity) * Math.sin(angle));
 				effect_Enemy.soundEffect_EnemyShoot.play();
-				System.out.println(enemyAmmo);
+				//System.out.println(enemyAmmo); //test-debug
 			}
 		}
 	}

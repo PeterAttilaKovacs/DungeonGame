@@ -53,9 +53,9 @@ public class LevelLoader {
 		this.effect_Enemy = effect_Enemy;
 		
 		BufferedImageLoader loader = new BufferedImageLoader();
-			level_1 = loader.loadImage("/underhivelvl1.png"); 	//level 1
-			level_2 = loader.loadImage("/underhivelvl2.png"); 	//level 2
-			level_3 = loader.loadImage("/underhivelvl3.png"); 	//level 3
+			level_1 = loader.loadImage("/maps/underhivelvl1.png"); 	//level 1
+			level_2 = loader.loadImage("/maps/underhivelvl2.png"); 	//level 2
+			level_3 = loader.loadImage("/maps/underhivelvl3.png"); 	//level 3
 			//level_4 = loader.loadImage("/...png"); 	//lvl 4
 			//level_5 = loader.loadImage("/...png"); 	//lvl 5
 			//etc...	

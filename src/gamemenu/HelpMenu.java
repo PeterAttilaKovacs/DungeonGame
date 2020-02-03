@@ -107,14 +107,14 @@ public class HelpMenu {
 		case 0:
 			Game.GameStatus = STATES.Menu;
 			
-			System.out.println("BACK meghivodik"); //test-debug
+			//System.out.println("BACK works"); //test-debug
 		break;
 	
 		//Exit Game
 		case 1:	
 			Runtime.getRuntime().exit(1);
 			
-			System.out.println("KILEPES meghivodik"); //test-debug
+			//System.out.println("EXIT works"); //test-debug
 		break;
 		}
 	}
