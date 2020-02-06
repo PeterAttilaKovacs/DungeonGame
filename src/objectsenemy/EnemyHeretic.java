@@ -64,7 +64,7 @@ public class EnemyHeretic extends BaseObject {
 	private Random randomPath = new Random();
 	
 	//Variables for enemy life and ammo
-	public int enemyLife = 75;
+	public int enemyLife = 50;
 	public int enemyAmmo = 3;
 	
 	/**
@@ -117,13 +117,13 @@ public class EnemyHeretic extends BaseObject {
 				}
 				else if (movePath == 0) {
 					//Enemys move randomly on level - bit laggy when moveing
-					velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
-					velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					//velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					//velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
 					
 					//test-debug
 					//Basic settings: Enemys dont move, unless detecting the Player
-					//velX = 0;
-					//velY = 0;
+					velX = 0;
+					velY = 0;
 				}
 			}
 			if (tempPlayerBolt.getId() == ID.WallBlock) {
@@ -133,7 +133,7 @@ public class EnemyHeretic extends BaseObject {
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
 			effect_Enemy.soundEffect_EnemyDeath.play();
-			hud.MarineScore += 1;
+			hud.MarineScHeretic += 1;
 		}
 		animation.runAnimation();
 		timer--;

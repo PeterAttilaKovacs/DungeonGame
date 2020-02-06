@@ -6,7 +6,6 @@
  * 
  * Added new enemy, no sprite renderd yet
  * 
- * TODO: sources packageing, Sound class
  * TODO: volume control for effects, make effects array?...
  * TODO debug: fix ammo color for enemyAI...pedding
  * 
@@ -99,7 +98,7 @@ public class Game extends Canvas implements Runnable {
 		//Step 1 for music
 		PlatformImpl.startup(() -> {}); //for music player, javafx platform initialization!!
 		
-		title = "HiveCity Infestation Game (Alpha 1.0)";
+		title = "HiveCity Infestation Game (V1.0)";
 		handler = new GameHandler(); 
 		
 		//Step 2 for music
@@ -125,7 +124,7 @@ public class Game extends Canvas implements Runnable {
 			//Step 1 of level image loading (loading main sprite-sheets for rendering)
 			level_layout = imageloader.loadImage("/sprites/spacecity2.png");
 			playerSprite = imageloader.loadImage("/sprites/spm.png");
-			enemySprite  = imageloader.loadImage("/sprites/enmheretic.png");
+			enemySprite  = imageloader.loadImage("/sprites/enemysprites.png");
 			
 			//Step 2 of level image loading
 			imageCut_level = new SpriteCuter(level_layout);
@@ -261,7 +260,7 @@ public class Game extends Canvas implements Runnable {
 		Graphics graphics2D = (Graphics2D) graphics;
 			
 			//Menu screen background rendering
-			graphics.setColor(Color.orange);
+			graphics.setColor(Color.gray);
 			graphics.fillRect(0, 0, width, height);
 		
 		/**

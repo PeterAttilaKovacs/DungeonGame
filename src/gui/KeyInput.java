@@ -19,7 +19,7 @@ public class KeyInput extends KeyAdapter {
 	 * 
 	 */
 	GameHandler handler;
-	public boolean keys[] = new boolean[5];
+	//public boolean keys[] = new boolean[9]; //ths may have no real effect on any variable...
 	
 	/**
 	 * KeyInput constructor
@@ -48,8 +48,11 @@ public class KeyInput extends KeyAdapter {
 				
 				if (key == KeyEvent.VK_ESCAPE) { 	handler.setEsc(true); } //only pressed is checkd
 				
-				if (key == KeyEvent.VK_N) {	handler.setUP(true); }
-				if (key == KeyEvent.VK_M) {	handler.setDOWN(true); }
+				if (key == KeyEvent.VK_N) {	handler.setVolUP(true); } //music volume control
+				if (key == KeyEvent.VK_M) {	handler.setVolDOWN(true); }
+				
+				if (key == KeyEvent.VK_I) { handler.setEffUP(true); } //effect volume control
+				if (key == KeyEvent.VK_O) { handler.setEffDOWN(true); }
 			}
 		}
 	}
@@ -71,8 +74,11 @@ public class KeyInput extends KeyAdapter {
 				if (key == KeyEvent.VK_A){ handler.setLeft(false); }
 				if (key == KeyEvent.VK_D){ handler.setRight(false); }
 				
-				if (key == KeyEvent.VK_N) {	handler.setUP(false); }
-				if (key == KeyEvent.VK_M) {	handler.setDOWN(false); }
+				if (key == KeyEvent.VK_N) {	handler.setVolUP(false); } //music volume control
+				if (key == KeyEvent.VK_M) {	handler.setVolDOWN(false); }
+				
+				if (key == KeyEvent.VK_I) { handler.setEffUP(false); } //effect volume control
+				if (key == KeyEvent.VK_O) { handler.setEffDOWN(false); }
 			}
 		}
 	}

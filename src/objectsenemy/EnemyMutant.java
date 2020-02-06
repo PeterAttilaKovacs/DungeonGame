@@ -47,12 +47,11 @@ public class EnemyMutant extends BaseObject {
 		this.hud = hud;
 		this.effect_Enemy = effect_Enemy;
 		
-		//TODO set image on enemy image sprite_sheet!!!!
-//		enmheretic[0] = imageCut.grabImage(1, 1, 33, 32);
-//		enmheretic[1] = imageCut.grabImage(2, 1, 33, 32);
-//		enmheretic[2] = imageCut.grabImage(3, 1, 33, 32);
-//		
-//		animation = new Animation2D(3, enmheretic);
+		enmheretic[0] = imageCut.grabImage(1, 2, 33, 32);
+		enmheretic[1] = imageCut.grabImage(2, 2, 33, 32);
+		enmheretic[2] = imageCut.grabImage(3, 2, 33, 32);
+		
+		animation = new Animation2D(3, enmheretic);
 	}
 
 	//Variables for Enemy movement and fireing
@@ -112,12 +111,13 @@ public class EnemyMutant extends BaseObject {
 				}
 				else if (movePath == 0) {
 					//Enemys move randomly on level - bit laggy when moveing
-					velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
-					velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					//velX = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
+					//velY = (randomPath.nextInt(2 * (int) maxSpeed + 1) - maxSpeed);
 					
+					//test-debug
 					//Basic settings: Enemys dont move, unless detecting the Player
-					//velX = 0;
-					//velY = 0;
+					velX = 0;
+					velY = 0;
 				}
 			}
 			if (tempPlayerBolt.getId() == ID.WallBlock) {
@@ -127,9 +127,9 @@ public class EnemyMutant extends BaseObject {
 		if (enemyLife <= 0) { 
 			handler.removeObject(this);
 			effect_Enemy.soundEffect_EnemyDeath.play();
-			hud.MarineScore += 1;
+			hud.MarineScMutant += 1;
 		}
-		//animation.runAnimation();
+		animation.runAnimation();
 		timer--;	
 	}
 
@@ -190,22 +190,22 @@ public class EnemyMutant extends BaseObject {
 	public void render(Graphics graphics) {
 		
 		//test-debug
-		graphics.setColor(Color.green);
-		graphics.drawRect((int)x, (int)y, width, height);
+		//graphics.setColor(Color.green);
+		//graphics.drawRect((int)x, (int)y, width, height);
 		
 		//Enemy
-//		if (velX == 0 && velY == 0) {
-//			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
-//		}
-//		else { 
-//			animation.drawAnimation(graphics, x, y, 0); 
-//		}
+		if (velX == 0 && velY == 0) {
+			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
+		}
+		else { 
+			animation.drawAnimation(graphics, x, y, 0); 
+		}
 
 		//EnemyHUD
 		graphics.setColor(Color.red);
-		graphics.fillRect((int)x, (int)y-5, enemyLife/2, 5);
+		graphics.fillRect((int)x, (int)y-5, enemyLife/3, 5);
 		graphics.setColor(Color.black);
-		graphics.drawRect((int)x, (int)y-5, enemyLife/2, 5);
+		graphics.drawRect((int)x, (int)y-5, enemyLife/3, 5);
 	}
 	
 	/**

@@ -27,7 +27,7 @@ public class GameOver extends BaseObject{
 		super(x, y, id, imageCut);
 		
 		//loading gameover.png image
-		game_over_image = gameoverLoader.loadImage("/gameover.png");
+		game_over_image = gameoverLoader.loadImage("/sprites/gameover.png");
 	}
 
 	//Variables for tick()

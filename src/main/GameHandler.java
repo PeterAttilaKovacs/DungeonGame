@@ -17,8 +17,11 @@ public class GameHandler {
 	//Variables for KeyInput
 	private boolean up = false, down = false, left = false, right = false, esc = false;
 	
-	//Variables for Volume control
+	//Variables for Music Volume control
 	private boolean volUP = false, volDOWN = false;
+	
+	//Variables for Effect Volume control
+	private boolean effUP = false, effDOWN = false;
 	
 	/**
 	 * Main tick method
@@ -102,20 +105,37 @@ public class GameHandler {
 		this.esc = esc;
 	}
 	
-	//Volume Control
-	public boolean volUP() {
+	//Volume Music Control getter and setter
+	public boolean getVolUP() {
 		return volUP;
 	}
 	
-	public void setUP(boolean volUP) {
+	public void setVolUP(boolean volUP) {
 		this.volUP = volUP;
 	}
 	
-	public boolean volDOWN() {
+	public boolean getVolDOWN() {
 		return volDOWN;
 	}
 	
-	public void setDOWN(boolean volDOWN) {
+	public void setVolDOWN(boolean volDOWN) {
 		this.volDOWN = volDOWN;
+	}
+	
+	//Volume Effect Control getter and setter
+	public boolean getEffUP() {
+		return effUP;
+	}
+	
+	public void setEffUP(boolean effUP) {
+		this.effUP = effUP;
+	}
+	
+	public boolean getEffDOWN() {
+		return effDOWN;
+	}
+	
+	public void setEffDOWN(boolean effDOWN) {
+		this.effDOWN = effDOWN;
 	}
 }

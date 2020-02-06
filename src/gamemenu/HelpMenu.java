@@ -50,7 +50,7 @@ public class HelpMenu {
 	
 		graphics.setColor(Color.black);
 		graphics.setFont(new Font("arial", Font.ITALIC, 30));
-		graphics.drawString("Game Help Menu", Game.height/2, Game.width/7);
+		graphics.drawString("    Game    Help    Menu", Game.height/2, Game.width/7);
 		
 		graphics.setFont(new Font("arial", Font.ITALIC, 19));
 		drawString(graphics, 

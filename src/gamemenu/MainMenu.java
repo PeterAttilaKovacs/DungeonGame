@@ -45,7 +45,6 @@ public class MainMenu {
 	//Menu rendering
 	public void render(Graphics graphics) {
 		
-		graphics.setColor(Color.orange);
 		MenuFonts.drawString(graphics, new Font("arial", Font.BOLD, 30), Color.blue, Game.title, 80);
 		
 		for (int i=0; i < options.length; i++){
