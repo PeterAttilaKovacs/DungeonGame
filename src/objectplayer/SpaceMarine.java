@@ -187,14 +187,28 @@ public class SpaceMarine extends BaseObject {
 				}
 			}
 			
-			//Collision with Enemy
+			//Collision with EnemyHeretic
 			if (tempObject.getId() == ID.EnemyHeretic) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife--;
 				}
 			}
 			
-			//Collision with Enemy Bolt
+			//Collision with EnemyMutant
+			if (tempObject.getId() == ID.EnemyMutant) {
+				if (getBounds().intersects(tempObject.getBounds())) {
+					hud.MarineLife-- ;
+				}
+			}
+			
+			//Collision with EnemyMutant
+			if (tempObject.getId() == ID.EnemyUnclean) {
+				if (getBounds().intersects(tempObject.getBounds())) {
+					hud.MarineLife -= 2;
+				}
+			}
+			
+			//Collision with EnemyBolt
 			if (tempObject.getId() == ID.EnemyBolt) {
 				if (getBounds().intersects(tempObject.getBounds())) {
 					hud.MarineLife -= 5;

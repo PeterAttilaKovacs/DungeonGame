@@ -1,5 +1,6 @@
 /**
  * Game Enums
+ * Game States
  * 
  */
 /**

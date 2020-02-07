@@ -24,7 +24,7 @@ public class EnemyMutant extends BaseObject {
 	private Game game;
 	private PlayerHUD hud;
 	private BaseObject tempPlayerBolt;
-	private BufferedImage enmheretic[] = new BufferedImage[3];
+	private BufferedImage enemymutant[] = new BufferedImage[3];
 	public Animation2D animation;
 	private Sound effect_Enemy;
 	
@@ -47,11 +47,11 @@ public class EnemyMutant extends BaseObject {
 		this.hud = hud;
 		this.effect_Enemy = effect_Enemy;
 		
-		enmheretic[0] = imageCut.grabImage(1, 2, 33, 32);
-		enmheretic[1] = imageCut.grabImage(2, 2, 33, 32);
-		enmheretic[2] = imageCut.grabImage(3, 2, 33, 32);
+		enemymutant[0] = imageCut.grabImage(1, 1, 33, 32);
+		enemymutant[1] = imageCut.grabImage(2, 1, 33, 32);
+		enemymutant[2] = imageCut.grabImage(3, 1, 33, 32);
 		
-		animation = new Animation2D(3, enmheretic);
+		animation = new Animation2D(3, enemymutant);
 	}
 
 	//Variables for Enemy movement and fireing
@@ -62,7 +62,7 @@ public class EnemyMutant extends BaseObject {
 	private Random randomPath = new Random();
 	
 	//Variables for enemy life and ammo
-	public int enemyLife = 100;
+	public int enemyLife = 75;
 	public int enemyAmmo = 3;
 	
 	@Override
@@ -195,7 +195,7 @@ public class EnemyMutant extends BaseObject {
 		
 		//Enemy
 		if (velX == 0 && velY == 0) {
-			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
+			graphics.drawImage(enemymutant[0], (int)x, (int)y, null);
 		}
 		else { 
 			animation.drawAnimation(graphics, x, y, 0); 
@@ -203,9 +203,9 @@ public class EnemyMutant extends BaseObject {
 
 		//EnemyHUD
 		graphics.setColor(Color.red);
-		graphics.fillRect((int)x, (int)y-5, enemyLife/3, 5);
+		graphics.fillRect((int)x, (int)y - 5, enemyLife / 3, 5);
 		graphics.setColor(Color.black);
-		graphics.drawRect((int)x, (int)y-5, enemyLife/3, 5);
+		graphics.drawRect((int)x, (int)y - 5, enemyLife / 3, 5);
 	}
 	
 	/**

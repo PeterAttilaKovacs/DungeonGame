@@ -7,6 +7,7 @@ import objectplayer.PlayerHUD;
 import objectplayer.SpaceMarine;
 import objectsenemy.EnemyHeretic;
 import objectsenemy.EnemyMutant;
+import objectsenemy.EnemyUnclean;
 import objectslevel.AmmoCrate;
 import objectslevel.Flag;
 import objectslevel.MediPack;
@@ -23,7 +24,7 @@ public class LevelLoader {
 	public SpriteCuter imageCut_enemy;
 	public SpriteCuter imageCut_player;
 	public Camera camera;
-	public BufferedImage level_1 = null, level_2 = null, level_3 = null;
+	public BufferedImage level_1 = null, level_2 = null, level_3 = null, level_4 = null;
 	private Game game;
 	private Sound effect_Player;
 	private Sound effect_Enemy;
@@ -56,7 +57,7 @@ public class LevelLoader {
 			level_1 = loader.loadImage("/maps/underhivelvl1.png"); 	//level 1
 			level_2 = loader.loadImage("/maps/underhivelvl2.png"); 	//level 2
 			level_3 = loader.loadImage("/maps/underhivelvl3.png"); 	//level 3
-			//level_4 = loader.loadImage("/...png"); 	//lvl 4
+			level_4 = loader.loadImage("/maps/underhivelvl4.png"); 	//level 4
 			//level_5 = loader.loadImage("/...png"); 	//lvl 5
 			//etc...	
 			
@@ -88,29 +89,33 @@ public class LevelLoader {
 					handler.addObject(new SpaceMarine(xx*32, yy*32, ID.SpaceMarine, imageCut_player, handler, camera, game, hud, effect_Player, this));
 				}
 					
-				//EnemyHeretic (green - enemy1)
+				//EnemyHeretic (green - enemy type 1)
 				if (red == 0 && green == 255 && blue == 0) {
 					handler.addObject(new EnemyHeretic(xx*32, yy*32, ID.EnemyHeretic, imageCut_enemy, handler, game, hud, effect_Enemy));
 				}
 				
-				//EnemyMutant (gray - enemy2)
+				//EnemyMutant (gray - enemy type 2)
 				if (red == 192 && green == 192 && blue == 192) {
 					handler.addObject(new EnemyMutant(xx*32, yy*32, ID.EnemyMutant, imageCut_enemy, handler, game, hud, effect_Enemy));
 				}
 				
+				//EnemyUnclean (purple - enemy type 3)
+				if (red == 255 && green == 0 && blue == 255) {
+					handler.addObject(new EnemyUnclean(xx*32, yy*32, ID.EnemyUnclean, imageCut_enemy, handler, game, hud, effect_Enemy));
+				}
 					
 				//AmmoCrate (cyan)
-				if (red == 0 && green == 255 && blue == 255) { //cyen color: red: 0, green: 255, blue: 255
+				if (red == 0 && green == 255 && blue == 255) {
 					handler.addObject(new AmmoCrate(xx*32, yy*32, ID.AmmoCrate, imageCut_level, handler));
 				}
 					
 				//Exitpoint (yellow)
-				if (red == 255 && green == 255 && blue == 0) { //yellow color: red: 255, green: 255, blue: 0 
+				if (red == 255 && green == 255 && blue == 0) {
 					handler.addObject(new Flag(xx*32, yy*32, ID.Flag, imageCut_level)); 
 				}
 				
 				//MediPack (white)
-				if (red == 255 && green == 255 && blue == 255) { //white color: red: 255, green: 255, blue: 255 
+				if (red == 255 && green == 255 && blue == 255) {
 					handler.addObject(new MediPack(xx*32, yy*32, ID.MediPack, imageCut_level, handler)); 
 				}
 			}
@@ -140,13 +145,19 @@ public class LevelLoader {
 			loadMap(level_3);
 			camera.findPlayer();
 			break;
+		
+		//Lvl 4
+		case 4: 
+			loadMap(level_4);
+			camera.findPlayer();
+			break;
 		}
 			
 		/**
 		 * Counter for level, after level 3, counter is set to null,
 		 * level loading starts from level 1.
 		 */
-		if (Game.Level == 3) {
+		if (Game.Level == 4) {
 			Game.Level = 1;
 		}
 		else {

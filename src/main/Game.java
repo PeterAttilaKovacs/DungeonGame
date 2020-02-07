@@ -4,8 +4,6 @@
  * 
  * author: Galaktika
  * 
- * Added new enemy, no sprite renderd yet
- * 
  * TODO: volume control for effects, make effects array?...
  * TODO debug: fix ammo color for enemyAI...pedding
  * 
@@ -124,7 +122,7 @@ public class Game extends Canvas implements Runnable {
 			//Step 1 of level image loading (loading main sprite-sheets for rendering)
 			level_layout = imageloader.loadImage("/sprites/spacecity2.png");
 			playerSprite = imageloader.loadImage("/sprites/spm.png");
-			enemySprite  = imageloader.loadImage("/sprites/enemysprites.png");
+			enemySprite  = imageloader.loadImage("/sprites/enemyspritesheet.png");
 			
 			//Step 2 of level image loading
 			imageCut_level = new SpriteCuter(level_layout);

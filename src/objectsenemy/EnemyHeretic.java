@@ -26,7 +26,7 @@ public class EnemyHeretic extends BaseObject {
 	private Game game;
 	private PlayerHUD hud;
 	private BaseObject tempPlayerBolt;
-	private BufferedImage enmheretic[] = new BufferedImage[3];
+	private BufferedImage enemyheretic[] = new BufferedImage[3];
 	public Animation2D animation;
 	private Sound effect_Enemy;
 	
@@ -49,11 +49,11 @@ public class EnemyHeretic extends BaseObject {
 		this.hud = hud;
 		this.effect_Enemy = effect_Enemy;
 		
-		enmheretic[0] = imageCut.grabImage(1, 1, 33, 32);
-		enmheretic[1] = imageCut.grabImage(2, 1, 33, 32);
-		enmheretic[2] = imageCut.grabImage(3, 1, 33, 32);
+		enemyheretic[0] = imageCut.grabImage(1, 3, 33, 32);
+		enemyheretic[1] = imageCut.grabImage(2, 3, 33, 32);
+		enemyheretic[2] = imageCut.grabImage(3, 3, 33, 32);
 		
-		animation = new Animation2D(3, enmheretic);
+		animation = new Animation2D(3, enemyheretic);
 	}
 
 	//Variables for Enemy movement and fireing
@@ -64,7 +64,7 @@ public class EnemyHeretic extends BaseObject {
 	private Random randomPath = new Random();
 	
 	//Variables for enemy life and ammo
-	public int enemyLife = 50;
+	public int enemyLife = 25;
 	public int enemyAmmo = 3;
 	
 	/**
@@ -204,7 +204,7 @@ public class EnemyHeretic extends BaseObject {
 		
 		//Enemy
 		if (velX == 0 && velY == 0) {
-			graphics.drawImage(enmheretic[0], (int)x, (int)y, null);
+			graphics.drawImage(enemyheretic[0], (int)x, (int)y, null);
 		}
 		else { 
 			animation.drawAnimation(graphics, x, y, 0); 
@@ -212,9 +212,9 @@ public class EnemyHeretic extends BaseObject {
 		
 		//EnemyHUD
 		graphics.setColor(Color.red);
-		graphics.fillRect((int)x, (int)y-5, enemyLife/2, 5);
+		graphics.fillRect((int)x, (int)y - 5, enemyLife, 5);
 		graphics.setColor(Color.black);
-		graphics.drawRect((int)x, (int)y-5, enemyLife/2, 5);
+		graphics.drawRect((int)x, (int)y - 5, enemyLife, 5);
 	}
 
 	/**
